@@ -1,5 +1,7 @@
 package com.danozzo.paymybuddy;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -32,6 +34,10 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 		Iterable<BankAccount> bankAccounts = bankAccountService.getBankAccounts();
 		bankAccounts.forEach(bankAccount -> System.out.println(bankAccount.getBankName()));
 		
+		
+		Optional<User> userOptional = userService.getUserById(20);
+		User userId1 = userOptional.get();
+		System.out.println(userId1.getFirstName());
 		}
 
 }
