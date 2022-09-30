@@ -2,25 +2,34 @@ package com.danozzo.paymybuddy.controller;
 
 import java.util.Optional;
 
+import com.danozzo.paymybuddy.service.IUserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.danozzo.paymybuddy.model.User;
-import com.danozzo.paymybuddy.service.UserService;
+import com.danozzo.paymybuddy.service.UserServiceImpl;
+import org.springframework.web.servlet.ModelAndView;
 
-@RestController
+@Controller
 public class UserController {
 	private static final Logger logger = LogManager.getLogger("UserController");
+
 	@Autowired
-	private UserService userService;
+	private IUserService userService;
 	
-	@GetMapping(value = "/user")
-	public Iterable<User> getUsers() {
+	@GetMapping(value = "/users")
+	public ModelAndView getUsers(Model model) {
+		model.addAttribute("users", userService.getUsers());
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("users");
 		logger.info("get all users");
-		return userService.getUsers();}
+		return modelAndView;
+	}
 	
 	@GetMapping(value = "/id")
 	public Optional<User> getUserById(Integer id){

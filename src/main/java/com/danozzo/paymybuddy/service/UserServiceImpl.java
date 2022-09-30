@@ -9,7 +9,7 @@ import com.danozzo.paymybuddy.repository.UserRepository;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserServiceImpl implements IUserService {
 
 	@Autowired
 	private UserRepository userRepository;

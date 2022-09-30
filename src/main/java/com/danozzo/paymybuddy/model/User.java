@@ -1,14 +1,10 @@
 package com.danozzo.paymybuddy.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
-@Table(name="user")
+@Table(name="user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 	
 	@Id
@@ -30,6 +26,22 @@ public class User {
 	
 	@Column(name="balance")
 	private int balance;
+
+	/*@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "role_name",
+			joinColumns = @JoinColumn(
+					name = "id_user", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(
+					name = "id", referencedColumnName = "id"
+			)
+	)
+	private Collection<Role> role;
+
+	public Collection<Role> getRole() {
+		return role;
+	}*/
+
 
 	public int getUserId() {
 		return userId;
@@ -78,6 +90,5 @@ public class User {
 	public void setBalance(int balance) {
 		this.balance = balance;
 	}
-	
 
 }

@@ -5,16 +5,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.danozzo.paymybuddy.model.BankAccount;
-import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.service.BankAccountService;
-import com.danozzo.paymybuddy.service.UserService;
+import com.danozzo.paymybuddy.service.UserServiceImpl;
 
 @SpringBootApplication
 public class PayMyBuddyApplication implements CommandLineRunner {
 
 	@Autowired
-	UserService userService;
+	UserServiceImpl userServiceImpl;
 	
 	@Autowired
 	BankAccountService bankAccountService;
@@ -26,11 +24,11 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {		
-		Iterable<User> users = userService.getUsers();
+		/*Iterable<User> users = userService.getUsers();
 		users.forEach(user -> System.out.println(user.getFirstName() +" "+ user.getLastName()));
 		
 		Iterable<BankAccount> bankAccounts = bankAccountService.getBankAccounts();
-		bankAccounts.forEach(bankAccount -> System.out.println(bankAccount.getBankName()));
+		bankAccounts.forEach(bankAccount -> System.out.println(bankAccount.getBankName()));*/
 		
 		}
 
