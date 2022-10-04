@@ -1,42 +1,61 @@
 package com.danozzo.paymybuddy.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
-@Table(name="user")
+@Table(name="user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
-	
+
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	@Column(name="id_user")
-	private int userId;
-	
+	private long id;
+
 	@Column(name="first_name")
 	private String firstName;
-	
+
 	@Column(name="last_name")
 	private String lastName;
-	
+
 	@Column(name="email")
 	private String email;
-	
+
 	@Column(name="password")
 	private String password;
-	
-	@Column(name="balance")
-	private int balance;
 
-	public int getUserId() {
-		return userId;
+	@Column(name="balance")
+	private long balance;
+
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "users_roles",
+			joinColumns = @JoinColumn(
+					name = "user_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(
+					name = "role_id", referencedColumnName = "id"))
+	private Collection<Role> role;
+
+
+	public User() {
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public User(long id, String firstName, String lastName, String email, String password, long balance, Collection<Role> role) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.balance = balance;
+		this.role = role;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -71,13 +90,19 @@ public class User {
 		this.password = password;
 	}
 
-	public int getBalance() {
+	public long getBalance() {
 		return balance;
 	}
 
-	public void setBalance(int balance) {
+	public void setBalance(long balance) {
 		this.balance = balance;
 	}
-	
 
+	public Collection<Role> getRole() {
+		return role;
+	}
+
+	public void setRole(Collection<Role> role) {
+		this.role = role;
+	}
 }
