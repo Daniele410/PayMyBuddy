@@ -2,6 +2,7 @@ package com.danozzo.paymybuddy.model;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name="user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -48,6 +49,9 @@ public class User {
 		this.password = password;
 		this.balance = balance;
 		this.role = role;
+	}
+
+	public <T> User(String firstName, String lastName, String email, String password, List<T> role_user) {
 	}
 
 	public long getId() {

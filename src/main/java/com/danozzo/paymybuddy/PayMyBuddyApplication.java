@@ -33,9 +33,9 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 		bankAccounts.forEach(bankAccount -> System.out.println(bankAccount.getBankName()));*/
 		
 		
-		Optional<User> userOptional = userService.getUserById(20);
-		User userId1 = userOptional.get();
-		System.out.println(userId1.getFirstName());
+//		Optional<User> userOptional = userService.getUserById(20);
+//		User userId1 = userOptional.get();
+//		System.out.println(userId1.getFirstName());
 		}
 
 }
