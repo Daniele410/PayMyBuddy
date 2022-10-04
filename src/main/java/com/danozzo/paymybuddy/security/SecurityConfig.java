@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/transaction", true)
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .loginPage("/login")
+                .loginPage("/registration")
                 .permitAll()
                 .and()
                 .logout()
