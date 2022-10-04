@@ -13,6 +13,8 @@ public class UserServiceImpl implements IUserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+
 	
 	public Iterable<User> getUsers() {
 		return userRepository.findAll();
@@ -21,4 +23,13 @@ public class UserServiceImpl implements IUserService {
     public Optional<User> getUserById(Integer id) {
 		return userRepository.findById(id);
     }
+
+	public Optional<User> findByUserName(String firstName){
+		return userRepository.findByFirstName(firstName);
+	}
+
+	public Optional<User> findByEmail(String email){
+		return userRepository.findByEmail(email);
+	}
+
 }

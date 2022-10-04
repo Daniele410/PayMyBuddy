@@ -1,0 +1,8 @@
+$fa-font-patch: '~@fortawesome/fontawesome-free/webfont';
+@import '~@fortawesome/fortawesome-free/css/all.css';
+@import 'bootstrap';
+
+body{
+    background-color:gray;
+    color:white;
+}

@@ -10,6 +10,7 @@ public interface IUserService {
 
     public Optional<User> getUserById(Integer id);
 
+    public Optional<User> findByEmail(String email);
 
 
 

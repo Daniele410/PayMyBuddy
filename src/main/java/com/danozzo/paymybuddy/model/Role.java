@@ -1,37 +1,35 @@
 package com.danozzo.paymybuddy.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name="role")
+@Table(name = "role")
 public class Role {
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	@Column(name="id")
-	private Long roleId;
-	
-	@Column(name="role_name")
-	private String roleName;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String name;
 
-	public Long getRoleId() {
-		return roleId;
+	public Role() {
+
 	}
 
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
+	public Role(String name) {
+		super();
+		this.name = name;
 	}
 
-	public String getRoleName() {
-		return roleName;
+	public Long getId() {
+		return id;
 	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 }
