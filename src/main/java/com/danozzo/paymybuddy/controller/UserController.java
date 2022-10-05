@@ -26,14 +26,14 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    @GetMapping("/")
-    public String index(Model model) {
-        if(getPrincipal()!=null){
-            model.addAttribute("user", getPrincipal());
-            return "authenticated";
-        }
-        return "login";
-    }
+//    @GetMapping("/")
+//    public String index(Model model) {
+//        if(getPrincipal()!=null){
+//            model.addAttribute("user", getPrincipal());
+//            return "authenticated";
+//        }
+//        return "login";
+//    }
 
     @GetMapping("/authenticated")
     public String authenticated(Model model) {
@@ -42,14 +42,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/login")
-    public String login() {
-        User user = getPrincipal();
-        if (user != null) {
-            return "authenticated";
-        }
-        return "login";
-    }
+
 
     @GetMapping(value = "/users")
     public ModelAndView getUsers(Model model) {

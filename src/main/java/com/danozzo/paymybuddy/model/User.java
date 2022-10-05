@@ -2,7 +2,6 @@ package com.danozzo.paymybuddy.model;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name="user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -35,23 +34,19 @@ public class User {
 					name = "user_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(
 					name = "role_id", referencedColumnName = "id"))
-	private Collection<Role> role;
+	private Collection<Role> roles;
 
 
 	public User() {
 	}
 
-	public User(long id, String firstName, String lastName, String email, String password, long balance, Collection<Role> role) {
-		this.id = id;
+
+	public User(String firstName, String lastName, String email, String password, Collection<Role> roles) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
-		this.balance = balance;
-		this.role = role;
-	}
-
-	public <T> User(String firstName, String lastName, String email, String password, List<T> role_user) {
+		this.roles = roles;
 	}
 
 	public long getId() {
@@ -102,11 +97,11 @@ public class User {
 		this.balance = balance;
 	}
 
-	public Collection<Role> getRole() {
-		return role;
+	public Collection<Role> getRoles() {
+		return roles;
 	}
 
-	public void setRole(Collection<Role> role) {
-		this.role = role;
+	public void setRoles(Collection<Role> roles) {
+		this.roles = roles;
 	}
 }

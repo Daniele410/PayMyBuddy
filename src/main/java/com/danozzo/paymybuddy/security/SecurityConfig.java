@@ -1,6 +1,7 @@
 package com.danozzo.paymybuddy.security;
 
 import com.danozzo.paymybuddy.model.User;
+import com.danozzo.paymybuddy.service.IUserService;
 import com.danozzo.paymybuddy.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,68 +18,55 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import java.util.Optional;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserServiceImpl userService;
+    private IUserService userService;
+
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return (UserDetailsService) email -> {
-            Optional<User> user = userService.findByEmail(email);
-            if (user.isEmpty()) {
-                throw new UsernameNotFoundException("No user found with username: " + email);
-            }
-            return (UserDetails) user.get();
-        };
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public DaoAuthenticationProvider authProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
 
-        return authProvider;
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService((userService));
+        auth.setPasswordEncoder(passwordEncoder());
+        return auth;
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
     }
 
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(authProvider());
-    }
-
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().antMatchers(
+                        "/registration**",
+                        "/js/**",
+                        "/css/**",
+                        "/img/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
-                .defaultSuccessUrl("/transaction", true)
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .loginPage("/registration")
-                .permitAll()
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .permitAll()
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .and()
-                .exceptionHandling()
-                .accessDeniedPage("/403");
-    }
+                .clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login?logout")
+                .permitAll();
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+
     }
 
 }
