@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface IUserService extends UserDetailsService {
 
-    public User save(UserRegistrationDto registrationDto);
+    public User save(UserRegistrationDto registrationDto, String newPassword);
 
 
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;

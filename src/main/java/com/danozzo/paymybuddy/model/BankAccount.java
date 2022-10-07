@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user_bank_account")
+@Table(name = "bank_account")
 public class BankAccount {
 
 	@Id
@@ -21,6 +21,9 @@ public class BankAccount {
 
 	@Column(name= "iban")
 	private String iban;
+
+	@Column(name="bank_location")
+	private String location;
 
 	public int getIdCountBank() {
 		return idCountBank;
@@ -54,7 +57,6 @@ public class BankAccount {
 		this.location = location;
 	}
 
-	@Column(name="bank_location")
-	private String location;
+
 
 }

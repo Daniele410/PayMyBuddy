@@ -20,23 +20,17 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements IUserService {
 
-
-
-	private UserRepository userRepository;
-
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	private final UserRepository userRepository;
 
 	public UserServiceImpl(UserRepository userRepository) {
-		super();
 		this.userRepository = userRepository;
 	}
 
 	@Override
-	public User save(UserRegistrationDto registrationDto) {
+	public User save(UserRegistrationDto registrationDto, String newPassword) {
 		User user = new User(registrationDto.getFirstName(),
 				registrationDto.getLastName(), registrationDto.getEmail(),
-				passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_USER")));
+				newPassword, Arrays.asList(new Role("ROLE_USER")));
 
 		return userRepository.save(user);
 	}

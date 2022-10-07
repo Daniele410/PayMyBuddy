@@ -41,7 +41,17 @@ public class UserController {
         return "authenticated";
     }
 
+    @GetMapping("/contact")
+    public String contact(Model model) {
+        model.addAttribute("user", getPrincipal());
+        return "contact";
+    }
 
+    @GetMapping("/addContact")
+    public String addContact(Model model) {
+        model.addAttribute("user", getPrincipal());
+        return "addContact";
+    }
 
 
     @GetMapping(value = "/users")
