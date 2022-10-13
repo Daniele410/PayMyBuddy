@@ -25,6 +25,12 @@ public class BankAccount {
 	@Column(name="bank_location")
 	private String location;
 
+	public BankAccount() {
+	}
+
+	public BankAccount(String bankName, String iban, String location) {
+	}
+
 	public int getIdCountBank() {
 		return idCountBank;
 	}

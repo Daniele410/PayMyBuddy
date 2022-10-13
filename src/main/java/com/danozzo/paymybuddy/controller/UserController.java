@@ -4,16 +4,17 @@ import java.security.Principal;
 import java.util.Optional;
 
 import com.danozzo.paymybuddy.service.IUserService;
+import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
+import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.service.UserServiceImpl;
@@ -26,18 +27,11 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-//    @GetMapping("/")
-//    public String index(Model model) {
-//        if(getPrincipal()!=null){
-//            model.addAttribute("user", getPrincipal());
-//            return "authenticated";
-//        }
-//        return "login";
-//    }
 
     @GetMapping("/authenticated")
     public String authenticated(Model model) {
         model.addAttribute("user", getPrincipal());
+        logger.info("user authenticated");
         return "authenticated";
     }
 
@@ -52,6 +46,7 @@ public class UserController {
         model.addAttribute("user", getPrincipal());
         return "addContact";
     }
+
 
 
     @GetMapping(value = "/users")
@@ -78,6 +73,36 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+
+    @ModelAttribute("user")
+    public UserRegistrationDto userRegistrationDto(){
+        return new UserRegistrationDto();
+    }
+
+    @GetMapping
+    public String showAddContactForm() {
+        return "addContact";
+    }
+
+    @PostMapping("/addContact")
+    public String registerContactFriend(@ModelAttribute("user") UserRegistrationDto userRegistrationDto, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "addContact";
+        }
+        logger.info("add contact friend");
+        if ( userService.existsByEmail(userRegistrationDto.getEmail()) ) {
+            bindingResult.rejectValue("email", "", "This email already exists");
+            return "addContact";
+        }
+
+        return "redirect:/addContact?success";
+    }
+
+
+
+
+
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public String accessDenied(Model model, Principal principal) {
         model.addAttribute("title", "Access Denied!");
@@ -91,6 +116,8 @@ public class UserController {
         }
         return "403";
     }
+
+
 
 
 }
