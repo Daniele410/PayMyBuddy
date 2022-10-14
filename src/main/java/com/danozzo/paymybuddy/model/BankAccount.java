@@ -29,6 +29,9 @@ public class BankAccount {
 	}
 
 	public BankAccount(String bankName, String iban, String location) {
+		this.bankName = bankName;
+		this.iban = iban;
+		this.location = location;
 	}
 
 	public int getIdCountBank() {

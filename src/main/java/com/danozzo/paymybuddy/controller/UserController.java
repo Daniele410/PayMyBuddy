@@ -9,6 +9,7 @@ import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,13 +86,15 @@ public class UserController {
     }
 
     @PostMapping("/addContact")
-    public String registerContactFriend(@ModelAttribute("user") UserRegistrationDto userRegistrationDto, BindingResult bindingResult, Model model) {
+    public String registerContactFriend(@ModelAttribute("user") UserRegistrationDto userRegistrationDto, String email, BindingResult bindingResult, Model model) {
+        Authentication user = SecurityContextHolder.getContext().getAuthentication();
 
         if (bindingResult.hasErrors()) {
             return "addContact";
         }
         logger.info("add contact friend");
         if ( userService.existsByEmail(userRegistrationDto.getEmail()) ) {
+           userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
             bindingResult.rejectValue("email", "", "This email already exists");
             return "addContact";
         }

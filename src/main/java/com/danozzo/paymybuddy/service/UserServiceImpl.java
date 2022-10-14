@@ -66,5 +66,13 @@ public class UserServiceImpl implements IUserService {
         return userRepository.existsByEmail(email);
     }
 
+    @Override
+    public void saveFriend(String email, String emailConnectedUser) {
+        User userToSave = userRepository.findByEmail(email);
+        User connectedUser = userRepository.findByEmail(emailConnectedUser);
+        connectedUser.addFriend(userToSave);
+        userRepository.save(connectedUser);
+    }
+
 
 }
