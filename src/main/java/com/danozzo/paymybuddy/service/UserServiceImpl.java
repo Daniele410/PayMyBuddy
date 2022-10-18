@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -72,6 +73,16 @@ public class UserServiceImpl implements IUserService {
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
         connectedUser.addFriend(userToSave);
         userRepository.save(connectedUser);
+    }
+
+    @Override
+    public List<User> getUsersFriends() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
 

@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IUserService extends UserDetailsService {
@@ -25,4 +26,9 @@ public interface IUserService extends UserDetailsService {
     Boolean existsByEmail(String email);
 
     void saveFriend(String email, String name);
+
+
+    List<User> getUsersFriends();
+
+    List<User> findAll();
 }

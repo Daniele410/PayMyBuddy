@@ -2,71 +2,71 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-  <meta charset="ISO-8859-1">
-  <title>Pay My Buddy Main</title>
+    <meta charset="ISO-8859-1">
+    <title>Pay My Buddy Main</title>
 
-  <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
 </head>
 <body>
 <br>
-<br
+<br>
 <!-- create navigation bar (header) -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
+    <div class="container">
+        <div class="navbar-header">
 
-      <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
-      <a class="navbar-brand" href="#" th:href="@{/contact}">Contact</a>
+            <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
+            <a class="navbar-brand" href="#" th:href="@{/contact}">Contact</a>
 
 
+        </div>
     </div>
-  </div>
 </nav>
 
-<div class ="container">
-  <div class = "row">
-    <h1> Friends List </h1>
-  </div>
-
-  <div class = "row">
-    <div class = "col-lg-3">
-      <a th:href = "@{/addContact}" class = "btn btn-primary btn-sm mb-3"> Add User</a>
+<div class="container">
+    <div class="row">
+        <h1> Friends List </h1>
     </div>
-  </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <a th:href="@{/addContact}" class="btn btn-primary btn-sm mb-3"> Add User</a>
+        </div>
+    </div>
 
 
     <!-- Table -->
 
-  <table class = "table table-striped table-bordered">
-    <thead class = "table-dark">
-    <tr>
-      <th> User First Name</th>
-      <th> User Last Name</th>
-      <th> User Email </th>
-      <th> Send Money </th>
-    </tr>
-    </thead>
+    <table class="table table-striped table-bordered" >
+        <thead class="table-dark">
+        <tr>
+            <th> First Name</th>
+            <th> Last Name</th>
+            <th> Email</th>
+            <th> Money</th>
+        </tr>
+        </thead>
 
-    <tbody>
-    <tr th:each = "user: ${users}">
-      <td th:text = "${user.firstName}"></td>
-      <td th:text = "${user.lastName}"></td>
-      <td th:text = "${user.email}"></td>
-<!--      <td>-->
-<!--       <a th:href = "@{/users/edit/{id}(id=${user.id})}"-->
-<!--           class = "btn btn-primary">Update</a>-->
+        <tbody>
+        <tr th:each="user: ${listFriends}">
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${user.email}"></td>
+            <!--      <td>-->
+            <!--       <a th:href = "@{/users/edit/{id}(id=${user.id})}"-->
+            <!--           class = "btn btn-primary">Update</a>-->
 
-<!--        <a th:href = "@{/user/{id}(id=${user.id})}"-->
-<!--           class = "btn btn-danger">Delete</a>-->
+            <!--        <a th:href = "@{/user/{id}(id=${user.id})}"-->
+            <!--           class = "btn btn-danger">Delete</a>-->
 
-<!--      </td>-->
-    </tr>
-    </tbody>
+            <!--      </td>-->
+        </tr>
+        </tbody>
 
-  </table>
+    </table>
 
 </div>
 </body>

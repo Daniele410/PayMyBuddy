@@ -1,10 +1,8 @@
 package com.danozzo.paymybuddy.controller;
 
-import java.security.Principal;
-import java.util.Optional;
-
+import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.service.IUserService;
-import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
+import com.danozzo.paymybuddy.web.dto.UserFriendDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,12 +12,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import com.danozzo.paymybuddy.model.User;
-import com.danozzo.paymybuddy.service.UserServiceImpl;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -36,28 +34,15 @@ public class UserController {
         return "authenticated";
     }
 
-    @GetMapping("/contact")
-    public String contact(Model model) {
-        model.addAttribute("user", getPrincipal());
-        return "contact";
-    }
 
-    @GetMapping("/addContact")
-    public String addContact(Model model) {
-        model.addAttribute("user", getPrincipal());
-        return "addContact";
-    }
-
-
-
-    @GetMapping(value = "/users")
-    public ModelAndView getUsers(Model model) {
-        model.addAttribute("users", userService.getUsers());
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("users");
-        logger.info("get all users");
-        return modelAndView;
-    }
+//    @GetMapping(value = "/contact")
+//    public ModelAndView getUsers(Model model) {
+//        model.addAttribute("users", userService.getUsers());
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("contact");
+//        logger.info("get all users");
+//        return modelAndView;
+//    }
 
 
     private User getPrincipal() {
@@ -85,6 +70,31 @@ public class UserController {
         return "addContact";
     }
 
+
+    @GetMapping("/addContact")
+    public String addContact(Model model) {
+        model.addAttribute("user", getPrincipal());
+        return "addContact";
+    }
+
+
+//    @PostMapping("/addContact")
+//    public String registerContactFriend(@ModelAttribute("user") UserRegistrationDto userRegistrationDto, String email, BindingResult bindingResult, Model model) {
+//        Authentication user = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if (bindingResult.hasErrors()) {
+//            return "addContact";
+//        }
+//        logger.info("add contact friend");
+//        if ( userService.existsByEmail(userRegistrationDto.getEmail()) ) {
+//           userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
+//            bindingResult.rejectValue("email", "", "This email already exists");
+//            return "addContact";
+//        }
+//
+//        return "redirect:/addContact?success";
+//    }
+
     @PostMapping("/addContact")
     public String registerContactFriend(@ModelAttribute("user") UserRegistrationDto userRegistrationDto, String email, BindingResult bindingResult, Model model) {
         Authentication user = SecurityContextHolder.getContext().getAuthentication();
@@ -94,7 +104,7 @@ public class UserController {
         }
         logger.info("add contact friend");
         if ( userService.existsByEmail(userRegistrationDto.getEmail()) ) {
-           userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
+            userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
             bindingResult.rejectValue("email", "", "This email already exists");
             return "addContact";
         }
@@ -102,6 +112,50 @@ public class UserController {
         return "redirect:/addContact?success";
     }
 
+
+
+
+
+
+    @GetMapping("/contact")
+    public ModelAndView showFriends(){
+        ModelAndView modelAndView = new ModelAndView("contact");
+        List<User> listFriends = userService.findAll();
+        modelAndView.addObject("listFriends",listFriends);
+        return modelAndView;
+
+    }
+
+
+
+
+//    @GetMapping("/contact")
+//    public String showFriendsForm(Model model) {
+//        UserFriendDto friendsForm = new UserFriendDto();
+//
+//        for (int i = 1; i <= 3; i++) {
+//            friendsForm.addFriend(new User());
+//        }
+//
+//        model.addAttribute("friends", friendsForm);
+//        return "contact/createFriendsForm";
+//    }
+
+//        @GetMapping("/contact")
+//    public String contact(Model model) {
+//        model.addAttribute("user", getPrincipal());
+//        return "contact";
+//    }
+
+
+//    @GetMapping({"/contact","/list"})
+//    public ModelAndView showUsers(){
+//        ModelAndView modelAndView = new ModelAndView("users");
+//        List<User> list = userService.findAll();
+//        modelAndView.addObject("users",list);
+//        return modelAndView;
+//
+//    }
 
 
 

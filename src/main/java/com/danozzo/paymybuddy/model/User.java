@@ -38,38 +38,16 @@ public class User {
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
-    public List<User> getFriends() {
-        return friends;
-    }
 
-    public void setFriends(List<User> friends) {
-        this.friends = friends;
-    }
-
-    public List<BankAccount> getBankAccountList() {
-        return bankAccountList;
-    }
-
-    public void setBankAccountList(List<BankAccount> bankAccountList) {
-        this.bankAccountList = bankAccountList;
-    }
-
-    public List<BankAccount> getTransferList() {
-        return transferList;
-    }
-
-    public void setTransferList(List<BankAccount> transferList) {
-        this.transferList = transferList;
-    }
 
     @ManyToMany
     @JoinTable(name = "friends",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "connection_id"))
-    private List<User> friends;
+    private List<User> friends = new ArrayList<>();
 
 
-    @ManyToMany
+    @OneToMany
     @JoinTable(name = "users_bank_account",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "bank_id"))
@@ -149,6 +127,30 @@ public class User {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
+    }
+
+    public List<BankAccount> getBankAccountList() {
+        return bankAccountList;
+    }
+
+    public void setBankAccountList(List<BankAccount> bankAccountList) {
+        this.bankAccountList = bankAccountList;
+    }
+
+    public List<BankAccount> getTransferList() {
+        return transferList;
+    }
+
+    public void setTransferList(List<BankAccount> transferList) {
+        this.transferList = transferList;
     }
 
     public void addFriend(User userToSave) {
