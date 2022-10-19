@@ -35,15 +35,6 @@ public class UserController {
     }
 
 
-//    @GetMapping(value = "/contact")
-//    public ModelAndView getUsers(Model model) {
-//        model.addAttribute("users", userService.getUsers());
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("contact");
-//        logger.info("get all users");
-//        return modelAndView;
-//    }
-
 
     private User getPrincipal() {
         User user = null;
@@ -73,27 +64,11 @@ public class UserController {
 
     @GetMapping("/addContact")
     public String addContact(Model model) {
+        List<User> friends = userService.findAll();
         model.addAttribute("user", getPrincipal());
         return "addContact";
     }
 
-
-//    @PostMapping("/addContact")
-//    public String registerContactFriend(@ModelAttribute("user") UserRegistrationDto userRegistrationDto, String email, BindingResult bindingResult, Model model) {
-//        Authentication user = SecurityContextHolder.getContext().getAuthentication();
-//
-//        if (bindingResult.hasErrors()) {
-//            return "addContact";
-//        }
-//        logger.info("add contact friend");
-//        if ( userService.existsByEmail(userRegistrationDto.getEmail()) ) {
-//           userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
-//            bindingResult.rejectValue("email", "", "This email already exists");
-//            return "addContact";
-//        }
-//
-//        return "redirect:/addContact?success";
-//    }
 
     @PostMapping("/addContact")
     public String registerContactFriend(@ModelAttribute("user") UserRegistrationDto userRegistrationDto, String email, BindingResult bindingResult, Model model) {
@@ -104,7 +79,7 @@ public class UserController {
         }
         logger.info("add contact friend");
         if ( userService.existsByEmail(userRegistrationDto.getEmail()) ) {
-            userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
+           userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
             bindingResult.rejectValue("email", "", "This email already exists");
             return "addContact";
         }
@@ -114,13 +89,11 @@ public class UserController {
 
 
 
-
-
-
     @GetMapping("/contact")
     public ModelAndView showFriends(){
         ModelAndView modelAndView = new ModelAndView("contact");
-        List<User> listFriends = userService.findAll();
+        List<User> listFriends = userService.getUsersFriends();
+        logger.info(listFriends);
         modelAndView.addObject("listFriends",listFriends);
         return modelAndView;
 
@@ -157,6 +130,14 @@ public class UserController {
 //
 //    }
 
+    //    @GetMapping(value = "/contact")
+//    public ModelAndView getUsers(Model model) {
+//        model.addAttribute("users", userService.getUsers());
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("contact");
+//        logger.info("get all users");
+//        return modelAndView;
+//    }
 
 
 

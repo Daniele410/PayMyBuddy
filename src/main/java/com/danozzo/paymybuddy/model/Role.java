@@ -16,7 +16,6 @@ public class Role {
 	}
 
 	public Role(String name) {
-		super();
 		this.name = name;
 	}
 
