@@ -38,17 +38,19 @@ public class User {
 
 
     @OneToMany
-    @JoinTable(name = "users_bank_account",
+    @JoinTable(name = "bank_account",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "bank_id"))
+            inverseJoinColumns = @JoinColumn(name = "id_count_bank"))
     private List<BankAccount> bankAccountList = new ArrayList<>();
 
 
     @ManyToMany
-    @JoinTable(name = "users_transfer",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "transfer_id"))
-    private List<BankAccount> transferList = new ArrayList<>();
+    @JoinTable(name = "transfer",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "transfer_id", referencedColumnName = "transfer_id"))
+    private List<Transfer> transferList = new ArrayList<>();
 
 
     public User() {
@@ -126,11 +128,11 @@ public class User {
         this.bankAccountList = bankAccountList;
     }
 
-    public List<BankAccount> getTransferList() {
+    public List<Transfer> getTransferList() {
         return transferList;
     }
 
-    public void setTransferList(List<BankAccount> transferList) {
+    public void setTransferList(List<Transfer> transferList) {
         this.transferList = transferList;
     }
 

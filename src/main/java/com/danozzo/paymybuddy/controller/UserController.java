@@ -69,11 +69,19 @@ public class UserController {
     }
 
     @PostMapping("/addContact")
-    public String registerContactFriend(@ModelAttribute ("User")UserRegistrationDto userRegistrationDto){
+    public String registerContactFriend(@ModelAttribute ("User")UserRegistrationDto userRegistrationDto,BindingResult bindingResult){
         Authentication user = SecurityContextHolder.getContext().getAuthentication();
-        userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
-        logger.info("save contact");
-        return "redirect:/addContact?success";
+        if (bindingResult.hasErrors()) {
+            return "redirect:errors/addContact";
+        }
+        if ( userService.existsByEmail(userRegistrationDto.getEmail()) ) {
+            userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
+            logger.info("save contact");
+            return "redirect:/addContact?success";
+
+        }
+        return "addContact";
+
     }
 
 

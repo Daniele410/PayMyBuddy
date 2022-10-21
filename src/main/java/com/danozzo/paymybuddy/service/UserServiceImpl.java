@@ -63,12 +63,21 @@ public class UserServiceImpl implements IUserService {
         Optional<User> isAlreadyFriend = connectedUser.getFriends().stream().filter(friend -> friend.getEmail().equals(friendUser.getEmail())).findAny();
             if(isAlreadyFriend.isPresent()){
                 throw new RuntimeException("This user is already in this list");
-            }else {
+            }
+
+            else {
                 List<User> friendsList = connectedUser.getFriends();
                 friendsList.add(friendUser);
                 userRepository.save(connectedUser);
             }
 
+    }
+
+    public List<User> showFriendsList(){
+        User user = new User();
+        List<User>friendsList = showFriendsList();
+
+        return friendsList;
     }
 
 

@@ -28,6 +28,8 @@ public interface IUserService extends UserDetailsService {
 
     List<User> getUsersFriends();
 
+
+
     List<User> findAll();
 
 

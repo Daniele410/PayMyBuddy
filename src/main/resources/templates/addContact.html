@@ -31,11 +31,6 @@
 <br>
 <br>
 
-<div class="container">
-  <h1>Pay My Buddy </h1>
-  Welcome <span sec:authentication="principal.username"> User</span>
-</div>
-
 <!-- Create HTML registration form -->
 <div class="container">
   <div class="row">
@@ -55,37 +50,35 @@
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
 
-      <form th:action="@{/addContact}" method="post">
-
-
+<!--      <form th:action="@{/addContact}" method="post">-->
 
       <h1>Register Your Friend Email</h1>
-
-
-      <form th:action="@{/addContact}" method="post" th:object="${friends}">
-        <!-- success message -->
-        <div th:switch="${message}">
-          <div th:case="'Success'" class="alert alert-success">
-            <strong>Success!</strong> You've successfully registered
-            your friend!!
-          </div>
-          <div th:case="'Failed'" class="alert alert-danger">
-            <strong>Failure!</strong> Invalid Email Friend!
-          </div>
+      <div th:if="${param.success}">
+        <div class="alert alert-info">You've successfully registered
+          your friend!!
         </div>
+      </div>
 
-<!--        <div th:if="${param.success}">-->
-<!--          <div class="alert alert-info">You've successfully registered-->
+      <!-- error message -->
+<!--      <div th:if="${param.error}">-->
+<!--        <div class="alert alert-danger">Invalid Email Friend!-->
+<!--        </div>-->
+<!--      </div>-->
+
+
+        <!-- success message -->
+<!--        <div th:switch="${message}">-->
+<!--          <div th:case="'Success'" class="alert alert-success">-->
+<!--            <strong>Success!</strong> You've successfully registered-->
 <!--            your friend!!-->
+<!--          </div>-->
+<!--          <div th:case="'Failed'" class="alert alert-danger">-->
+<!--            <strong>Failure!</strong> Invalid Email Friend!-->
 <!--          </div>-->
 <!--        </div>-->
 
-<!--        &lt;!&ndash; error message &ndash;&gt;-->
-<!--          <div th:if="${param.error}">-->
-<!--            <div class="alert alert-danger">Invalid Email Friend!-->
-<!--            </div>-->
-<!--          </div>-->
 
+      <form th:action="@{/addContact}" method="post" th:object="${user}">
 
         <div class="form-group">
           <label class="control-label" for="email"> Email </label>
@@ -96,6 +89,7 @@
         <div class="form-group">
           <button type="submit" class="btn btn-success">Register</button>
           <span>Already registered? <a  th:href="@{/contact}">Contact Page</a></span>
+
         </div>
       </form>
 

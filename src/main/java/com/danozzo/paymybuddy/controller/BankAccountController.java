@@ -38,15 +38,15 @@ public class BankAccountController {
         return "redirect:/bankRegistration?success";
     }
 
-    @PostMapping("/update")
-    public String updateBank(String name,BankRegistrationDto bankRegistrationDto, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            bankRegistrationDto.setBankName(name);
-            return "/bankRegistrationUpdate";
-        }
-        bankAccountService.save(bankRegistrationDto);
-        return "redirect:/bankAccount";
-    }
+//    @PostMapping("/update")
+//    public String updateBank(String name,BankRegistrationDto bankRegistrationDto, BindingResult result, Model model) {
+//        if (result.hasErrors()) {
+//            bankRegistrationDto.setBankName(name);
+//            return "/bankRegistrationUpdate";
+//        }
+//        bankAccountService.save(bankRegistrationDto);
+//        return "redirect:/bankAccount";
+//    }
 
 
 }
