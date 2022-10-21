@@ -1,23 +1,19 @@
 package com.danozzo.paymybuddy.service;
 
-import com.danozzo.paymybuddy.model.Role;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
+@Transactional
 public class UserServiceImpl implements IUserService {
 
     @Autowired
@@ -28,7 +24,7 @@ public class UserServiceImpl implements IUserService {
     public User save(UserRegistrationDto registrationDto, String newPassword) {
         User user = new User(registrationDto.getFirstName(),
                 registrationDto.getLastName(), registrationDto.getEmail(),
-                newPassword, Arrays.asList(new Role("ROLE_USER")));
+                newPassword);
 
         return userRepository.save(user);
     }
@@ -41,21 +37,14 @@ public class UserServiceImpl implements IUserService {
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username and password.");
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+        //
     }
 
-    @Override
-    public Object getUsers() {
-        return null;
-    }
 
     @Override
     public Optional<User> getUserById(Integer id) {
         return Optional.empty();
-    }
-
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
 
@@ -68,12 +57,21 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void saveFriend(String email, String emailConnectedUser) {
-        User userToSave = userRepository.findByEmail(email);
+    public void saveFriend(String email,String emailConnectedUser ) {
+        User friendUser = userRepository.findByEmail(email);
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
-        connectedUser.addFriend(userToSave);
-        userRepository.save(connectedUser);
+        Optional<User> isAlreadyFriend = connectedUser.getFriends().stream().filter(friend -> friend.getEmail().equals(friendUser.getEmail())).findAny();
+            if(isAlreadyFriend.isPresent()){
+                throw new RuntimeException("This user is already in this list");
+            }else {
+                List<User> friendsList = connectedUser.getFriends();
+                friendsList.add(friendUser);
+                userRepository.save(connectedUser);
+            }
+
     }
+
+
 
     @Override
     public List<User> getUsersFriends() {

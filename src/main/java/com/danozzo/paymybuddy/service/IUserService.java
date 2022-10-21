@@ -17,18 +17,18 @@ public interface IUserService extends UserDetailsService {
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
 
-    public Object getUsers();
-
     Optional<User> getUserById(Integer id);
 
     User findByEmail(String email);
 
     Boolean existsByEmail(String email);
 
-    void saveFriend(String email, String name);
+    void saveFriend(String emailConnectedUser ,String email);
 
 
     List<User> getUsersFriends();
 
     List<User> findAll();
+
+
 }

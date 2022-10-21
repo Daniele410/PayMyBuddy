@@ -17,6 +17,7 @@ public class BankAccountServiceImpl implements IBankAccountService{
 
     @Override
     public BankAccount save(BankRegistrationDto bankRegistrationDto) {
+
         BankAccount bankAccount = new BankAccount(bankRegistrationDto.getBankName(),bankRegistrationDto.getIban(),
                 bankRegistrationDto.getLocation());
         return bankAccountRepository.save(bankAccount);

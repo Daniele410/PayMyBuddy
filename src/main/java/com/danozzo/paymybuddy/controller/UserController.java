@@ -2,7 +2,6 @@ package com.danozzo.paymybuddy.controller;
 
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.service.IUserService;
-import com.danozzo.paymybuddy.web.dto.UserFriendDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -64,28 +63,36 @@ public class UserController {
 
     @GetMapping("/addContact")
     public String addContact(Model model) {
-        List<User> friends = userService.findAll();
+        List<User> friends = userService.getUsersFriends();
         model.addAttribute("user", getPrincipal());
         return "addContact";
     }
 
-
     @PostMapping("/addContact")
-    public String registerContactFriend(@ModelAttribute("user") UserRegistrationDto userRegistrationDto, String email, BindingResult bindingResult, Model model) {
+    public String registerContactFriend(@ModelAttribute ("User")UserRegistrationDto userRegistrationDto){
         Authentication user = SecurityContextHolder.getContext().getAuthentication();
-
-        if (bindingResult.hasErrors()) {
-            return "addContact";
-        }
-        logger.info("add contact friend");
-        if ( userService.existsByEmail(userRegistrationDto.getEmail()) ) {
-           userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
-            bindingResult.rejectValue("email", "", "This email already exists");
-            return "addContact";
-        }
-
+        userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
+        logger.info("save contact");
         return "redirect:/addContact?success";
     }
+
+
+//    @PostMapping("/addContact")
+//    public String registerContactFriend(@ModelAttribute("user") UserRegistrationDto userRegistrationDto, String email, BindingResult bindingResult, Model model) {
+//        Authentication user = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if (bindingResult.hasErrors()) {
+//            return "addContact";
+//        }
+//        logger.info("add contact friend");
+//        if ( userService.existsByEmail(userRegistrationDto.getEmail()) ) {
+//           userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
+//            bindingResult.rejectValue("email", "");
+//            return "addContact";
+//        }
+//
+//        return "redirect:/addContact?success";
+//    }
 
 
 
@@ -138,24 +145,6 @@ public class UserController {
 //        logger.info("get all users");
 //        return modelAndView;
 //    }
-
-
-
-    @RequestMapping(value = "/403", method = RequestMethod.GET)
-    public String accessDenied(Model model, Principal principal) {
-        model.addAttribute("title", "Access Denied!");
-
-        if (principal != null) {
-            model.addAttribute("message", "Hi " + principal.getName()
-                    + "<br> You do not have permission to access this page!");
-        } else {
-            model.addAttribute("msg",
-                    "You do not have permission to access this page!");
-        }
-        return "403";
-    }
-
-
 
 
 }
