@@ -1,6 +1,7 @@
 package com.danozzo.paymybuddy.controller;
 
 import com.danozzo.paymybuddy.model.User;
+import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.service.IUserService;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class UserController {
@@ -24,6 +26,11 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+
 
 
     @GetMapping("/authenticated")
@@ -107,7 +114,8 @@ public class UserController {
     @GetMapping("/contact")
     public ModelAndView showFriends(){
         ModelAndView modelAndView = new ModelAndView("contact");
-        List<User> listFriends = userService.getUsersFriends();
+        String emailConnectedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<User> listFriends = userService.getUsersFriends(emailConnectedUser);
         logger.info(listFriends);
         modelAndView.addObject("listFriends",listFriends);
         return modelAndView;

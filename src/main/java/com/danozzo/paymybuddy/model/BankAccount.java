@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class BankAccount {
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column(name="id_count_bank")
 	private int idCountBank;
 
@@ -32,6 +32,9 @@ public class BankAccount {
 		this.bankName = bankName;
 		this.iban = iban;
 		this.location = location;
+	}
+
+	public BankAccount(String bankName, String iban, String location, long id) {
 	}
 
 	public int getIdCountBank() {

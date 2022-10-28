@@ -4,5 +4,7 @@ import com.danozzo.paymybuddy.model.BankAccount;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 
 public interface IBankAccountService {
-    public BankAccount save(BankRegistrationDto bankRegistrationDto);
+//    public BankAccount save(BankRegistrationDto bankRegistrationDto);
+
+    BankAccount save(BankRegistrationDto bankRegistrationDto, String emailConnectedUser);
 }

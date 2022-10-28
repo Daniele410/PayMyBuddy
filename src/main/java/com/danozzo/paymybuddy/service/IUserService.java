@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface IUserService extends UserDetailsService {
 
@@ -27,6 +28,9 @@ public interface IUserService extends UserDetailsService {
 
 
     List<User> getUsersFriends();
+
+
+    public List<User> getUsersFriends(String emailConnectedUser);
 
 
 

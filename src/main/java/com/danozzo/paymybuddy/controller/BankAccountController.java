@@ -7,6 +7,7 @@ import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,7 +34,8 @@ public class BankAccountController {
 
     @PostMapping
     public String registerBankUserAccount(@ModelAttribute("bankAccount")BankRegistrationDto bankRegistrationDto){
-        bankAccountService.save(bankRegistrationDto);
+        String emailConnectedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        bankAccountService.save(bankRegistrationDto,emailConnectedUser);
         logger.info("save BankAccount");
         return "redirect:/bankRegistration?success";
     }

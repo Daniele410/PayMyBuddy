@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -57,35 +58,43 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void saveFriend(String email,String emailConnectedUser ) {
+    public void saveFriend(String email, String emailConnectedUser) {
         User friendUser = userRepository.findByEmail(email);
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
         Optional<User> isAlreadyFriend = connectedUser.getFriends().stream().filter(friend -> friend.getEmail().equals(friendUser.getEmail())).findAny();
-            if(isAlreadyFriend.isPresent()){
+        if (friendUser != connectedUser && emailConnectedUser != email) {
+            if (isAlreadyFriend.isPresent()) {
                 throw new RuntimeException("This user is already in this list");
             }
+            List<User> friendsList = connectedUser.getFriends();
+            friendsList.add(friendUser);
+            userRepository.save(connectedUser);
 
-            else {
-                List<User> friendsList = connectedUser.getFriends();
-                friendsList.add(friendUser);
-                userRepository.save(connectedUser);
-            }
+        } else {
+            throw new IllegalArgumentException("Your account not is user friend!");
+        }
 
     }
-
-    public List<User> showFriendsList(){
-        User user = new User();
-        List<User>friendsList = showFriendsList();
-
-        return friendsList;
-    }
-
-
 
     @Override
     public List<User> getUsersFriends() {
-        return userRepository.findAll();
+        return null;
     }
+
+
+//    public List<User> showFriendsList(String emailConnectedUser) {
+//        User connectedUser = userRepository.findByEmail(emailConnectedUser);
+//        List<User> friendsList = connectedUser.getFriends();
+//
+//        return friendsList;
+//    }
+
+    @Override
+    public List<User> getUsersFriends(String emailConnectedUser) {
+        User connectedUser = userRepository.findByEmail(emailConnectedUser);
+        return connectedUser.getFriends();
+    }
+
 
     @Override
     public List<User> findAll() {
