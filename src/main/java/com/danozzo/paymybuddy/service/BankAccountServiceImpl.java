@@ -8,6 +8,8 @@ import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +29,7 @@ public class BankAccountServiceImpl implements IBankAccountService {
     public BankAccount saveBank(BankRegistrationDto bankRegistrationDto, String emailConnectedUser) {
 //        String userConnected = SecurityContextHolder.getContext().getAuthentication().getName();
 //        User userConnected = userRepository.getUser(SecurityContextHolder);
-
+        Authentication user = SecurityContextHolder.getContext().getAuthentication();
         User userConnected = userRepository.findByEmail(emailConnectedUser);
 
         BankAccount bankUser = new BankAccount(bankRegistrationDto.getBankName(), bankRegistrationDto.getIban(),
