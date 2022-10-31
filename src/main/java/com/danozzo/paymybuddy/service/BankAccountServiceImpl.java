@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ public class BankAccountServiceImpl implements IBankAccountService {
 
 
     @Override
+    @Transactional
     public BankAccount saveBank(BankRegistrationDto bankRegistrationDto, String emailConnectedUser) {
 //        String userConnected = SecurityContextHolder.getContext().getAuthentication().getName();
 //        User userConnected = userRepository.getUser(SecurityContextHolder);
@@ -33,22 +35,19 @@ public class BankAccountServiceImpl implements IBankAccountService {
         User userConnected = userRepository.findByEmail(user.getName());
 
         BankAccount bankUser = new BankAccount(bankRegistrationDto.getBankName(), bankRegistrationDto.getIban(),
-                bankRegistrationDto.getLocation(), userConnected.getId());
+                bankRegistrationDto.getLocation());
 
         Optional<BankAccount> isAlreadyBank = userConnected.getBankAccountList()
                 .stream()
-                .filter(bank -> bank.getIban().equals(bankUser.getIban())).findFirst();
+                .filter(bank -> bank.getIban().equals(bankUser.getIban())).findAny();
 
         if (isAlreadyBank.isPresent()) {
             throw new RuntimeException("This bank is already present in this list");
         } else {
-
-            List<BankAccount> listBankUser = userConnected.getBankAccountList();
-            listBankUser.add(bankUser);
-            userConnected.setBankAccountList(listBankUser);
+            userConnected.addBankAccount(bankUser);
             logger.info("saving bank account");
             userRepository.save(userConnected);
-            return bankAccountRepository.save(bankUser);
+            return bankUser;
         }
     }
 

@@ -65,12 +65,12 @@ public class BankAccountController {
 
     @PostMapping("/bankRegistration")
     public String registerContactFriend(@ModelAttribute("bankAccount") BankRegistrationDto bankRegistrationDto, BindingResult bindingResult) {
-//        Authentication user = SecurityContextHolder.getContext().getAuthentication();
+        Authentication user = SecurityContextHolder.getContext().getAuthentication();
         if (bindingResult.hasErrors()) {
             return "redirect:/bankRegistration?error";
         }
         if (bankAccountService.existsByIban(bankRegistrationDto.getIban())== false) {
-//            bankAccountService.saveBank(bankRegistrationDto, user.getName());
+            bankAccountService.saveBank(bankRegistrationDto, user.getName());
             logger.info("save bank");
             return "redirect:/bankRegistration?success";
 

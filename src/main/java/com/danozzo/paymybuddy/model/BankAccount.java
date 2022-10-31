@@ -9,7 +9,7 @@ import java.util.List;
 public class BankAccount {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_count_bank")
     private int idCountBank;
 
@@ -22,25 +22,25 @@ public class BankAccount {
     @Column(name = "bank_location")
     private String location;
 
-    @Column(name = "user_id")
-    private long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public BankAccount() {
     }
 
-    public BankAccount(String bankName, String iban, String location, long userId) {
+    public BankAccount(String bankName, String iban, String location) {
         this.bankName = bankName;
         this.iban = iban;
         this.location = location;
-        this.userId = userId;
     }
 
-    public long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getIdCountBank() {

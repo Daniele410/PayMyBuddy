@@ -9,7 +9,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "first_name")
@@ -36,13 +36,7 @@ public class User {
     private List<User> friends = new ArrayList<>();
 
 
-    @OneToMany
-    @JoinTable(name = "bank_account",
-            joinColumns = @JoinColumn(
-                    name = "user_id",
-                    referencedColumnName = "id" ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "id_count_bank"))
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BankAccount> bankAccountList = new ArrayList<>();
 
 
@@ -58,6 +52,13 @@ public class User {
     public User() {
     }
 
+    public void addBankAccount(BankAccount bankAccount) {
+        if (bankAccountList.contains(bankAccount)){
+            throw new IllegalArgumentException();
+        }
+        bankAccountList.add(bankAccount);
+        bankAccount.setUser(this);
+    }
 
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
