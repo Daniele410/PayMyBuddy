@@ -9,5 +9,5 @@ import com.danozzo.paymybuddy.model.BankAccount;
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccount, Integer> {
 
-
+    Boolean existsByIban(String iban);
 }

@@ -2,74 +2,69 @@ package com.danozzo.paymybuddy.model;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.sql.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name="transfer")
 @DynamicUpdate
 public class Transfer {
-	
-	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	@Column(name="transfer_id")
-	private int transferId;
 
-	@Column(name="amount")
-	private double amount;
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="transfer_id")
+    private int transferId;
 
-	@Column(name= "description")
-	private String description;
-	
-	@Column(name= "transaction_date")
-	private Date transactionDate;
+    @Column(name="amount")
+    private double amount;
 
-	@Column(name= "id_count_bank")
-	private int idCountBank;
+    @Column(name= "description")
+    private String description;
 
-	public int getTransferId() {
-		return transferId;
-	}
+    @Column(name= "transaction_date")
+    private Date transactionDate;
 
-	public void setTransferId(int transferId) {
-		this.transferId = transferId;
-	}
+    @Column(name= "id_count_bank")
+    private int idCountBank;
 
-	public double getAmount() {
-		return amount;
-	}
+    public int getTransferId() {
+        return transferId;
+    }
 
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
+    public void setTransferId(int transferId) {
+        this.transferId = transferId;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public double getAmount() {
+        return amount;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 
-	public Date getTransactionDate() {
-		return transactionDate;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setTransactionDate(Date transactionDate) {
-		this.transactionDate = transactionDate;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public int getIdCountBank() {
-		return idCountBank;
-	}
+    public Date getTransactionDate() {
+        return transactionDate;
+    }
 
-	public void setIdCountBank(int idCountBank) {
-		this.idCountBank = idCountBank;
-	}
+    public void setTransactionDate(Date transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
+    public int getIdCountBank() {
+        return idCountBank;
+    }
+
+    public void setIdCountBank(int idCountBank) {
+        this.idCountBank = idCountBank;
+    }
 }

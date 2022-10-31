@@ -1,74 +1,79 @@
 package com.danozzo.paymybuddy.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "bank_account")
 public class BankAccount {
 
-	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
-	@Column(name="id_count_bank")
-	private int idCountBank;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_count_bank")
+    private int idCountBank;
 
-	@Column(name="bank_name")
-	private String bankName;
+    @Column(name = "bank_name")
+    private String bankName;
 
-	@Column(name= "iban")
-	private String iban;
+    @Column(name = "iban")
+    private String iban;
 
-	@Column(name="bank_location")
-	private String location;
+    @Column(name = "bank_location")
+    private String location;
 
-	public BankAccount() {
-	}
+    @Column(name = "user_id")
+    private long userId;
 
-	public BankAccount(String bankName, String iban, String location) {
-		this.bankName = bankName;
-		this.iban = iban;
-		this.location = location;
-	}
+    public BankAccount() {
+    }
 
-	public BankAccount(String bankName, String iban, String location, long id) {
-	}
+    public BankAccount(String bankName, String iban, String location, long userId) {
+        this.bankName = bankName;
+        this.iban = iban;
+        this.location = location;
+        this.userId = userId;
+    }
 
-	public int getIdCountBank() {
-		return idCountBank;
-	}
+    public long getUserId() {
+        return userId;
+    }
 
-	public void setIdCountBank(int idCountBank) {
-		this.idCountBank = idCountBank;
-	}
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 
-	public String getBankName() {
-		return bankName;
-	}
+    public int getIdCountBank() {
+        return idCountBank;
+    }
 
-	public void setBankName(String bankName) {
-		this.bankName = bankName;
-	}
+    public void setIdCountBank(int idCountBank) {
+        this.idCountBank = idCountBank;
+    }
 
-	public String getIban() {
-		return iban;
-	}
+    public String getBankName() {
+        return bankName;
+    }
 
-	public void setIban(String iban) {
-		this.iban = iban;
-	}
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
 
-	public String getLocation() {
-		return location;
-	}
+    public String getIban() {
+        return iban;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
 
 }

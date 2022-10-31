@@ -31,15 +31,12 @@ public class UserController {
     private UserRepository userRepository;
 
 
-
-
     @GetMapping("/authenticated")
     public String authenticated(Model model) {
         model.addAttribute("user", getPrincipal());
         logger.info("user authenticated");
         return "authenticated";
     }
-
 
 
     private User getPrincipal() {
@@ -58,7 +55,7 @@ public class UserController {
 
 
     @ModelAttribute("user")
-    public UserRegistrationDto userRegistrationDto(){
+    public UserRegistrationDto userRegistrationDto() {
         return new UserRegistrationDto();
     }
 
@@ -76,91 +73,31 @@ public class UserController {
     }
 
     @PostMapping("/addContact")
-    public String registerContactFriend(@ModelAttribute ("User")UserRegistrationDto userRegistrationDto,BindingResult bindingResult){
+    public String registerContactFriend(@ModelAttribute("User") UserRegistrationDto userRegistrationDto, BindingResult bindingResult) {
         Authentication user = SecurityContextHolder.getContext().getAuthentication();
         if (bindingResult.hasErrors()) {
-            return "redirect:errors/addContact";
+            return "redirect:/addContact?error";
         }
-        if ( userService.existsByEmail(userRegistrationDto.getEmail()) ) {
+        if (userService.existsByEmail(userRegistrationDto.getEmail())) {
             userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
             logger.info("save contact");
             return "redirect:/addContact?success";
 
         }
-        return "addContact";
+        return "redirect:/addContact?error";
 
     }
 
 
-//    @PostMapping("/addContact")
-//    public String registerContactFriend(@ModelAttribute("user") UserRegistrationDto userRegistrationDto, String email, BindingResult bindingResult, Model model) {
-//        Authentication user = SecurityContextHolder.getContext().getAuthentication();
-//
-//        if (bindingResult.hasErrors()) {
-//            return "addContact";
-//        }
-//        logger.info("add contact friend");
-//        if ( userService.existsByEmail(userRegistrationDto.getEmail()) ) {
-//           userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
-//            bindingResult.rejectValue("email", "");
-//            return "addContact";
-//        }
-//
-//        return "redirect:/addContact?success";
-//    }
-
-
-
     @GetMapping("/contact")
-    public ModelAndView showFriends(){
+    public ModelAndView showFriends() {
         ModelAndView modelAndView = new ModelAndView("contact");
         String emailConnectedUser = SecurityContextHolder.getContext().getAuthentication().getName();
         List<User> listFriends = userService.getUsersFriends(emailConnectedUser);
         logger.info(listFriends);
-        modelAndView.addObject("listFriends",listFriends);
+        modelAndView.addObject("listFriends", listFriends);
         return modelAndView;
 
     }
-
-
-
-
-//    @GetMapping("/contact")
-//    public String showFriendsForm(Model model) {
-//        UserFriendDto friendsForm = new UserFriendDto();
-//
-//        for (int i = 1; i <= 3; i++) {
-//            friendsForm.addFriend(new User());
-//        }
-//
-//        model.addAttribute("friends", friendsForm);
-//        return "contact/createFriendsForm";
-//    }
-
-//        @GetMapping("/contact")
-//    public String contact(Model model) {
-//        model.addAttribute("user", getPrincipal());
-//        return "contact";
-//    }
-
-
-//    @GetMapping({"/contact","/list"})
-//    public ModelAndView showUsers(){
-//        ModelAndView modelAndView = new ModelAndView("users");
-//        List<User> list = userService.findAll();
-//        modelAndView.addObject("users",list);
-//        return modelAndView;
-//
-//    }
-
-    //    @GetMapping(value = "/contact")
-//    public ModelAndView getUsers(Model model) {
-//        model.addAttribute("users", userService.getUsers());
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("contact");
-//        logger.info("get all users");
-//        return modelAndView;
-//    }
-
 
 }

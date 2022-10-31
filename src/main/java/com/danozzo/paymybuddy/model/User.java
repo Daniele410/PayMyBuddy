@@ -2,7 +2,6 @@ package com.danozzo.paymybuddy.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -10,7 +9,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "first_name")
@@ -39,8 +38,11 @@ public class User {
 
     @OneToMany
     @JoinTable(name = "bank_account",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "id_count_bank"))
+            joinColumns = @JoinColumn(
+                    name = "user_id",
+                    referencedColumnName = "id" ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "id_count_bank"))
     private List<BankAccount> bankAccountList = new ArrayList<>();
 
 

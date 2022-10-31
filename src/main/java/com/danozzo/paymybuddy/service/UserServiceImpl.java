@@ -82,12 +82,6 @@ public class UserServiceImpl implements IUserService {
     }
 
 
-//    public List<User> showFriendsList(String emailConnectedUser) {
-//        User connectedUser = userRepository.findByEmail(emailConnectedUser);
-//        List<User> friendsList = connectedUser.getFriends();
-//
-//        return friendsList;
-//    }
 
     @Override
     public List<User> getUsersFriends(String emailConnectedUser) {
