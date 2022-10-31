@@ -30,14 +30,14 @@ public class BankAccountServiceImpl implements IBankAccountService {
 //        String userConnected = SecurityContextHolder.getContext().getAuthentication().getName();
 //        User userConnected = userRepository.getUser(SecurityContextHolder);
         Authentication user = SecurityContextHolder.getContext().getAuthentication();
-        User userConnected = userRepository.findByEmail(emailConnectedUser);
+        User userConnected = userRepository.findByEmail(user.getName());
 
         BankAccount bankUser = new BankAccount(bankRegistrationDto.getBankName(), bankRegistrationDto.getIban(),
                 bankRegistrationDto.getLocation(), userConnected.getId());
 
         Optional<BankAccount> isAlreadyBank = userConnected.getBankAccountList()
                 .stream()
-                .filter(bank -> bank.getIban().equals(bankUser.getIban())).findAny();
+                .filter(bank -> bank.getIban().equals(bankUser.getIban())).findFirst();
 
         if (isAlreadyBank.isPresent()) {
             throw new RuntimeException("This bank is already present in this list");
