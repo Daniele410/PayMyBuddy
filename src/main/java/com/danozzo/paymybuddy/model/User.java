@@ -40,12 +40,7 @@ public class User {
     private List<BankAccount> bankAccountList = new ArrayList<>();
 
 
-    @ManyToMany
-    @JoinTable(name = "transfer",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "transfer_id", referencedColumnName = "transfer_id"))
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transfer> transferList = new ArrayList<>();
 
 

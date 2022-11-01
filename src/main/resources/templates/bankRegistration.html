@@ -34,8 +34,8 @@
             <h1>Register Your Bank Account</h1>
 
             <form th:action="@{/bankRegistration}" method="post" th:object="${bankAccount}">
-
-
+                <br>
+                <br>
                 <!-- success message -->
                 <div th:if="${param.success}">
                     <div class="alert alert-info">You've successfully registered

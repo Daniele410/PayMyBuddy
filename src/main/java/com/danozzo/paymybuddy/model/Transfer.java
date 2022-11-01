@@ -25,8 +25,27 @@ public class Transfer {
     @Column(name= "transaction_date")
     private Date transactionDate;
 
-    @Column(name= "id_count_bank")
-    private int idCountBank;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Transfer() {
+    }
+
+    public Transfer(double amount, String description, Date transactionDate) {
+        this.amount = amount;
+        this.description = description;
+        this.transactionDate = transactionDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public int getTransferId() {
         return transferId;
@@ -60,11 +79,5 @@ public class Transfer {
         this.transactionDate = transactionDate;
     }
 
-    public int getIdCountBank() {
-        return idCountBank;
-    }
 
-    public void setIdCountBank(int idCountBank) {
-        this.idCountBank = idCountBank;
-    }
 }
