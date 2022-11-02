@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="ISO-8859-1">
     <title>Pay My Buddy Registration BankAccount</title>
@@ -13,13 +13,20 @@
 <!-- create navigation bar (header) -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
-        <div class="navbar-header">
 
+        <div class="navbar-header">
             <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
             <a class="navbar-brand" href="#" th:href="@{/contact}">Contact</a>
             <a class="navbar-brand" href="#" th:href="@{/bankAccount}">Bank</a>
 
         </div>
+
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+
     </div>
 </nav>
 

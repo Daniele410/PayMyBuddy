@@ -3,6 +3,7 @@ package com.danozzo.paymybuddy.model;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -14,53 +15,56 @@ public class Transfer {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="transfer_id")
-    private int transferId;
+    private Long transferId;
 
-    @Column(name="amount")
-    private double amount;
 
     @Column(name= "description")
     private String description;
 
+    @Column(name="amount")
+    private BigDecimal amount;
+
+
     @Column(name= "transaction_date")
     private Date transactionDate;
 
+    private Double fees;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userSource;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
+    @JoinColumn(name = "user_friend_id")
+    private User userFriend;
+
+    public User getUserFriend() {
+        return userFriend;
+    }
+
+    public void setUserFriend(User userFriend) {
+        this.userFriend = userFriend;
+    }
 
     public Transfer() {
     }
 
-    public Transfer(double amount, String description, Date transactionDate) {
-        this.amount = amount;
+    public Transfer(String description, BigDecimal amount, Date transactionDate, Double fees, User userSource, User userFriend) {
         this.description = description;
+        this.amount = amount;
         this.transactionDate = transactionDate;
+        this.fees = fees;
+        this.userSource = userSource;
+        this.userFriend = userFriend;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public int getTransferId() {
+    public Long getTransferId() {
         return transferId;
     }
 
-    public void setTransferId(int transferId) {
+    public void setTransferId(Long transferId) {
         this.transferId = transferId;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
 
     public String getDescription() {
@@ -71,6 +75,14 @@ public class Transfer {
         this.description = description;
     }
 
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
     public Date getTransactionDate() {
         return transactionDate;
     }
@@ -79,5 +91,19 @@ public class Transfer {
         this.transactionDate = transactionDate;
     }
 
+    public Double getFees() {
+        return fees;
+    }
 
+    public void setFees(Double fees) {
+        this.fees = fees;
+    }
+
+    public User getUserSource() {
+        return userSource;
+    }
+
+    public void setUserSource(User userSource) {
+        this.userSource = userSource;
+    }
 }

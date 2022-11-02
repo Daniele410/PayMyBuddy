@@ -21,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/bankRegistration")
 public class BankAccountController {
     private static final Logger logger = LogManager.getLogger("BankAccountController");
 
@@ -55,13 +54,7 @@ public class BankAccountController {
         return "bankRegistration";
     }
 
-//    @PostMapping("/bankRegistration")
-//    public String registerBankUserAccount(@ModelAttribute("bankAccount") BankRegistrationDto bankRegistrationDto) throws Exception {
-//        Authentication user = SecurityContextHolder.getContext().getAuthentication();
-//        bankAccountService.saveBank(bankRegistrationDto, user.getName());
-//        logger.info("save BankAccount");
-//        return "redirect:/bankRegistration?success";
-//    }
+
 
     @PostMapping("/bankRegistration")
     public String registerContactFriend(@ModelAttribute("bankAccount") BankRegistrationDto bankRegistrationDto, BindingResult bindingResult) {
