@@ -59,6 +59,17 @@ public class UserController {
         return new UserRegistrationDto();
     }
 
+    @GetMapping("/contact")
+    public ModelAndView showFriends() {
+        ModelAndView modelAndView = new ModelAndView("contact");
+        String emailConnectedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<User> listFriends = userService.getUsersFriends(emailConnectedUser);
+        logger.info(listFriends);
+        modelAndView.addObject("listFriends", listFriends);
+        return modelAndView;
+
+    }
+
     @GetMapping
     public String showAddContactForm() {
         return "addContact";
@@ -88,16 +99,5 @@ public class UserController {
 
     }
 
-
-    @GetMapping("/contact")
-    public ModelAndView showFriends() {
-        ModelAndView modelAndView = new ModelAndView("contact");
-        String emailConnectedUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<User> listFriends = userService.getUsersFriends(emailConnectedUser);
-        logger.info(listFriends);
-        modelAndView.addObject("listFriends", listFriends);
-        return modelAndView;
-
-    }
 
 }

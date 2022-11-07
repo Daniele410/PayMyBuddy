@@ -20,6 +20,8 @@
 
             <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
             <a class="navbar-brand" href="#" th:href="@{/contact}">Contact</a>
+            <a class="navbar-brand" href="#" th:href="@{/bankAccount}">Bank</a>
+            <a class="navbar-brand" href="#" th:href="@{/transfer}">Transfer</a>
 
 
         </div>
@@ -40,7 +42,7 @@
 
     <!-- Table -->
 
-    <table class="table table-striped table-bordered" >
+    <table class="table table-striped table-bordered">
         <thead class="table-dark">
         <tr>
             <th> Bank Name</th>
@@ -55,14 +57,22 @@
             <td th:text="${user.bankName}"></td>
             <td th:text="${user.iban}"></td>
             <td th:text="${user.location}"></td>
-            <!--      <td>-->
-            <!--       <a th:href = "@{/users/edit/{id}(id=${user.id})}"-->
-            <!--           class = "btn btn-primary">Update</a>-->
+            <td>
+                <!--                <a th:href = "@{/students/edit/{id}(id=${student.id})}"-->
+                <!--                   class = "btn btn-primary">Update</a>-->
+                <!--                <form th:action="@{/bankAccount}" method="get" th:object="${bankAccount}">-->
+                <!--                <a th:href = "@{/bankAccount/{id}(id=${id_count_bank})}"-->
+                <!--                   class = "btn btn-danger">Delete</a>-->
+                <!--                </form>-->
+                <!--            </td>-->
+                <!--      <td>-->
+                <!--       <a th:href = "@{/users/edit/{id}(id=${user.id})}"-->
+                <!--           class = "btn btn-primary">Update</a>-->
 
-            <!--        <a th:href = "@{/user/{id}(id=${user.id})}"-->
-            <!--           class = "btn btn-danger">Delete</a>-->
+                <!--        <a th:href = "@{/user/{id}(id=${user.id})}"-->
+                <!--           class = "btn btn-danger">Delete</a>-->
 
-            <!--      </td>-->
+                <!--      </td>-->
         </tr>
         </tbody>
 

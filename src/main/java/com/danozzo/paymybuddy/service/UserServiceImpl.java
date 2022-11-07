@@ -1,5 +1,6 @@
 package com.danozzo.paymybuddy.service;
 
+import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -81,12 +81,32 @@ public class UserServiceImpl implements IUserService {
         return null;
     }
 
+    @Override
+    public User getCurrentUser() {
+        return null;
+    }
+
+    @Override
+    public User getCurrentUser(String emailConnectedUser) {
+        User connectedUser = userRepository.findByEmail(emailConnectedUser);
+        return connectedUser;
+    }
 
 
     @Override
     public List<User> getUsersFriends(String emailConnectedUser) {
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
         return connectedUser.getFriends();
+    }
+    @Override
+    public Set<Transfer> getReceivedPayments(String emailConnectedUser) {
+        User connectedUser = userRepository.findByEmail(emailConnectedUser);
+        return connectedUser.getReceivedPayments();
+    }
+    @Override
+    public Set<Transfer> getSentPayment(String emailConnectedUser) {
+        User connectedUser = userRepository.findByEmail(emailConnectedUser);
+        return connectedUser.getSentPayments();
     }
 
 

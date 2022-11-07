@@ -5,7 +5,7 @@ import com.sun.istack.NotNull;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-public class UserTransactionDTO {
+public class UserTransactionDto {
 
     @NotNull
     //A cross-record validation is also done in UserTransferController
@@ -18,6 +18,15 @@ public class UserTransactionDTO {
     //A cross-record validation is also done in UserTransferController
     private Currency currency;
 
+
+    public UserTransactionDto() {
+    }
+
+    public UserTransactionDto(Long userDestinationId, BigDecimal amount, Currency currency) {
+        this.userDestinationId = userDestinationId;
+        this.amount = amount;
+        this.currency = currency;
+    }
 
     public Long getUserDestinationId() {
         return userDestinationId;

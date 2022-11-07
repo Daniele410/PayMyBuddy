@@ -1,5 +1,6 @@
 package com.danozzo.paymybuddy.service;
 
+import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,11 +31,19 @@ public interface IUserService extends UserDetailsService {
     List<User> getUsersFriends();
 
 
+    User getCurrentUser();
+
+    User getCurrentUser(String emailConnectedUser);
+
     public List<User> getUsersFriends(String emailConnectedUser);
 
+    public Set<Transfer> getReceivedPayments(String emailConnectedUser);
 
+    public Set<Transfer> getSentPayment(String emailConnectedUser);
 
     List<User> findAll();
+
+
 
 
 }

@@ -56,15 +56,15 @@ public class BankAccountServiceImpl implements IBankAccountService {
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
         return connectedUser.getBankAccountList();
     }
-//    @Override
-//    public BankAccount save(BankRegistrationDto bankRegistrationDto) {
-//        BankAccount bankAccount = new BankAccount(bankRegistrationDto.getBankName(),bankRegistrationDto.getIban(),
-//                bankRegistrationDto.getLocation());
-//        return bankAccountRepository.save(bankAccount);
-//    }
+
 
     public boolean existsByIban(String iban) {
         return bankAccountRepository.existsByIban(iban);
     }
+
+    public void deleteBankById(int id){
+        bankAccountRepository.deleteById(id);
+    }
+
 
 }

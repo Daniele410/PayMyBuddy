@@ -4,59 +4,49 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
-@Table(name="transfer")
+@Table(name = "transfer")
 @DynamicUpdate
 public class Transfer {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="transfer_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "transfer_id")
     private Long transferId;
 
-
-    @Column(name= "description")
+    @Column(name = "description")
     private String description;
 
-    @Column(name="amount")
+    @Column(name = "amount")
     private BigDecimal amount;
 
+    @ManyToOne
+    @JoinColumn(name = "debit_account")
+    private User debitAccount;
 
-    @Column(name= "transaction_date")
-    private Date transactionDate;
+    @ManyToOne
+    @JoinColumn(name = "credit_account")
+    private User creditAccount;
 
-    private Double fees;
 
+    //    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
+//    @JoinColumn(name = "user_id")
+//    private User userSource;
+//
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
+//    @JoinColumn(name = "friends_connection_id")
+//    private User userFriend;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
-    @JoinColumn(name = "user_id")
-    private User userSource;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
-    @JoinColumn(name = "user_friend_id")
-    private User userFriend;
-
-    public User getUserFriend() {
-        return userFriend;
-    }
-
-    public void setUserFriend(User userFriend) {
-        this.userFriend = userFriend;
-    }
 
     public Transfer() {
     }
 
-    public Transfer(String description, BigDecimal amount, Date transactionDate, Double fees, User userSource, User userFriend) {
+    public Transfer(String description, BigDecimal amount, User debitAccount, User creditAccount) {
         this.description = description;
         this.amount = amount;
-        this.transactionDate = transactionDate;
-        this.fees = fees;
-        this.userSource = userSource;
-        this.userFriend = userFriend;
+        this.debitAccount = debitAccount;
+        this.creditAccount = creditAccount;
     }
 
     public Long getTransferId() {
@@ -83,27 +73,19 @@ public class Transfer {
         this.amount = amount;
     }
 
-    public Date getTransactionDate() {
-        return transactionDate;
+    public User getDebitAccount() {
+        return debitAccount;
     }
 
-    public void setTransactionDate(Date transactionDate) {
-        this.transactionDate = transactionDate;
+    public void setDebitAccount(User debitAccount) {
+        this.debitAccount = debitAccount;
     }
 
-    public Double getFees() {
-        return fees;
+    public User getCreditAccount() {
+        return creditAccount;
     }
 
-    public void setFees(Double fees) {
-        this.fees = fees;
-    }
-
-    public User getUserSource() {
-        return userSource;
-    }
-
-    public void setUserSource(User userSource) {
-        this.userSource = userSource;
+    public void setCreditAccount(User creditAccount) {
+        this.creditAccount = creditAccount;
     }
 }

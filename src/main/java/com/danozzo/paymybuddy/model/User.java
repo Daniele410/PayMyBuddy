@@ -3,6 +3,8 @@ package com.danozzo.paymybuddy.model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -28,7 +30,6 @@ public class User {
     private long balance;
 
 
-
     @ManyToMany
     @JoinTable(name = "friends",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -40,15 +41,38 @@ public class User {
     private List<BankAccount> bankAccountList = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Transfer> transferList = new ArrayList<>();
+//    @OneToMany(mappedBy = "userFriend", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Transfer> transferList = new ArrayList<>();
 
+
+    /**
+     * All payments received in pay may buddy account
+     **/
+    @OneToMany(fetch = FetchType.LAZY,
+            mappedBy = "creditAccount",
+            cascade = {
+                    CascadeType.MERGE,
+                    CascadeType.PERSIST
+            })
+    private Set<Transfer> receivedPayments = new TreeSet<>();
+
+
+    /**
+     * All payments sent from pay may buddy account to contacts
+     **/
+    @OneToMany(fetch = FetchType.LAZY,
+            mappedBy = "debitAccount", cascade = {
+            CascadeType.MERGE,
+            CascadeType.PERSIST
+    }
+    )
+    private Set<Transfer> sentPayments = new TreeSet<>();
 
     public User() {
     }
 
     public void addBankAccount(BankAccount bankAccount) {
-        if (bankAccountList.contains(bankAccount)){
+        if (bankAccountList.contains(bankAccount)) {
             throw new IllegalArgumentException();
         }
         bankAccountList.add(bankAccount);
@@ -61,6 +85,7 @@ public class User {
         this.email = email;
         this.password = password;
     }
+
 
     public long getId() {
         return id;
@@ -126,14 +151,30 @@ public class User {
         this.bankAccountList = bankAccountList;
     }
 
-    public List<Transfer> getTransferList() {
-        return transferList;
+//    public List<Transfer> getTransferList() {
+//        return transferList;
+//    }
+//
+//    public void setTransferList(List<Transfer> transferList) {
+//        this.transferList = transferList;
+//    }
+
+
+    public Set<Transfer> getReceivedPayments() {
+        return receivedPayments;
     }
 
-    public void setTransferList(List<Transfer> transferList) {
-        this.transferList = transferList;
+    public void setReceivedPayments(Set<Transfer> receivedPayments) {
+        this.receivedPayments = receivedPayments;
     }
 
+    public Set<Transfer> getSentPayments() {
+        return sentPayments;
+    }
+
+    public void setSentPayments(Set<Transfer> sentPayments) {
+        this.sentPayments = sentPayments;
+    }
 
     public Object getFriends(String firstName, String lastName, String email) {
         this.firstName = firstName;
