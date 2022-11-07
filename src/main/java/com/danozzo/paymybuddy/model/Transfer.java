@@ -30,12 +30,12 @@ public class Transfer {
     private User creditAccount;
 
 
-    //    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
 //    @JoinColumn(name = "user_id")
 //    private User userSource;
 //
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
-//    @JoinColumn(name = "friends_connection_id")
+//    @JoinColumn(name = "connection_id")
 //    private User userFriend;
 
 

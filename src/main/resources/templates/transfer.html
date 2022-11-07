@@ -22,6 +22,7 @@
             <a class="navbar-brand" href="#" th:href="@{/contact}">Contact</a>
             <a class="navbar-brand" href="#" th:href="@{/bankAccount}">Bank</a>
             <a class="navbar-brand" href="#" th:href="@{/transfer}">Transfer</a>
+            <a class="navbar-brand" href="#" th:href="@{/transaction}">Transaction</a>
         </div>
 
         <div id="navbar" class="collapse navbar-collapse">
@@ -36,6 +37,12 @@
 <div class="container" >
     <div class="row" >
         <h1> Transfer Money </h1>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <a th:href="@{/transaction}" class="btn btn-primary btn-sm mb-3"> Send Money</a>
+        </div>
     </div>
 
     <!-- FORM : Transaction between users -->
@@ -108,7 +115,7 @@
                     <tr th:each="user: ${sentPayments}">
                         <td th:text="${user.description}"></td>
                         <td th:text="${user.amount}"></td>
-                        <td th:text="${user.creditAccount}"></td>
+                        <td th:text="${user.creditAccount.email}"></td>
 
 
                     </tr>
@@ -132,7 +139,7 @@
                     <tr th:each="user: ${receivedPayments}">
                         <td th:text="${user.description}"></td>
                         <td th:text="${user.amount}"></td>
-                        <td th:text="${user.debitAccount}"></td>
+                        <td th:text="${user.debitAccount.email}"></td>
 
 
                     </tr>
