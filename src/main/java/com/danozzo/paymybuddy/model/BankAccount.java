@@ -1,13 +1,15 @@
 package com.danozzo.paymybuddy.model;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "bank_account")
 public class BankAccount {
-
+    private static final Logger logger = LogManager.getLogger("BankAccount");
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_count_bank")
@@ -21,6 +23,8 @@ public class BankAccount {
 
     @Column(name = "bank_location")
     private String location;
+
+    private double balance;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -75,5 +79,35 @@ public class BankAccount {
         this.location = location;
     }
 
+    public double getBalance() {
+        return this.balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+//        public void deposit(double amount){
+//        balance += amount;
+//    }
+//
+//    public void withdraw(double amount){
+//        if (amount <= balance){
+//            balance -= amount;
+//        }else {
+//
+//            throw new RuntimeException("error!! you do not have enough money!");
+//        }
+//    }
+//
+//    public void transfer(double amount, BankAccount bankAccount){
+//        if (this.balance < amount){
+//            throw new RuntimeException("Transfer fails!! you do not have enough money!");
+//        }else{
+//            this.balance-=amount;
+//            bankAccount.balance += amount;
+//            logger.info("User of " + this.bankName + " become €"+this.balance);
+//        }
+//    }
 
 }

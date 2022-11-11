@@ -55,6 +55,7 @@
             <th> Last Name</th>
             <th> Email</th>
             <th> Money</th>
+            <th> Action</th>
         </tr>
         </thead>
 
@@ -63,14 +64,15 @@
             <td th:text="${user.firstName}"></td>
             <td th:text="${user.lastName}"></td>
             <td th:text="${user.email}"></td>
-            <!--      <td>-->
+            <td th:text="${user.balance}"></td>
+                  <td>
             <!--       <a th:href = "@{/users/edit/{id}(id=${user.id})}"-->
             <!--           class = "btn btn-primary">Update</a>-->
 
-            <!--        <a th:href = "@{/user/{id}(id=${user.id})}"-->
-            <!--           class = "btn btn-danger">Delete</a>-->
+                    <a th:href = "@{/contact/{id}(id=${user.id})}"
+                       class = "btn btn-danger">Delete</a>
 
-            <!--      </td>-->
+                  </td>
         </tr>
         </tbody>
 

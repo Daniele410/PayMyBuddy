@@ -21,6 +21,8 @@ public class Transfer {
     @Column(name = "amount")
     private BigDecimal amount;
 
+
+
     @ManyToOne
     @JoinColumn(name = "debit_account")
     private User debitAccount;

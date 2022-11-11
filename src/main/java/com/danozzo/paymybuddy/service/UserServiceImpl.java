@@ -5,7 +5,9 @@ import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -76,6 +78,7 @@ public class UserServiceImpl implements IUserService {
 
     }
 
+
     @Override
     public List<User> getUsersFriends() {
         return null;
@@ -98,11 +101,13 @@ public class UserServiceImpl implements IUserService {
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
         return connectedUser.getFriends();
     }
+
     @Override
     public Set<Transfer> getReceivedPayments(String emailConnectedUser) {
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
         return connectedUser.getReceivedPayments();
     }
+
     @Override
     public Set<Transfer> getSentPayment(String emailConnectedUser) {
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
@@ -113,6 +118,12 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public void deleteUserFriendById(Long id) {
+
+        userRepository.deleteById(id);
     }
 
 

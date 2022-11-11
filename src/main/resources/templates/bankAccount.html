@@ -48,6 +48,7 @@
             <th> Bank Name</th>
             <th> Bank iban</th>
             <th> Bank Location</th>
+            <th> Action </th>
 
         </tr>
         </thead>
@@ -58,21 +59,13 @@
             <td th:text="${user.iban}"></td>
             <td th:text="${user.location}"></td>
             <td>
-                <!--                <a th:href = "@{/students/edit/{id}(id=${student.id})}"-->
-                <!--                   class = "btn btn-primary">Update</a>-->
-                <!--                <form th:action="@{/bankAccount}" method="get" th:object="${bankAccount}">-->
-                <!--                <a th:href = "@{/bankAccount/{id}(id=${id_count_bank})}"-->
-                <!--                   class = "btn btn-danger">Delete</a>-->
-                <!--                </form>-->
-                <!--            </td>-->
-                <!--      <td>-->
                 <!--       <a th:href = "@{/users/edit/{id}(id=${user.id})}"-->
                 <!--           class = "btn btn-primary">Update</a>-->
 
-                <!--        <a th:href = "@{/user/{id}(id=${user.id})}"-->
-                <!--           class = "btn btn-danger">Delete</a>-->
+                <a th:href = "@{/bankAccount/{id}(id=${user.idCountBank})}"
+                   class = "btn btn-danger">Delete</a>
 
-                <!--      </td>-->
+            </td>
         </tr>
         </tbody>
 

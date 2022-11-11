@@ -3,6 +3,7 @@ package com.danozzo.paymybuddy.service;
 import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +18,7 @@ public interface IUserService extends UserDetailsService {
 
 
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+
 
 
     Optional<User> getUserById(Integer id);
@@ -44,6 +46,7 @@ public interface IUserService extends UserDetailsService {
     List<User> findAll();
 
 
+    void deleteUserFriendById(Long id);
 
 
 }

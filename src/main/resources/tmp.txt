@@ -1,0 +1,25 @@
+Ce que je dois faire : créer une transaction
+
+
+couches :
+
+front-end => j'ai thymeleaf et on doit envoyer vers le controller :
+le mail de l'ami
+le montant
+la description
+
+controller => on doit récupérer un objet depuis le front-end thymeleaf
+quand on regarde dans userRegistrationController  et on va faire quelque chose de similaire à  pour créer une transaction:
+(@ModelAttribute("user") UserRegistrationDto registrationDto)
+
+Dans le controller on a récupérer notre objet DTO depuis le front-end
+on va appeler le transactionService
+
+Dans le service on a quoi (dans l'objet DTO)
+l'email de l'ami choisi
+le montant
+la description
+
+1) on récupère le User connecté
+2) on récupère le friend
+3) On créer un objet Transfer et on le sauvegarde

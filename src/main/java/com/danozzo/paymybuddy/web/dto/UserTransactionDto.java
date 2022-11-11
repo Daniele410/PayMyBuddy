@@ -2,38 +2,41 @@ package com.danozzo.paymybuddy.web.dto;
 
 import com.sun.istack.NotNull;
 
+import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.util.Currency;
 
 public class UserTransactionDto {
 
+//    @NotNull
+//    //A cross-record validation is also done in UserTransferController
+//    private Long userDestinationId;
+
     @NotNull
-    //A cross-record validation is also done in UserTransferController
-    private Long userDestinationId;
+    private String email;
 
     @NotNull
     private BigDecimal amount;
 
     @NotNull
-    //A cross-record validation is also done in UserTransferController
-    private Currency currency;
+    private String description;
 
 
     public UserTransactionDto() {
     }
 
-    public UserTransactionDto(Long userDestinationId, BigDecimal amount, Currency currency) {
-        this.userDestinationId = userDestinationId;
+    public UserTransactionDto(String email, BigDecimal amount, String description) {
+        this.email = email;
         this.amount = amount;
-        this.currency = currency;
+        this.description = description;
     }
 
-    public Long getUserDestinationId() {
-        return userDestinationId;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserDestinationId(Long userDestinationId) {
-        this.userDestinationId = userDestinationId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public BigDecimal getAmount() {
@@ -44,11 +47,11 @@ public class UserTransactionDto {
         this.amount = amount;
     }
 
-    public Currency getCurrency() {
-        return currency;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -72,10 +72,8 @@ public class BankAccountController {
     }
 
     @GetMapping("/bankAccount/{id}")
-    public String deleteBankById(@PathVariable int id,BankRegistrationDto bankRegistrationDto) {
-        Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
-        List<BankAccount> bankAccountList = bankAccountService.getUsersBanks(emailConnectedUser.getName());
-        bankAccountList.get(id);
+    public String deleteBankById(@PathVariable int id) {
+
         bankAccountService.deleteBankById(id);
 
         return "redirect:/bankAccount";
