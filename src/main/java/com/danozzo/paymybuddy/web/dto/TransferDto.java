@@ -1,12 +1,12 @@
 package com.danozzo.paymybuddy.web.dto;
 
+import com.danozzo.paymybuddy.model.User;
 import com.sun.istack.NotNull;
 
-import javax.persistence.Column;
 import java.math.BigDecimal;
-import java.util.Currency;
+import java.util.List;
 
-public class UserTransactionDto {
+public class TransferDto {
 
 //    @NotNull
 //    //A cross-record validation is also done in UserTransferController
@@ -21,11 +21,13 @@ public class UserTransactionDto {
     @NotNull
     private String description;
 
+    @NotNull
+    private List<User> listFriend;
 
-    public UserTransactionDto() {
+    public TransferDto() {
     }
 
-    public UserTransactionDto(String email, BigDecimal amount, String description) {
+    public TransferDto(String description,  BigDecimal amount, String email) {
         this.email = email;
         this.amount = amount;
         this.description = description;

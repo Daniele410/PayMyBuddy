@@ -27,7 +27,7 @@ public class User {
     private String password;
 
     @Column(name = "balance")
-    private long balance;
+    private Long balance;
 
 
 
@@ -41,9 +41,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BankAccount> bankAccountList = new ArrayList<>();
 
-
-//    @OneToMany(mappedBy = "userFriend", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Transfer> transferList = new ArrayList<>();
 
 
     /**
@@ -127,11 +124,11 @@ public class User {
         this.password = password;
     }
 
-    public long getBalance() {
+    public Long getBalance() {
         return balance;
     }
 
-    public void setBalance(long balance) {
+    public void setBalance(Long balance) {
         this.balance = balance;
     }
 

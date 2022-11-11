@@ -1,15 +1,19 @@
 package com.danozzo.paymybuddy.controller;
 
 import com.danozzo.paymybuddy.model.User;
+import com.danozzo.paymybuddy.service.ITransferService;
 import com.danozzo.paymybuddy.service.IUserService;
 import com.danozzo.paymybuddy.web.dto.FriendDto;
+import com.danozzo.paymybuddy.web.dto.TransferDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -20,6 +24,9 @@ public class TransactionController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private ITransferService transferService;
 
 
 //    @GetMapping("transaction")
@@ -32,15 +39,40 @@ public class TransactionController {
         return new FriendDto();
     }
 
+    @ModelAttribute("transfer")
+    public TransferDto transferDto() {
+        return new TransferDto();
+    }
+
     @GetMapping("/transaction")
-    public ModelAndView showFriendsToSend() {
+    public ModelAndView showFormTranssaction(TransferDto transferDto) {
         ModelAndView modelAndView = new ModelAndView("transaction");
-        String emailConnectedUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<User> listFriends = userService.getUsersFriends(emailConnectedUser);
+        Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
+        List<User> listFriends = userService.getUsersFriends(emailConnectedUser.getName());
         logger.info(listFriends);
         modelAndView.addObject("listFriends", listFriends);
+        modelAndView.addObject("transfer", transferDto);
+//        transferService.saveTransfert(transferDto);
         return modelAndView;
-
     }
+
+    @PostMapping("/transaction")
+    public String sentAmount(TransferDto transfer, String email) {
+        transferService.saveTransfert(transfer);
+        return "redirect:/transfer";
+    }
+
+
+//    @GetMapping("/transaction")
+//    public ModelAndView showFriendsToSend() {
+//        ModelAndView modelAndView = new ModelAndView("transfer");
+//        String emailConnectedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+//        List<User> listFriends = userService.getUsersFriends(emailConnectedUser);
+//        logger.info(listFriends);
+//        modelAndView.addObject("listFriends", listFriends);
+//
+//        return modelAndView;
+//
+//    }
 
 }

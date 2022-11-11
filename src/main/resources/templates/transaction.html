@@ -43,54 +43,79 @@
     <div class="container">
 
 
+        <!--        <form th:action="@{/transaction}" method="post" th:object="${user}">-->
+
+        <!--            <div class="form-row my-3">-->
+        <!--                <div class="col-12 col-md-6 col-lg-4">-->
+
+        <!--                    <select class="form-control" id="dropDownList">-->
+        <!--                        <option value="0">&#45;&#45; Please select buddy &#45;&#45;</option>-->
+        <!--                        <option th:each="user : ${listFriends}"-->
+        <!--                                th:value="${user.email}"-->
+        <!--                                th:text="${user.email}"></option>-->
+        <!--                    </select>-->
+
+        <!--                </div>-->
+        <!--            </div>-->
+        <form th:action="@{/transaction}" method="post" th:object="${transfer}">
 
 
-
-        <form th:action="@{/transaction}" method="post" th:object="${user}">
-
-            <div class="form-row my-3">
-                <div class="col-12 col-md-6 col-lg-4">
-
-                    <select class="form-control" id="dropDownList">
-                        <option value="0">-- Please select buddy --</option>
-                        <option th:each="user : ${listFriends}"
-                                th:value="${user.email}"
-                                th:text="${user.email}"></option>
-                    </select>
-
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label" for="lastName"> Last Name </label> <input
-                    id="lastName" class="form-control" th:field="*{lastName}"
-                    required autofocus="autofocus"/>
-            </div>
-
-
-<!--            <div class="col-12 col-md-6 col-lg-8 h5 text-right">-->
-<!--                <div-->
-<!--                        th:text="'Your account value: '+ ${user.amount}+ ' ' +${user.currency}"></div>-->
-<!--            </div>-->
-
-
-            <div class="form-row my-3">
-                <div class="col-12 col-md-6 col-lg-4">
-            <input th:field="*{amount}" type="number" step="0.01"
-                   class="form-control" placeholder="Enter money amount"
-                   autofocus="true">
-            <span class="has-error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
-        </div>
-
-        <br>
-        <div class="col-12 col-md-4 col-lg-3">
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
-        </div>
     </div>
-    </form>
+    <div class="form-group">
+        <label class="control-label" for="amount"> Amount </label> <input
+            id="amount" class="form-control" th:field="*{transfer.amount}"
+            required autofocus="autofocus"/>
+    </div>
 
-</div>
-<br>
+    <div class="form-group">
+        <label class="control-label" for="lastName"> Description </label> <input
+            id="lastName" class="form-control" th:field="*{transfer.description}"
+            required autofocus="autofocus"/>
+    </div>
+    <div class="form-row my-3">
+        <div class="col-12 col-md-6 col-lg-4">
+            <select class="form-control" id="dropDownList" name="email" >
+
+                <option value="0">-- Please select buddy --</option>
+                <option th:each="user : ${listFriends}"
+                        th:value="${user.email}"
+                        th:text="${user.email}">
+
+                </option>
+
+            </select>
+        </div>
+<!--            <div class=" form-group
+                ">-->
+                <!--                <label class="control-label" for="lastName"> Last Name </label> <input-->
+                <!--                    id="lastName" class="form-control" th:field="*{lastName}"-->
+                <!--                    required autofocus="autofocus"/>-->
+                <!--            </div>-->
+
+
+                <!--            <div class="col-12 col-md-6 col-lg-8 h5 text-right">-->
+                <!--                <div-->
+                <!--                        th:text="'Your account value: '+ ${user.amount}+ ' ' +${user.currency}"></div>-->
+                <!--            </div>-->
+
+
+                <!--            <div class="form-row my-3">-->
+                <!--                <div class="col-12 col-md-6 col-lg-4">-->
+                <!--            <input th:field="*{amount}" type="number" step="0.01"-->
+                <!--                   class="form-control" placeholder="Enter money amount"-->
+                <!--                   autofocus="true">-->
+                <!--            <span class="has-error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>-->
+                <!--        </div>-->
+
+                <br>
+                <div class="col-12 col-md-4 col-lg-3">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+                </div>
+        </div>
+        </form>
+
+    </div>
+    <br>
 </div>
 
 </body>

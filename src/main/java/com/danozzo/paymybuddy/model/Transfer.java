@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @DynamicUpdate
 public class Transfer {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transfer_id")
@@ -21,6 +22,7 @@ public class Transfer {
     @Column(name = "amount")
     private BigDecimal amount;
 
+    private String email;
 
 
     @ManyToOne
@@ -32,24 +34,25 @@ public class Transfer {
     private User creditAccount;
 
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
-//    @JoinColumn(name = "user_id")
-//    private User userSource;
-//
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)//child entity, owner of the relationship
-//    @JoinColumn(name = "connection_id")
-//    private User userFriend;
-
-
     public Transfer() {
     }
 
-    public Transfer(String description, BigDecimal amount, User debitAccount, User creditAccount) {
+
+
+    public Transfer(String description, BigDecimal amount, User debitAccount, User creditAccount, String email) {
         this.description = description;
         this.amount = amount;
         this.debitAccount = debitAccount;
         this.creditAccount = creditAccount;
+        this.email= email;
     }
+
+    public Transfer(String description, BigDecimal amount, String email) {
+        this.description = description;
+        this.amount = amount;
+        this.email = email;
+    }
+
 
     public Long getTransferId() {
         return transferId;

@@ -1,4 +1,4 @@
-package com.danozzo.paymybuddy.web;
+package com.danozzo.paymybuddy.controller;
 
 import com.danozzo.paymybuddy.service.IUserService;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
