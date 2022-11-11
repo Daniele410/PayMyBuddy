@@ -50,54 +50,10 @@
               th:action="@{/userTransaction}">
             <div class="form-row my-3">
                 <div class="col-12 col-md-6 col-lg-4">
-<!--                    <select th:field="*{userDestinationId}" class="form-control">-->
-<!--                        <option value="0">-&#45;&#45; Please select buddy -&#45;&#45;</option>-->
-<!--                        <option-->
-<!--                                th:each="user : ${user.friends()}"-->
-<!--                                th:value="${user.getId}"-->
-<!--                                th:text="${user.getEmail()}">-->
-<!--                        </option>-->
-<!--                    </select>-->
-<!--                    <span class="has-error" th:if="${#fields.hasErrors('userDestinationId')}"-->
-<!--                          th:errors="*{userDestinationId}">-->
-<!--					</span>-->
+
                 </div>
 
-
-<!--                <div class="col-12 col-md-6 col-lg-8 h5 text-right">-->
-<!--                    <div-->
-<!--                            th:text="'Your account value: '+ ${user.amount}+ ' ' +${user.currency}"></div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="form-row">-->
-<!--                <div class="col-6 col-md-4 col-lg-3">-->
-<!--                    <input th:field="*{amount}" type="number" step="0.01"-->
-<!--                           class="form-control" placeholder="Enter money amount"-->
-<!--                           autofocus="true"> <span class="has-error"-->
-<!--                                                   th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>-->
-<!--                </div>-->
-<!--                <div class="col-6 col-md-4 col-lg-3">-->
-<!--                    <select th:field="*{currency}" class="form-control">-->
-<!--                        &lt;!&ndash;/* Accessing directly bean "currenciesAllowed" in Spring application context: */&ndash;&gt;-->
-<!--                        <option-->
-<!--                                th:each="entry : ${@currenciesAllowed.getCurrenciesAllowedList()}"-->
-<!--                                th:value="${entry}" th:text="${entry.getDisplayName()}">-->
-<!--                        </option>-->
-<!--                    </select>-->
-<!--                    <span class="has-error" th:if="${#fields.hasErrors('currency')}"-->
-<!--                          th:errors="*{currency}"></span>-->
-<!--                </div>-->
-<!--                <br>-->
-<!--                <div class="col-12 col-md-4 col-lg-3">-->
-<!--                    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </form>-->
-<!--    </div>-->
     <br>
-
-
                 <!-- Table -->
 
                 <table class="table table-striped table-bordered" >
@@ -105,7 +61,7 @@
                     <tr>
                         <th> Description</th>
                         <th> Amount</th>
-                        <th> Sent Payment</th>
+                        <th> Debit Account</th>
 
                     </tr>
                     </thead>
@@ -129,7 +85,7 @@
                     <tr>
                         <th> Description</th>
                         <th> Amount</th>
-                        <th> Receive Payment</th>
+                        <th> Credit Account</th>
 
                     </tr>
                     </thead>

@@ -22,7 +22,7 @@ public class Transfer {
     @Column(name = "amount")
     private BigDecimal amount;
 
-    private String email;
+
 
 
     @ManyToOne
@@ -39,18 +39,18 @@ public class Transfer {
 
 
 
-    public Transfer(String description, BigDecimal amount, User debitAccount, User creditAccount, String email) {
+    public Transfer(String description, BigDecimal amount, User debitAccount, User creditAccount) {
         this.description = description;
         this.amount = amount;
         this.debitAccount = debitAccount;
         this.creditAccount = creditAccount;
-        this.email= email;
+
     }
 
-    public Transfer(String description, BigDecimal amount, String email) {
+    public Transfer(String description, BigDecimal amount) {
         this.description = description;
         this.amount = amount;
-        this.email = email;
+
     }
 
 

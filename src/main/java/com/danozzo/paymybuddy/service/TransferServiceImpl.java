@@ -26,7 +26,7 @@ public class TransferServiceImpl implements ITransferService {
         User creditAccount = userService.findByEmail(emailConnectedUser.getName());
 
         Transfer transfer = new Transfer(transferDto.getDescription(), transferDto.getAmount(),
-                debitAccount,creditAccount, transferDto.getEmail());
+                debitAccount,creditAccount);
         return transferRepository.save(transfer);
     }
 
