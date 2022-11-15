@@ -24,7 +24,7 @@ public class BankAccount {
     @Column(name = "bank_location")
     private String location;
 
-    private double balance;
+    private BigDecimal balance;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -79,11 +79,11 @@ public class BankAccount {
         this.location = location;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return this.balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

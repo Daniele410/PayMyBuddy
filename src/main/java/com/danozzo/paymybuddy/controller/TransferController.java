@@ -55,34 +55,5 @@ public class TransferController {
     }
 
 
-//    @GetMapping("/transfer")
-//    public ModelAndView showSentPaymentsPage() {
-//        ModelAndView modelAndView = new ModelAndView("transfer");
-//        Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
-//        Set<Transfer> sentPayments = userService.getSentPayment(emailConnectedUser.getName());
-//        logger.info("sentPayments: "+sentPayments);
-//        modelAndView.addObject("sentPayments", sentPayments);
-//        return modelAndView;
-//    }
-
-
-
-//    @GetMapping("/userTransaction")
-//    public String getUserTransaction(
-//            @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
-////            @RequestParam(value = "size", required = false, defaultValue = "5") int size,
-//            Model model, String emailConnectedUser) {
-//        logger.info("GET: /userTransaction");
-//
-//
-//        User user = userService.getCurrentUser(emailConnectedUser).getFriends().get(pageNumber);
-//        model.addAttribute("user", user);//needed to display current user amount + currency
-////        model.addAttribute("paged", user;
-//
-//        UserTransactionDto userTransactionDto = new UserTransactionDto();
-//        model.addAttribute("userTransactionDto",userTransactionDto);
-//        return "/userTransaction";
-//    }
-
 
 }

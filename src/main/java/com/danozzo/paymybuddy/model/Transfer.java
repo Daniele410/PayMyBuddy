@@ -23,8 +23,6 @@ public class Transfer {
     private BigDecimal amount;
 
 
-
-
     @ManyToOne
     @JoinColumn(name = "debit_account")
     private User debitAccount;
@@ -52,6 +50,7 @@ public class Transfer {
         this.amount = amount;
 
     }
+
 
 
     public Long getTransferId() {
@@ -93,4 +92,17 @@ public class Transfer {
     public void setCreditAccount(User creditAccount) {
         this.creditAccount = creditAccount;
     }
+
+
+
+//        public void transfer(double amount,double balance, User user){
+//        if (balance < amount){
+//            throw new RuntimeException("Transfer fails!! you do not have enough money!");
+//        }else{
+//            user.getBalance() += amount;
+//
+//        }
+//    }
+
+
 }

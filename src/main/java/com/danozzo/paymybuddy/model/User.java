@@ -1,6 +1,7 @@
 package com.danozzo.paymybuddy.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -27,14 +28,16 @@ public class User {
     private String password;
 
     @Column(name = "balance")
-    private Long balance;
+    private BigDecimal balance;
 
 
 
-    @ManyToMany
-    @JoinTable(name = "friends",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "connection_id"))
+    @ManyToMany( cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    }
+    )
+
     private List<User> friends = new ArrayList<>();
 
 
@@ -124,11 +127,11 @@ public class User {
         this.password = password;
     }
 
-    public Long getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
@@ -147,14 +150,6 @@ public class User {
     public void setBankAccountList(List<BankAccount> bankAccountList) {
         this.bankAccountList = bankAccountList;
     }
-
-//    public List<Transfer> getTransferList() {
-//        return transferList;
-//    }
-//
-//    public void setTransferList(List<Transfer> transferList) {
-//        this.transferList = transferList;
-//    }
 
 
     public Set<Transfer> getReceivedPayments() {

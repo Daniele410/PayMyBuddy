@@ -27,7 +27,7 @@ public class TransferDto {
     public TransferDto() {
     }
 
-    public TransferDto(String description,  BigDecimal amount) {
+    public TransferDto(String description, BigDecimal amount) {
 
         this.amount = amount;
         this.description = description;

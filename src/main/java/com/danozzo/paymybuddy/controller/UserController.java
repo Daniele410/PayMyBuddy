@@ -7,6 +7,7 @@ import com.danozzo.paymybuddy.web.dto.FriendDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -77,7 +78,9 @@ public class UserController {
 
     @GetMapping("/addContact")
     public String addContact(Model model) {
-        List<User> friends = userService.getUsersFriends();
+        Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
+
+        List<User> friends = userService.getUsersFriends(emailConnectedUser.getName());
         model.addAttribute("user", getPrincipal());
         return "addContact";
     }
@@ -103,12 +106,16 @@ public class UserController {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
         List<User> listFriends = userService.getUsersFriends(emailConnectedUser.getName());
 
+        User contactToDelete = userService.getCurrentUser(emailConnectedUser.getName()).getFriends().stream()
+                .filter(friend -> friend.getId().equals(id)).findFirst().orElseThrow(()-> new RuntimeException(" Is equal!") );
+
         //User user = userService.getCurrentUser();
-        Long idFriend = listFriends
-                .stream()
-                .filter(u -> u.getId() == id)
-                .findAny().get().getId();
-        userRepository.deleteByFriendsId(idFriend);
+//        Long idFriend = listFriends
+//                .stream()
+//                .filter(friend -> friend.getId() == id).findFirst().;
+//                .findAny().get().getId();
+        listFriends.remove(contactToDelete);
+        userRepository.save(userService.getCurrentUser(emailConnectedUser.getName()));
 
         return "redirect:/contact";
     }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -45,7 +46,7 @@ public class TransactionController {
     }
 
     @GetMapping("/transaction")
-    public ModelAndView showFormTranssaction(TransferDto transferDto) {
+    public ModelAndView showFormTransaction(TransferDto transferDto) {
         ModelAndView modelAndView = new ModelAndView("transaction");
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
         List<User> listFriends = userService.getUsersFriends(emailConnectedUser.getName());
@@ -57,22 +58,13 @@ public class TransactionController {
     }
 
     @PostMapping("/transaction")
-    public String sentAmount(TransferDto transfer, String email) {
-        transferService.saveTransfert(transfer);
+    public String sentAmount(TransferDto transfer, String email ,BigDecimal amount) {
+
+        transferService.saveTransfert(transfer, amount);
         return "redirect:/transfer";
     }
 
 
-//    @GetMapping("/transaction")
-//    public ModelAndView showFriendsToSend() {
-//        ModelAndView modelAndView = new ModelAndView("transfer");
-//        String emailConnectedUser = SecurityContextHolder.getContext().getAuthentication().getName();
-//        List<User> listFriends = userService.getUsersFriends(emailConnectedUser);
-//        logger.info(listFriends);
-//        modelAndView.addObject("listFriends", listFriends);
-//
-//        return modelAndView;
-//
-//    }
+
 
 }

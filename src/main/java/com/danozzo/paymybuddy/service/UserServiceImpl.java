@@ -5,15 +5,16 @@ import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -63,31 +64,33 @@ public class UserServiceImpl implements IUserService {
     public void saveFriend(String email, String emailConnectedUser) {
         User friendUser = userRepository.findByEmail(email);
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
-        Optional<User> isAlreadyFriend = connectedUser.getFriends().stream().filter(friend -> friend.getEmail().equals(friendUser.getEmail())).findAny();
-        if (friendUser != connectedUser && emailConnectedUser != email) {
-            if (isAlreadyFriend.isPresent()) {
-                throw new RuntimeException("This user is already in this list");
-            }
-            List<User> friendsList = connectedUser.getFriends();
+
+        if(connectedUser.getFriends().contains(friendUser)){
+            throw new RuntimeException("This user is already in this list");
+        }
+      if( connectedUser.getEmail().equals(email)){
+          throw new IllegalArgumentException("Your account not is user friend!");
+      }
+        List<User> friendsList = connectedUser.getFriends();
             friendsList.add(friendUser);
             userRepository.save(connectedUser);
 
-        } else {
-            throw new IllegalArgumentException("Your account not is user friend!");
-        }
+//        Optional<User> isAlreadyFriend = connectedUser.getFriends().stream()
+//                .filter(friend -> friend.getEmail().equals(friendUser.getEmail())).findFirst();
+//        if (friendUser != connectedUser && emailConnectedUser != email) {
+//            if (isAlreadyFriend.isPresent()) {
+//                throw new RuntimeException("This user is already in this list");
+//            }
+//            List<User> friendsList = connectedUser.getFriends();
+//            friendsList.add(friendUser);
+//            userRepository.save(connectedUser);
+//
+//        } else {
+//            throw new IllegalArgumentException("Your account not is user friend!");
+//        }
 
     }
 
-
-    @Override
-    public List<User> getUsersFriends() {
-        return null;
-    }
-
-    @Override
-    public User getCurrentUser() {
-        return null;
-    }
 
     @Override
     public User getCurrentUser(String emailConnectedUser) {

@@ -30,10 +30,10 @@ public interface IUserService extends UserDetailsService {
     void saveFriend(String emailConnectedUser ,String email);
 
 
-    List<User> getUsersFriends();
+//    List<User> getUsersFriends();
 
 
-    User getCurrentUser();
+
 
     User getCurrentUser(String emailConnectedUser);
 
