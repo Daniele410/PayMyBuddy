@@ -30,9 +30,6 @@ public class TransferServiceImpl implements ITransferService {
     @Autowired
     UserServiceImpl userService;
 
-    public static BigDecimal percentage(BigDecimal base, BigDecimal pct) {
-        return base.multiply(pct).divide(BigDecimal.valueOf(100));
-    }
 
     @Transactional
     public Transfer saveTransfert(TransferDto transferDto, double amount) throws UserNotFoundException {
@@ -63,21 +60,5 @@ public class TransferServiceImpl implements ITransferService {
         return transferRepository.save(transfer);
     }
 
-
-//    public void withdraw( double balanceCredit, TransferDto transferDto){
-//        Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
-//        User debitAccount = userService.findByEmail(transferDto.getEmail());
-//        User creditAccount = userService.findByEmail(emailConnectedUser.getName());
-//       double balanceDebit = debitAccount.getBalance();
-//        double amountDebit = creditAccount.getBalance();
-//
-//        if (debitAccount.getBalance() < creditAccount.getBalance()){
-//            balanceDebit -= balanceCredit;
-//
-//        }else {
-//
-//            throw new RuntimeException("error!! you do not have enough money!");
-//        }
-//    }
 
 }
