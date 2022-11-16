@@ -65,29 +65,29 @@ public class UserServiceImpl implements IUserService {
         User friendUser = userRepository.findByEmail(email);
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
 
-        if(connectedUser.getFriends().contains(friendUser)){
-            throw new RuntimeException("This user is already in this list");
-        }
-      if( connectedUser.getEmail().equals(email)){
-          throw new IllegalArgumentException("Your account not is user friend!");
-      }
-        List<User> friendsList = connectedUser.getFriends();
+//        if(connectedUser.getFriends().contains(friendUser)){
+//            throw new RuntimeException("This user is already in this list");
+//        }
+//      if( connectedUser.getEmail().equals(email)){
+//          throw new IllegalArgumentException("Your account not is user friend!");
+//      }
+//        List<User> friendsList = connectedUser.getFriends();
+//            friendsList.add(friendUser);
+//            userRepository.save(connectedUser);
+
+        Optional<User> isAlreadyFriend = connectedUser.getFriends().stream()
+                .filter(friend -> friend.getEmail().equals(friendUser.getEmail())).findFirst();
+        if (friendUser != connectedUser && emailConnectedUser != email) {
+            if (isAlreadyFriend.isPresent()) {
+                throw new RuntimeException("This user is already in this list");
+            }
+            List<User> friendsList = connectedUser.getFriends();
             friendsList.add(friendUser);
             userRepository.save(connectedUser);
 
-//        Optional<User> isAlreadyFriend = connectedUser.getFriends().stream()
-//                .filter(friend -> friend.getEmail().equals(friendUser.getEmail())).findFirst();
-//        if (friendUser != connectedUser && emailConnectedUser != email) {
-//            if (isAlreadyFriend.isPresent()) {
-//                throw new RuntimeException("This user is already in this list");
-//            }
-//            List<User> friendsList = connectedUser.getFriends();
-//            friendsList.add(friendUser);
-//            userRepository.save(connectedUser);
-//
-//        } else {
-//            throw new IllegalArgumentException("Your account not is user friend!");
-//        }
+        } else {
+            throw new IllegalArgumentException("Your account not is user friend!");
+        }
 
     }
 

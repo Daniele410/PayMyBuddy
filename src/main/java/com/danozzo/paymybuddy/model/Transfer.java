@@ -3,7 +3,6 @@ package com.danozzo.paymybuddy.model;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "transfer")
@@ -20,7 +19,7 @@ public class Transfer {
     private String description;
 
     @Column(name = "amount")
-    private BigDecimal amount;
+    private double amount;
 
 
     @ManyToOne
@@ -37,7 +36,7 @@ public class Transfer {
 
 
 
-    public Transfer(String description, BigDecimal amount, User debitAccount, User creditAccount) {
+    public Transfer(String description, double amount, User debitAccount, User creditAccount) {
         this.description = description;
         this.amount = amount;
         this.debitAccount = debitAccount;
@@ -45,7 +44,7 @@ public class Transfer {
 
     }
 
-    public Transfer(String description, BigDecimal amount) {
+    public Transfer(String description, double amount) {
         this.description = description;
         this.amount = amount;
 
@@ -69,11 +68,11 @@ public class Transfer {
         this.description = description;
     }
 
-    public BigDecimal getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

@@ -5,6 +5,7 @@ import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.TransferRepository;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.TransferDto;
+import exception.UserNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class TransferServiceImpl implements ITransferService {
@@ -28,34 +30,35 @@ public class TransferServiceImpl implements ITransferService {
     @Autowired
     UserServiceImpl userService;
 
+    public static BigDecimal percentage(BigDecimal base, BigDecimal pct) {
+        return base.multiply(pct).divide(BigDecimal.valueOf(100));
+    }
+
     @Transactional
-    public Transfer saveTransfert(TransferDto transferDto, BigDecimal amount) {
+    public Transfer saveTransfert(TransferDto transferDto, double amount) throws UserNotFoundException {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
-        User debitAccount = userService.findByEmail(emailConnectedUser.getName());
+        User debitAccount = userService.getCurrentUser(emailConnectedUser.getName());
         User creditAccount = userService.findByEmail(transferDto.getEmail());
 
-        BigDecimal senderNewAmount = debitAccount.getBalance().subtract(amount);
-        BigDecimal receiverNewAmount = creditAccount.getBalance().add(amount);
-//
-//        userRepository.findById(debitAccount.getEmail(),senderNewAmount);
-//        userRepository.findById(creditAccount.getEmail(),receiverNewAmount);
+        List<User> friends = debitAccount.getFriends();
+        logger.debug("Contact list: " + friends);
 
+        double amountWithCommission = amount + (5 * 100 / amount);
+
+        double balanceDebitAccount = debitAccount.getBalance();
+        double balanceCreditAccount = creditAccount.getBalance();
+
+        if (balanceDebitAccount < amountWithCommission) {
+            throw new UserNotFoundException("Not enough money on your account");
+        }
+        debitAccount.setBalance(balanceDebitAccount - amountWithCommission);
+        userRepository.save(debitAccount);
+
+        creditAccount.setBalance(balanceCreditAccount + amount);
+        userRepository.save(creditAccount);
 
         Transfer transfer = new Transfer(transferDto.getDescription(), transferDto.getAmount(),
                 debitAccount, creditAccount);
-
-
-//        withdraw(debitAccount.getBalance(),creditAccount.getBalance());
-
-//        if (transferDto.getAmount() < debitAccount.getBalance()){
-//
-//            throw new RuntimeException("Transfer fails!! you do not have enough money!");
-//        }else{
-//            transferDto.getAmount() -= debitAccount.getBalance();
-//            creditAccount.getBalance() += transferDto.getAmount();
-//            logger.info("User of " +  + " become €"+this.balance);
-
-
 
         return transferRepository.save(transfer);
     }

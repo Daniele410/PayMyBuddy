@@ -107,13 +107,8 @@ public class UserController {
         List<User> listFriends = userService.getUsersFriends(emailConnectedUser.getName());
 
         User contactToDelete = userService.getCurrentUser(emailConnectedUser.getName()).getFriends().stream()
-                .filter(friend -> friend.getId().equals(id)).findFirst().orElseThrow(()-> new RuntimeException(" Is equal!") );
+                .filter(friend -> friend.getId().equals(id)).findFirst().orElseThrow(()-> new RuntimeException(" Id Not Found") );
 
-        //User user = userService.getCurrentUser();
-//        Long idFriend = listFriends
-//                .stream()
-//                .filter(friend -> friend.getId() == id).findFirst().;
-//                .findAny().get().getId();
         listFriends.remove(contactToDelete);
         userRepository.save(userService.getCurrentUser(emailConnectedUser.getName()));
 

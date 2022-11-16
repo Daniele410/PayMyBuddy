@@ -3,7 +3,6 @@ package com.danozzo.paymybuddy.web.dto;
 import com.danozzo.paymybuddy.model.User;
 import com.sun.istack.NotNull;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class TransferDto {
@@ -16,7 +15,7 @@ public class TransferDto {
     private String email;
 
     @NotNull
-    private BigDecimal amount;
+    private double amount;
 
     @NotNull
     private String description;
@@ -27,7 +26,7 @@ public class TransferDto {
     public TransferDto() {
     }
 
-    public TransferDto(String description, BigDecimal amount) {
+    public TransferDto(String description, double amount) {
 
         this.amount = amount;
         this.description = description;
@@ -41,11 +40,11 @@ public class TransferDto {
         this.email = email;
     }
 
-    public BigDecimal getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

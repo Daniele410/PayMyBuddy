@@ -5,6 +5,7 @@ import com.danozzo.paymybuddy.service.ITransferService;
 import com.danozzo.paymybuddy.service.IUserService;
 import com.danozzo.paymybuddy.web.dto.FriendDto;
 import com.danozzo.paymybuddy.web.dto.TransferDto;
+import exception.UserNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transaction")
-    public String sentAmount(TransferDto transfer, String email ,BigDecimal amount) {
+    public String sentAmount(TransferDto transfer, String email ,double amount) throws UserNotFoundException {
 
         transferService.saveTransfert(transfer, amount);
         return "redirect:/transfer";

@@ -1,7 +1,6 @@
 package com.danozzo.paymybuddy.model;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +27,7 @@ public class User {
     private String password;
 
     @Column(name = "balance")
-    private BigDecimal balance;
+    private double balance;
 
 
 
@@ -127,11 +126,11 @@ public class User {
         this.password = password;
     }
 
-    public BigDecimal getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

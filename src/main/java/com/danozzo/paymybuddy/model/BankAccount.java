@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "bank_account")
@@ -24,7 +23,7 @@ public class BankAccount {
     @Column(name = "bank_location")
     private String location;
 
-    private BigDecimal balance;
+    private double balance;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -79,11 +78,11 @@ public class BankAccount {
         this.location = location;
     }
 
-    public BigDecimal getBalance() {
+    public double getBalance() {
         return this.balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
