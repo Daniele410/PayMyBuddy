@@ -130,7 +130,11 @@ class UserServiceImplTest {
 
 
     @Test
-    void saveFriend() {
+    void saveFriend_test() {
+//      User connectedUser = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+//      User friend = new User("Toto", "Tata", "toto@mail.com", "12345");
+
+
 
     }
 
