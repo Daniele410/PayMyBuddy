@@ -1,5 +1,6 @@
 package com.danozzo.paymybuddy.service;
 
+import com.danozzo.paymybuddy.model.BankAccount;
 import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.UserRepository;
@@ -65,16 +66,6 @@ public class UserServiceImpl implements IUserService {
         User friendUser = userRepository.findByEmail(email);
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
 
-//        if(connectedUser.getFriends().contains(friendUser)){
-//            throw new RuntimeException("This user is already in this list");
-//        }
-//      if( connectedUser.getEmail().equals(email)){
-//          throw new IllegalArgumentException("Your account not is user friend!");
-//      }
-//        List<User> friendsList = connectedUser.getFriends();
-//            friendsList.add(friendUser);
-//            userRepository.save(connectedUser);
-
         Optional<User> isAlreadyFriend = connectedUser.getFriends().stream()
                 .filter(friend -> friend.getEmail().equals(friendUser.getEmail())).findFirst();
         if (friendUser != connectedUser && emailConnectedUser != email) {
@@ -103,6 +94,11 @@ public class UserServiceImpl implements IUserService {
     public List<User> getUsersFriends(String emailConnectedUser) {
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
         return connectedUser.getFriends();
+    }
+
+    public List<BankAccount> getUsersBanks(String emailConnectedUser){
+        User connectedUser = userRepository.findByEmail(emailConnectedUser);
+        return connectedUser.getBankAccountList();
     }
 
     @Override

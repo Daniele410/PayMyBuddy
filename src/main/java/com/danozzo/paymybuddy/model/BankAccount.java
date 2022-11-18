@@ -12,7 +12,7 @@ public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_count_bank")
-    private int idCountBank;
+    private Long idCountBank;
 
     @Column(name = "bank_name")
     private String bankName;
@@ -38,6 +38,14 @@ public class BankAccount {
         this.location = location;
     }
 
+    public BankAccount(Long idCountBank, String bankName, String iban, String location, double balance) {
+        this.idCountBank = idCountBank;
+        this.bankName = bankName;
+        this.iban = iban;
+        this.location = location;
+        this.balance = balance;
+    }
+
     public User getUser() {
         return user;
     }
@@ -46,11 +54,11 @@ public class BankAccount {
         this.user = user;
     }
 
-    public int getIdCountBank() {
+    public Long getIdCountBank() {
         return idCountBank;
     }
 
-    public void setIdCountBank(int idCountBank) {
+    public void setIdCountBank(Long idCountBank) {
         this.idCountBank = idCountBank;
     }
 

@@ -1,10 +1,13 @@
 package com.danozzo.paymybuddy.service;
 
 import com.danozzo.paymybuddy.model.BankAccount;
+import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.BankAccountRepository;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
+import com.danozzo.paymybuddy.web.dto.TransferDto;
+import exception.UserNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,9 @@ public class BankAccountServiceImpl implements IBankAccountService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    IUserService userService;
 
 
     @Override
@@ -62,8 +68,34 @@ public class BankAccountServiceImpl implements IBankAccountService {
         return bankAccountRepository.existsByIban(iban);
     }
 
-    public void deleteBankById(int id){
+    public void deleteBankById(Long id){
         bankAccountRepository.deleteById(id);
+    }
+
+    @Override
+    public void saveBankTransfert(BankRegistrationDto bankAccountDto, double amount) throws Exception {
+        Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
+        User debitAccount = userService.getCurrentUser(emailConnectedUser.getName());
+        Optional<BankAccount> creditAccount = bankAccountRepository.findById(bankAccountDto.getUserId());
+
+        List<BankAccount> banks = debitAccount.getBankAccountList();
+
+        double amountWithCommission = amount + (5 * 100 / amount);
+        double commission = amount* (5/100);
+
+        double balanceDebitAccount = debitAccount.getBalance();
+        double balanceCreditAccount = creditAccount.get().getBalance();
+
+        if (balanceDebitAccount < amountWithCommission) {
+            throw new Exception("Not enough money on your account");
+        }
+        debitAccount.setBalance(balanceDebitAccount - amountWithCommission);
+        userRepository.save(debitAccount);
+
+        creditAccount.get().setBalance(balanceCreditAccount + amount);
+        bankAccountRepository.save(creditAccount.get());
+
+
     }
 
 

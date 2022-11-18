@@ -2,6 +2,7 @@ package com.danozzo.paymybuddy.service;
 
 import com.danozzo.paymybuddy.model.BankAccount;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
+import com.danozzo.paymybuddy.web.dto.TransferDto;
 
 import java.util.List;
 
@@ -13,5 +14,7 @@ public interface IBankAccountService {
 
     List<BankAccount> getUsersBanks(String emailConnectedUser);
 
-    public void deleteBankById(int id);
+    public void deleteBankById(Long id);
+
+    void saveBankTransfert(BankRegistrationDto bankAccount, double amount) throws Exception;
 }

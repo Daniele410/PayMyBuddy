@@ -1,5 +1,6 @@
 package com.danozzo.paymybuddy.service;
 
+import com.danozzo.paymybuddy.model.BankAccount;
 import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
@@ -51,5 +52,6 @@ public interface IUserService extends UserDetailsService {
 
     void deleteUserFriendById(Long id);
 
+    public List<BankAccount> getUsersBanks(String emailConnectedUser);
 
 }

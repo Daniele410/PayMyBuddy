@@ -5,7 +5,9 @@ import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.service.IBankAccountService;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
+import com.danozzo.paymybuddy.web.dto.TransferDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
+import exception.UserNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,10 +74,17 @@ public class BankAccountController {
     }
 
     @GetMapping("/bankAccount/{id}")
-    public String deleteBankById(@PathVariable int id) {
+    public String deleteBankById(@PathVariable Long id) {
 
-        bankAccountService.deleteBankById(id);
+        bankAccountService.deleteBankById((id));
 
+        return "redirect:/bankAccount";
+    }
+
+    @PostMapping("/bankTransfer")
+    public String sentAmount(BankRegistrationDto bankAccount, double balance) throws Exception {
+
+        bankAccountService.saveBankTransfert(bankAccount, balance);
         return "redirect:/bankAccount";
     }
 

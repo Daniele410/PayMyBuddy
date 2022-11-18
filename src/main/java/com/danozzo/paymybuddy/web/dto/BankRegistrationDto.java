@@ -19,6 +19,8 @@ public class BankRegistrationDto {
 
     private long userId;
 
+    private double balance;
+
 
 
     public BankRegistrationDto() {
@@ -36,6 +38,10 @@ public class BankRegistrationDto {
         this.iban = iban;
         this.location = location;
 
+    }
+
+    public BankRegistrationDto(double balance) {
+        this.balance = balance;
     }
 
     public long getUserId() {
@@ -70,5 +76,11 @@ public class BankRegistrationDto {
         this.location = location;
     }
 
+    public double getBalance() {
+        return balance;
+    }
 
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 }

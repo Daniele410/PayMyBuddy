@@ -28,6 +28,48 @@
     </div>
 </nav>
 
+<div class="container" >
+    <div class="row" >
+        <h1> Transfer Money Bank </h1>
+    </div>
+
+    <div class="container">
+
+
+        <form th:action="@{/bankTransfer}" method="post" th:object="${bankAccount}">
+
+
+    <div class="form-group">
+        <label class="control-label" for="balance"> Amount </label> <input
+            id="balance" class="form-control" th:field="*{bank.balance}"
+            required autofocus="autofocus"/>
+    </div>
+
+
+    <div class="form-row my-3">
+        <div class="col-12 col-md-6 col-lg-4">
+            <select class="form-control" id="dropDownList" name="bankAccountList" >
+
+                <option value="0">-- Please Select Bank --</option>
+                <option th:each="user : ${bankAccountList}"
+                        th:value="${user.banks}"
+                        th:text="${user.banks}">
+
+                </option>
+
+            </select>
+        </div>
+
+
+        <br>
+        <div class="col-12 col-md-4 col-lg-3">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+        </div>
+    </div>
+    </form>
+
+</div>
+
 <div class="container">
     <div class="row">
         <h1> Banks List </h1>
@@ -71,6 +113,7 @@
 
     </table>
 
+</div>
 </div>
 </body>
 </html>
