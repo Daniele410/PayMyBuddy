@@ -42,9 +42,14 @@ public class TransferController {
         return new FriendDto();
     }
 
+//    @ModelAttribute("transfer")
+//    public TransferDto transferDto() {
+//        return new TransferDto();
+//    }
+
 
     @GetMapping("/transfer")
-    public ModelAndView showReceivedPaymentsPage(TransferDto transferDto) {
+    public ModelAndView showReceivedPaymentsPage() {
         ModelAndView modelAndView = new ModelAndView("transfer");
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
 
@@ -56,17 +61,23 @@ public class TransferController {
         logger.info("sentPayments: "+sentPayments);
         modelAndView.addObject("sentPayments", sentPayments);
 
-
-        List<User> listFriends = userService.getUsersFriends(emailConnectedUser.getName());
-        logger.info(listFriends);
-        modelAndView.addObject("listFriends", listFriends);
-        modelAndView.addObject("transfer", transferDto);
-
         return modelAndView;
     }
 
 
 
+
+//    @GetMapping("/transaction")
+//    public ModelAndView showFormTransaction(TransferDto transferDto) {
+//        ModelAndView modelAndView = new ModelAndView("transaction");
+//        Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
+//        List<User> listFriends = userService.getUsersFriends(emailConnectedUser.getName());
+//        logger.info(listFriends);
+//        modelAndView.addObject("listFriends", listFriends);
+//        modelAndView.addObject("transfer", transferDto);
+//
+//        return modelAndView;
+//    }
 
     @PostMapping("/transfer")
     public String sentAmount(TransferDto transfer, String email ,double amount) throws UserNotFoundException {
