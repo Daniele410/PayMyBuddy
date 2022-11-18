@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/id")
-    public Optional<User> getUserById(Integer id) {
+    public Optional<User> getUserById(Long id) {
         logger.info("get user by id");
         return userService.getUserById(id);
     }

@@ -41,14 +41,14 @@ public class UserServiceImpl implements IUserService {
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username and password.");
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
-        //
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
     }
 
 
     @Override
-    public Optional<User> getUserById(Integer id) {
-        return Optional.empty();
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
     }
 
 

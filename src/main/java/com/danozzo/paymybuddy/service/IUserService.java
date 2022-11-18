@@ -3,6 +3,7 @@ package com.danozzo.paymybuddy.service;
 import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
+import exception.UserEmailNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,16 +13,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+
 public interface IUserService extends UserDetailsService {
 
+    /**
+     * Save in DataBase New User whit password
+     */
     public User save(UserRegistrationDto registrationDto, String newPassword);
-
 
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
 
-
-    Optional<User> getUserById(Integer id);
+    Optional<User> getUserById(Long id);
 
     User findByEmail(String email);
 

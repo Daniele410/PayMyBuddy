@@ -36,7 +36,6 @@ public class User {
             CascadeType.MERGE
     }
     )
-
     private List<User> friends = new ArrayList<>();
 
 
@@ -77,6 +76,14 @@ public class User {
         }
         bankAccountList.add(bankAccount);
         bankAccount.setUser(this);
+    }
+
+    public User(Long id, String firstName, String lastName, String email, String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
     }
 
     public User(String firstName, String lastName, String email, String password) {

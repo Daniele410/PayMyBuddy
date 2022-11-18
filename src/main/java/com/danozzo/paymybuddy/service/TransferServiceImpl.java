@@ -26,7 +26,6 @@ public class TransferServiceImpl implements ITransferService {
     @Autowired
     UserRepository userRepository;
 
-
     @Autowired
     UserServiceImpl userService;
 
@@ -41,6 +40,7 @@ public class TransferServiceImpl implements ITransferService {
         logger.debug("Contact list: " + friends);
 
         double amountWithCommission = amount + (5 * 100 / amount);
+        double commission = amount* (5/100);
 
         double balanceDebitAccount = debitAccount.getBalance();
         double balanceCreditAccount = creditAccount.getBalance();

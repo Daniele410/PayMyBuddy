@@ -19,6 +19,9 @@
 
             <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
             <a class="navbar-brand" href="#" th:href="@{/contact}">Contact</a>
+            <a class="navbar-brand" href="#" th:href="@{/bankAccount}">Bank</a>
+            <a class="navbar-brand" href="#" th:href="@{/transfer}">Transfer</a>
+
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -52,72 +55,45 @@
             <!--      <form th:action="@{/addContact}" method="post">-->
 
             <h1>Register Your Friend Email</h1>
-<!--            <div th:if="${param.success}">-->
-<!--                <div class="alert alert-info">You've successfully registered-->
-<!--                    your friend!!-->
-<!--                </div>-->
-<!--                <div th:else="${param.error}">&ndash;&gt;-->
-<!--                    <div class="alert alert-danger">Invalid Email Friend!-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
 
 
-                <!--      <div th:if="${param.error}">-->
-                <!--        <div class="alert alert-danger">Invalid Email Friend!-->
-                <!--        </div>-->
-                <!--      </div>-->
+            <form th:action="@{/addContact}" method="post" th:object="${user}">
 
+                <!-- success message -->
+                <div th:if="${param.success}">
+                    <div class="alert alert-info">You've successfully registered
+                        your friend!!
+                    </div>
+                </div>
 
-
-                <!--        <div th:switch="${message}">-->
-                <!--          <div th:case="'Success'" class="alert alert-success">-->
-                <!--            <strong>Success!</strong> You've successfully registered-->
-                <!--            your friend!!-->
-                <!--          </div>-->
-                <!--          <div th:else="'Failed'" class="alert alert-danger">-->
-                <!--            <strong>Failure!</strong> Invalid Email Friend!-->
-                <!--          </div>-->
-                <!--        </div>-->
-
-
-                <form th:action="@{/addContact}" method="post" th:object="${user}">
-
-                    <!-- success message -->
-                    <div th:if="${param.success}">
-                        <div class="alert alert-info">You've successfully registered
-                            your friend!!
+                <!-- error message -->
+                <div>
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger">Invalid Email Friend!
                         </div>
                     </div>
-
-                    <!-- error message -->
-                    <div>
-                        <div th:if="${param.error}">
-                            <div class="alert alert-danger">Invalid Email Friend!
-                            </div>
-                        </div>
-                    </div>
+                </div>
 
 
-                    <div class="form-group">
-                        <label class="control-label" for="email"> Email </label>
-                        <input type="email" id="email" class="form-control" name="email"
-                               placeholder="Enter Friend Email"
-                               required autofocus="autofocus"/>
-                    </div>
+                <div class="form-group">
+                    <label class="control-label" for="email"> Email </label>
+                    <input type="email" id="email" class="form-control" name="email"
+                           placeholder="Enter Friend Email"
+                           required autofocus="autofocus"/>
+                </div>
 
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success">Register</button>
-                        <span>Already registered? <a th:href="@{/contact}">Contact Page</a></span>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Register</button>
+                    <span>Already registered? <a th:href="@{/contact}">Contact Page</a></span>
 
-                    </div>
+                </div>
 
 
-                </form>
+            </form>
 
-            </div>
         </div>
     </div>
+</div>
 </body>
 
 </html>
