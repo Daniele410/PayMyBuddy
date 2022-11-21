@@ -15,7 +15,7 @@
 <br>
 <!-- create navigation bar (header) -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
+    <div class="container" style="background-color:#7dd076">
         <div class="navbar-header">
 
             <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
@@ -23,8 +23,14 @@
             <a class="navbar-brand" href="#" th:href="@{/bankAccount}">Bank</a>
             <a class="navbar-brand" href="#" th:href="@{/transfer}">Transfer</a>
 
-
         </div>
+
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+
     </div>
 </nav>
 
