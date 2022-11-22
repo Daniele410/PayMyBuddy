@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Pay My Buddy Transfer Bank Page</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+</head>
+<body>
+<br>
+<br>
+<!-- create navigation bar (header) -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
+            <a class="navbar-brand" href="#" th:href="@{/contact}">Contact</a>
+            <a class="navbar-brand" href="#" th:href="@{/bankAccount}">Bank</a>
+            <a class="navbar-brand" href="#" th:href="@{/transfer}">Transfer</a>
+        </div>
+
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </div>
+
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <h1> Transfer Money In My Bank</h1>
+    </div>
+
+
+    <!-- FORM : Transaction between users -->
+    <div class="container">
+
+
+        <form th:action="@{/bankTransfer}" method="post" th:object="${bankAccount}">
+
+
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="balance"> Balance </label> <input
+            id="balance" class="form-control" th:field="*{bankAccount.balance}"
+            required autofocus="autofocus"/>
+    </div>
+
+
+    <div class="form-row my-3">
+        <div class="col-12 col-md-6 col-lg-4">
+            <select class="form-control" id="dropDownList" name="bankName" >
+
+                <option value="0">-- Please select Bank --</option>
+                <option th:each="user : ${bankAccountList}"
+                        th:value="${user.bankName}"
+                        th:text="${user.bankName}">
+
+                </option>
+
+            </select>
+        </div>
+
+
+        <br>
+        <div class="col-12 col-md-4 col-lg-3">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+        </div>
+    </div>
+    </form>
+
+</div>
+<br>
+</div>
+
+</body>
+
+</html>

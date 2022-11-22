@@ -1,9 +1,11 @@
 package com.danozzo.paymybuddy.service;
 
 import com.danozzo.paymybuddy.model.BankAccount;
+import com.danozzo.paymybuddy.model.Profit;
 import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.BankAccountRepository;
+import com.danozzo.paymybuddy.repository.ProfitRepository;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.TransferDto;
@@ -30,6 +32,12 @@ public class BankAccountServiceImpl implements IBankAccountService {
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    ProfitRepository profitRepository;
+
+    @Autowired
+    Profit profit;
 
 
     @Override
@@ -89,6 +97,10 @@ public class BankAccountServiceImpl implements IBankAccountService {
         if (balanceDebitAccount < amountWithCommission) {
             throw new Exception("Not enough money on your account");
         }
+
+        profit.setFees(commission);
+        profitRepository.save(profit);
+
         debitAccount.setBalance(balanceDebitAccount - amountWithCommission);
         userRepository.save(debitAccount);
 

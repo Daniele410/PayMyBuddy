@@ -4,6 +4,7 @@ import com.danozzo.paymybuddy.model.BankAccount;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.service.IBankAccountService;
+import com.danozzo.paymybuddy.service.IUserService;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.TransferDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
@@ -32,6 +33,9 @@ public class BankAccountController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    IUserService userService;
+
 
     //    bankRegistration
     @GetMapping("/bankAccount")
@@ -55,6 +59,8 @@ public class BankAccountController {
     public String showRegistrationForm() {
         return "bankRegistration";
     }
+
+
 
 
     @PostMapping("/bankRegistration")
@@ -81,12 +87,37 @@ public class BankAccountController {
         return "redirect:/bankAccount";
     }
 
+    @GetMapping("/bankTransfer")
+    public ModelAndView showSendToTheBank(BankRegistrationDto bankAccount) {
+        ModelAndView modelAndView = new ModelAndView("bankTransfer");
+        Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
+
+        List<BankAccount> bankAccountList = userService.getUsersBanks(emailConnectedUser.getName());
+        logger.info(bankAccountList);
+
+        modelAndView.addObject("bankAccountList", bankAccountList);
+        modelAndView.addObject("bankAccount", bankRegistrationDto());
+
+
+
+//        bankAccountService.saveBankTransfert(bankAccount, balance);
+//        return "redirect:/bankAccount";
+        return modelAndView;
+    }
+
     @PostMapping("/bankTransfer")
-    public String sentAmount(BankRegistrationDto bankAccount, double balance) throws Exception {
+    public String sentBankAmount(BankRegistrationDto bankAccount, double balance) throws Exception {
 
         bankAccountService.saveBankTransfert(bankAccount, balance);
-        return "redirect:/bankAccount";
+        return "redirect:/bankTransfer";
     }
+
+
+//    @GetMapping("/bankTransfer")
+//    public String showBankTransferPage() {
+//        return "bankTransfer";
+//    }
+
 
 
 //    @PostMapping

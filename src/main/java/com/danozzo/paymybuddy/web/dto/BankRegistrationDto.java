@@ -40,18 +40,6 @@ public class BankRegistrationDto {
 
     }
 
-    public BankRegistrationDto(double balance) {
-        this.balance = balance;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
     public String getBankName() {
         return bankName;
     }
@@ -74,6 +62,14 @@ public class BankRegistrationDto {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public double getBalance() {
