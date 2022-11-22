@@ -1,7 +1,9 @@
 package com.danozzo.paymybuddy.service;
 
+import com.danozzo.paymybuddy.model.Profit;
 import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
+import com.danozzo.paymybuddy.repository.ProfitRepository;
 import com.danozzo.paymybuddy.repository.TransferRepository;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.TransferDto;
@@ -29,6 +31,11 @@ public class TransferServiceImpl implements ITransferService {
     @Autowired
     UserServiceImpl userService;
 
+    @Autowired
+    ProfitRepository profitRepository;
+
+//    Profit profit;
+
 
     @Transactional
     public Transfer saveTransfert(TransferDto transferDto, double amount) throws UserNotFoundException {
@@ -36,11 +43,13 @@ public class TransferServiceImpl implements ITransferService {
         User debitAccount = userService.getCurrentUser(emailConnectedUser.getName());
         User creditAccount = userService.findByEmail(transferDto.getEmail());
 
+//        Profit appProfit = profitRepository.getById(profit.getId());
+
         List<User> friends = debitAccount.getFriends();
         logger.debug("Contact list: " + friends);
 
         double amountWithCommission = amount + (5 * 100 / amount);
-        double commission = amount* (5/100);
+        double commission = amount * (5 / 100);
 
         double balanceDebitAccount = debitAccount.getBalance();
         double balanceCreditAccount = creditAccount.getBalance();
@@ -48,6 +57,10 @@ public class TransferServiceImpl implements ITransferService {
         if (balanceDebitAccount < amountWithCommission) {
             throw new UserNotFoundException("Not enough money on your account");
         }
+
+//        appProfit.setFees(profit.getFees() + commission);
+//        profitRepository.save(appProfit);
+
         debitAccount.setBalance(balanceDebitAccount - amountWithCommission);
         userRepository.save(debitAccount);
 

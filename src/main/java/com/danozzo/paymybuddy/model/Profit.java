@@ -5,10 +5,8 @@ import javax.persistence.*;
 @Entity
 public class Profit {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Long id;
-
+    private long id;
 
     private double fees;
 
@@ -16,7 +14,7 @@ public class Profit {
 
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {

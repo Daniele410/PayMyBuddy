@@ -36,8 +36,8 @@ public class BankAccountServiceImpl implements IBankAccountService {
     @Autowired
     ProfitRepository profitRepository;
 
-    @Autowired
-    Profit profit;
+
+//    Profit profit;
 
 
     @Override
@@ -83,30 +83,36 @@ public class BankAccountServiceImpl implements IBankAccountService {
     @Override
     public void saveBankTransfert(BankRegistrationDto bankAccountDto, double amount) throws Exception {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
-        User debitAccount = userService.getCurrentUser(emailConnectedUser.getName());
-        Optional<BankAccount> creditAccount = bankAccountRepository.findById(bankAccountDto.getUserId());
+        User account = userService.getCurrentUser(emailConnectedUser.getName());
 
-        List<BankAccount> banks = debitAccount.getBankAccountList();
+        Optional<BankAccount> isAlreadyBank = account.getBankAccountList()
+                .stream()
+                .filter(bank -> bank.getBankName().equals(bankAccountDto.getBankName())).findFirst();
+        if (isAlreadyBank.isPresent()) {
 
-        double amountWithCommission = amount + (5 * 100 / amount);
-        double commission = amount* (5/100);
+            double amountWithCommission = amount + (5 * 100 / amount);
+//            double commission = amount* (5/100);
 
-        double balanceDebitAccount = debitAccount.getBalance();
-        double balanceCreditAccount = creditAccount.get().getBalance();
+            double balanceAccount = account.getBalance();
+            double balanceCreditAccount = isAlreadyBank.get().getBalance();
 
-        if (balanceDebitAccount < amountWithCommission) {
-            throw new Exception("Not enough money on your account");
+//            if (balanceAccount < amountWithCommission) {
+                account.setBalance(balanceAccount - amountWithCommission);
+                userRepository.save(account);
+
+                isAlreadyBank.get().setBalance(balanceCreditAccount + amount);
+                bankAccountRepository.save(isAlreadyBank.get());
+
+            }else {
+                throw new Exception("Bank not present");
+
+
+//        profit.setFees(commission);
+//        profitRepository.save(profit);
+
+
+
         }
-
-        profit.setFees(commission);
-        profitRepository.save(profit);
-
-        debitAccount.setBalance(balanceDebitAccount - amountWithCommission);
-        userRepository.save(debitAccount);
-
-        creditAccount.get().setBalance(balanceCreditAccount + amount);
-        bankAccountRepository.save(creditAccount.get());
-
 
     }
 
