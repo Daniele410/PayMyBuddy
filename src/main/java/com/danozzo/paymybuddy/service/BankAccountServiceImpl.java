@@ -80,6 +80,10 @@ public class BankAccountServiceImpl implements IBankAccountService {
         bankAccountRepository.deleteById(id);
     }
 
+
+    /**
+     *send money from bank credit to user credit
+     */
     @Override
     public void saveBankTransfert(BankRegistrationDto bankAccountDto, double amount) throws Exception {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
@@ -104,7 +108,7 @@ public class BankAccountServiceImpl implements IBankAccountService {
                 bankAccountRepository.save(isAlreadyBank.get());
 
             }else {
-                throw new Exception("Bank not present");
+                throw new Exception("Problem To Transfer");
 
 
 //        profit.setFees(commission);

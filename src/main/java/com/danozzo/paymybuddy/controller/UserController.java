@@ -1,8 +1,10 @@
 package com.danozzo.paymybuddy.controller;
 
+import com.danozzo.paymybuddy.model.BankAccount;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.service.IUserService;
+import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.FriendDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.apache.logging.log4j.LogManager;
@@ -114,6 +116,7 @@ public class UserController {
 
         return "redirect:/contact";
     }
+
 
 
 }

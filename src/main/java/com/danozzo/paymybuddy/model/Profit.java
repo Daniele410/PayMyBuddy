@@ -10,8 +10,20 @@ public class Profit {
 
     private double fees;
 
+    @ManyToOne
+    private Transfer transfer;
 
+    public void setFees(double fees) {
+        this.fees = fees;
+    }
 
+    public Transfer getTransfer() {
+        return transfer;
+    }
+
+    public void setTransfer(Transfer transfer) {
+        this.transfer = transfer;
+    }
 
     public Long getId() {
         return this.id;

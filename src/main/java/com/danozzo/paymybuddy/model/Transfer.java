@@ -3,6 +3,8 @@ package com.danozzo.paymybuddy.model;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "transfer")
@@ -30,6 +32,8 @@ public class Transfer {
     @JoinColumn(name = "credit_account")
     private User creditAccount;
 
+    @OneToMany(mappedBy = "transfer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Profit>  profitList = new ArrayList<>();
 
     public Transfer() {
     }
@@ -50,7 +54,13 @@ public class Transfer {
 
     }
 
+    public List<Profit> getProfitList() {
+        return profitList;
+    }
 
+    public void setProfitList(List<Profit> profitList) {
+        this.profitList = profitList;
+    }
 
     public Long getTransferId() {
         return transferId;

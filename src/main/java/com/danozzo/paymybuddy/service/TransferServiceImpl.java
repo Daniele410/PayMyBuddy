@@ -34,7 +34,6 @@ public class TransferServiceImpl implements ITransferService {
     @Autowired
     ProfitRepository profitRepository;
 
-//    Profit profit;
 
 
     @Transactional
@@ -43,13 +42,14 @@ public class TransferServiceImpl implements ITransferService {
         User debitAccount = userService.getCurrentUser(emailConnectedUser.getName());
         User creditAccount = userService.findByEmail(transferDto.getEmail());
 
-//        Profit appProfit = profitRepository.getById(profit.getId());
+
+        Profit appProfit = profitRepository.findAll().stream().findFirst().get();
 
         List<User> friends = debitAccount.getFriends();
         logger.debug("Contact list: " + friends);
 
         double amountWithCommission = amount + (5 * 100 / amount);
-        double commission = amount * (5 / 100);
+        double commission = amount * 5 / 100;
 
         double balanceDebitAccount = debitAccount.getBalance();
         double balanceCreditAccount = creditAccount.getBalance();
@@ -58,8 +58,8 @@ public class TransferServiceImpl implements ITransferService {
             throw new UserNotFoundException("Not enough money on your account");
         }
 
-//        appProfit.setFees(profit.getFees() + commission);
-//        profitRepository.save(appProfit);
+        appProfit.setFees(appProfit.getFees() + commission);
+        profitRepository.save(appProfit);
 
         debitAccount.setBalance(balanceDebitAccount - amountWithCommission);
         userRepository.save(debitAccount);

@@ -3,10 +3,14 @@ package com.danozzo.paymybuddy.service;
 import com.danozzo.paymybuddy.model.BankAccount;
 import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
+import com.danozzo.paymybuddy.repository.BankAccountRepository;
 import com.danozzo.paymybuddy.repository.UserRepository;
+import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BankAccountRepository bankAccountRepository;
 
 
     @Override
@@ -123,6 +130,44 @@ public class UserServiceImpl implements IUserService {
     public void deleteUserFriendById(Long id) {
 
         userRepository.deleteById(id);
+    }
+
+    /**
+     * send money from user credit to bank credit
+     */
+    public void saveUserTransfer(BankRegistrationDto bankAccountDto, double amount) throws Exception {
+        Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
+        User account = userRepository.findByEmail(emailConnectedUser.getName());
+
+        Optional<BankAccount> isAlreadyBank = account.getBankAccountList()
+                .stream()
+                .filter(bank -> bank.getBankName().equals(bankAccountDto.getBankName())).findFirst();
+        if (isAlreadyBank.isPresent()) {
+
+            double amountWithCommission = amount + (5 * 100 / amount);
+//            double commission = amount* (5/100);
+
+            double balanceAccount = account.getBalance();
+            double balanceCreditAccount = isAlreadyBank.get().getBalance();
+
+//            if (balanceAccount < amountWithCommission) {
+            account.setBalance(balanceCreditAccount + amount);
+            userRepository.save(account);
+
+            isAlreadyBank.get().setBalance(balanceAccount - amountWithCommission);
+            bankAccountRepository.save(isAlreadyBank.get());
+
+        }else {
+            throw new Exception("Problem to Transfer");
+
+
+//        profit.setFees(commission);
+//        profitRepository.save(profit);
+
+
+
+        }
+
     }
 
 
