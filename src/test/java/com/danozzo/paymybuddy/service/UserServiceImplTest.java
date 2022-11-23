@@ -3,21 +3,21 @@ package com.danozzo.paymybuddy.service;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
-import org.junit.jupiter.api.BeforeEach;
+import nl.altindag.log.LogCaptor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,6 +32,10 @@ class UserServiceImplTest {
 
     @Captor
     ArgumentCaptor<User> userCaptor;
+
+    Logger logger = LogManager.getLogger(UserServiceImpl.class);
+
+    private static LogCaptor logcaptor;
 
 
     User user;
@@ -67,16 +71,25 @@ class UserServiceImplTest {
 
     @Test
     void loadUserByUsername_Test_ShouldReturnTrue() {
-//        //Given
-//       User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
-//        when(userRepository.findByEmail(user.getFirstName())).thenReturn(this.user);
-//
-//        //When
-//        userService.loadUserByUsername(user.getFirstName());
-//
-//        //Then
-//        verify(userRepository, Mockito.times(1)).findByEmail(user.getEmail());
-//        assertEquals("Frank", user.getFirstName());
+        //Given
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+
+        //When
+        userService.loadUserByUsername(user.getEmail());
+
+        //Then
+        verify(userRepository, Mockito.times(1)).findByEmail(user.getEmail());
+        assertEquals("Frank", user.getFirstName());
+
+    }
+
+    @Test
+    void loadUserByUsername_Test_shouldReturnException() throws UsernameNotFoundException {
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+
+        assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername("Invalid username and password."));
+
 
     }
 
@@ -112,6 +125,7 @@ class UserServiceImplTest {
         assertEquals("palumbo@mail.com", user.getEmail());
     }
 
+
     @Test
     void existsByEmail_test_shouldReturnTrue() {
         //Given
@@ -133,8 +147,6 @@ class UserServiceImplTest {
     void saveFriend_test() {
 //      User connectedUser = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
 //      User friend = new User("Toto", "Tata", "toto@mail.com", "12345");
-
-
 
 
     }
