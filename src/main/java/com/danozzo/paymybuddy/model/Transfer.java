@@ -3,8 +3,6 @@ package com.danozzo.paymybuddy.model;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "transfer")
@@ -32,12 +30,9 @@ public class Transfer {
     @JoinColumn(name = "credit_account")
     private User creditAccount;
 
-    @OneToMany(mappedBy = "transfer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Profit>  profitList = new ArrayList<>();
 
     public Transfer() {
     }
-
 
 
     public Transfer(String description, double amount, User debitAccount, User creditAccount) {
@@ -54,13 +49,6 @@ public class Transfer {
 
     }
 
-    public List<Profit> getProfitList() {
-        return profitList;
-    }
-
-    public void setProfitList(List<Profit> profitList) {
-        this.profitList = profitList;
-    }
 
     public Long getTransferId() {
         return transferId;
@@ -101,17 +89,6 @@ public class Transfer {
     public void setCreditAccount(User creditAccount) {
         this.creditAccount = creditAccount;
     }
-
-
-
-//        public void transfer(double amount,double balance, User user){
-//        if (balance < amount){
-//            throw new RuntimeException("Transfer fails!! you do not have enough money!");
-//        }else{
-//            user.getBalance() += amount;
-//
-//        }
-//    }
 
 
 }

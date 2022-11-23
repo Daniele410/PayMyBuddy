@@ -3,6 +3,7 @@ package com.danozzo.paymybuddy.service;
 import com.danozzo.paymybuddy.model.BankAccount;
 import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
+import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import exception.UserEmailNotFoundException;
 import org.springframework.security.core.Authentication;
@@ -37,7 +38,7 @@ public interface IUserService extends UserDetailsService {
 //    List<User> getUsersFriends();
 
 
-
+    public void saveUserTransfert(BankRegistrationDto bankAccountDto, double amount) throws Exception;
 
     User getCurrentUser(String emailConnectedUser);
 

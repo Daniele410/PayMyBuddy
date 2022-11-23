@@ -37,14 +37,9 @@ public class BankAccountServiceImpl implements IBankAccountService {
     ProfitRepository profitRepository;
 
 
-//    Profit profit;
-
-
     @Override
     @Transactional
     public BankAccount saveBank(BankRegistrationDto bankRegistrationDto, String emailConnectedUser) {
-//        String userConnected = SecurityContextHolder.getContext().getAuthentication().getName();
-//        User userConnected = userRepository.getUser(SecurityContextHolder);
         Authentication user = SecurityContextHolder.getContext().getAuthentication();
         User userConnected = userRepository.findByEmail(user.getName());
 
@@ -76,46 +71,43 @@ public class BankAccountServiceImpl implements IBankAccountService {
         return bankAccountRepository.existsByIban(iban);
     }
 
-    public void deleteBankById(Long id){
+    public void deleteBankById(Long id) {
         bankAccountRepository.deleteById(id);
     }
 
 
     /**
-     *send money from bank credit to user credit
+     * send money from bank credit to user credit
      */
     @Override
     public void saveBankTransfert(BankRegistrationDto bankAccountDto, double amount) throws Exception {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
         User account = userService.getCurrentUser(emailConnectedUser.getName());
 
+        Profit appProfit = profitRepository.findAll().stream().findFirst().get();
+
         Optional<BankAccount> isAlreadyBank = account.getBankAccountList()
                 .stream()
                 .filter(bank -> bank.getBankName().equals(bankAccountDto.getBankName())).findFirst();
         if (isAlreadyBank.isPresent()) {
 
-            double amountWithCommission = amount + (5 * 100 / amount);
-//            double commission = amount* (5/100);
+            double amountWithCommission = amount + 5 * 100 / amount;
+            double commission = amount * 5 / 100;
 
             double balanceAccount = account.getBalance();
             double balanceCreditAccount = isAlreadyBank.get().getBalance();
 
-//            if (balanceAccount < amountWithCommission) {
-                account.setBalance(balanceAccount - amountWithCommission);
-                userRepository.save(account);
+            if (balanceAccount < amountWithCommission) {
+                throw new UserNotFoundException("Not enough money on your account");
+            } else
+                appProfit.setFees(appProfit.getFees() + commission);
+            profitRepository.save(appProfit);
 
-                isAlreadyBank.get().setBalance(balanceCreditAccount + amount);
-                bankAccountRepository.save(isAlreadyBank.get());
+            account.setBalance(balanceAccount - amountWithCommission);
+            userRepository.save(account);
 
-            }else {
-                throw new Exception("Problem To Transfer");
-
-
-//        profit.setFees(commission);
-//        profitRepository.save(profit);
-
-
-
+            isAlreadyBank.get().setBalance(balanceCreditAccount + amount);
+            bankAccountRepository.save(isAlreadyBank.get());
         }
 
     }

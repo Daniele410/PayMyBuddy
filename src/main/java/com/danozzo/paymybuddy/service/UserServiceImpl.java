@@ -1,12 +1,15 @@
 package com.danozzo.paymybuddy.service;
 
 import com.danozzo.paymybuddy.model.BankAccount;
+import com.danozzo.paymybuddy.model.Profit;
 import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.BankAccountRepository;
+import com.danozzo.paymybuddy.repository.ProfitRepository;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
+import exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,6 +33,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private BankAccountRepository bankAccountRepository;
+
+    @Autowired
+    private ProfitRepository profitRepository;
 
 
     @Override
@@ -135,38 +141,38 @@ public class UserServiceImpl implements IUserService {
     /**
      * send money from user credit to bank credit
      */
-    public void saveUserTransfer(BankRegistrationDto bankAccountDto, double amount) throws Exception {
+    public void saveUserTransfert(BankRegistrationDto bankAccountDto, double amount) throws Exception {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
+
         User account = userRepository.findByEmail(emailConnectedUser.getName());
+
+        Profit appProfit = profitRepository.findAll().stream().findFirst().get();
 
         Optional<BankAccount> isAlreadyBank = account.getBankAccountList()
                 .stream()
                 .filter(bank -> bank.getBankName().equals(bankAccountDto.getBankName())).findFirst();
         if (isAlreadyBank.isPresent()) {
 
-            double amountWithCommission = amount + (5 * 100 / amount);
-//            double commission = amount* (5/100);
+            double amountWithCommission = amount + 5 * 100 / amount;
+            double commission = amount * 5 / 100;
 
-            double balanceAccount = account.getBalance();
-            double balanceCreditAccount = isAlreadyBank.get().getBalance();
+            double balanceAccount = isAlreadyBank.get().getBalance();
+            double balanceCreditAccount = account.getBalance();
 
-//            if (balanceAccount < amountWithCommission) {
-            account.setBalance(balanceCreditAccount + amount);
-            userRepository.save(account);
+            if (balanceAccount < amountWithCommission) {
+                throw new UserNotFoundException("Not enough money on your account");
+            } else
+                appProfit.setFees(appProfit.getFees() + commission);
+            profitRepository.save(appProfit);
 
-            isAlreadyBank.get().setBalance(balanceAccount - amountWithCommission);
+            isAlreadyBank.get().setBalance(balanceCreditAccount - amountWithCommission);
             bankAccountRepository.save(isAlreadyBank.get());
 
-        }else {
-            throw new Exception("Problem to Transfer");
+            account.setBalance(balanceAccount + amount);
+            userRepository.save(account);
 
 
-//        profit.setFees(commission);
-//        profitRepository.save(profit);
-
-
-
-        }
+    }
 
     }
 

@@ -5,33 +5,30 @@ import javax.persistence.*;
 @Entity
 public class Profit {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profit_gen")
+    @SequenceGenerator(name = "profit_gen", sequenceName = "profit_seq")
     @Column(name = "id", nullable = false)
-    private long id;
+    private Long id;
 
     private double fees;
 
-    @ManyToOne
-    private Transfer transfer;
-
-    public void setFees(double fees) {
-        this.fees = fees;
-    }
-
-    public Transfer getTransfer() {
-        return transfer;
-    }
-
-    public void setTransfer(Transfer transfer) {
-        this.transfer = transfer;
-    }
 
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
+
+
+    public void setFees(double fees) {
+        this.fees = fees;
+    }
+
+
+
+
 
     public Double getFees() {
         return fees;

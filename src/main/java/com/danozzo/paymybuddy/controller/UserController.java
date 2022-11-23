@@ -117,6 +117,36 @@ public class UserController {
         return "redirect:/contact";
     }
 
+    @ModelAttribute("userTransfer")
+    public BankRegistrationDto bankRegistrationDto() {
+        return new BankRegistrationDto();
+    }
+
+    @GetMapping("/userTransfer")
+    public ModelAndView showSendToTheBank(BankRegistrationDto bankAccount) {
+        ModelAndView modelAndView = new ModelAndView("userTransfer");
+        Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
+
+        List<BankAccount> bankAccountList = userService.getUsersBanks(emailConnectedUser.getName());
+        logger.info(bankAccountList);
+
+        modelAndView.addObject("bankAccountList", bankAccountList);
+        modelAndView.addObject("bankAccount", bankRegistrationDto());
+
+
+
+//        bankAccountService.saveBankTransfert(bankAccount, balance);
+//        return "redirect:/bankAccount";
+        return modelAndView;
+    }
+
+    @PostMapping("/userTransfer")
+    public String sentBankAmount(BankRegistrationDto bankAccount, double balance) throws Exception {
+
+        userService.saveUserTransfert(bankAccount, balance);
+        return "redirect:/userTransfer";
+    }
+
 
 
 }

@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -33,7 +32,6 @@ public class TransferServiceImpl implements ITransferService {
 
     @Autowired
     ProfitRepository profitRepository;
-
 
 
     @Transactional
@@ -71,6 +69,7 @@ public class TransferServiceImpl implements ITransferService {
                 debitAccount, creditAccount);
 
         return transferRepository.save(transfer);
+
     }
 
 
