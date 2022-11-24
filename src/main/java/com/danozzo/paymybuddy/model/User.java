@@ -162,7 +162,7 @@ public class User {
         return receivedPayments;
     }
 
-    public void setReceivedPayments(Set<Transfer> receivedPayments) {
+    public void setReceivedPayments() {
         this.receivedPayments = receivedPayments;
     }
 

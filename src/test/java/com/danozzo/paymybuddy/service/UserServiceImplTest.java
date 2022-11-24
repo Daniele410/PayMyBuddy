@@ -1,9 +1,9 @@
 package com.danozzo.paymybuddy.service;
 
 import com.danozzo.paymybuddy.model.BankAccount;
+import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.UserRepository;
-import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import nl.altindag.log.LogCaptor;
 import org.apache.logging.log4j.LogManager;
@@ -206,14 +206,14 @@ class UserServiceImplTest {
         assertEquals(listFriend.get(0), resultUser);
         verify(userRepository, Mockito.times(1)).findByEmail("palumbo@mail.com");
         assertEquals(friend.getEmail(), user.getFriends().get(0).getEmail());
-//
+
     }
 
     @Test
-    void getUsersBanks_shouldReturnIbanBank(){
+    void getUsersBanksTest_shouldReturnIbanBank() {
         //Given
         User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
-        BankAccount bankAccount = new BankAccount("IBM", "qwertyuiop","Paris");
+        BankAccount bankAccount = new BankAccount("IBM", "qwertyuiop", "Paris");
         List<BankAccount> listBanks = new ArrayList<>();
         listBanks.add(bankAccount);
         user.setBankAccountList(listBanks);
@@ -232,17 +232,59 @@ class UserServiceImplTest {
 
     @Test
     void getReceivedPayments() {
+        //Given
+        User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+        Transfer transfer = new Transfer("Gift", 100.0);
+        transfer.setCreditAccount(transfer.getCreditAccount());
+        when(userRepository.findByEmail("palumbo@mail.com")).thenReturn(user);
+
+        //When
+       userService.getReceivedPayments(user.getEmail());
+
+        //Then
+        verify(userRepository, Mockito.times(1)).findByEmail("palumbo@mail.com");
+
     }
 
     @Test
     void getSentPayment() {
+        //Given
+        User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+        Transfer transfer = new Transfer("Gift", 100.0);
+        transfer.setCreditAccount(transfer.getCreditAccount());
+        when(userRepository.findByEmail("palumbo@mail.com")).thenReturn(user);
+
+        //When
+        userService.getSentPayment(user.getEmail());
+
+        //Then
+        verify(userRepository, Mockito.times(1)).findByEmail("palumbo@mail.com");
+
+
     }
 
     @Test
     void findAll() {
+        User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+        User user2 = new User("Toto", "Tata", "toto@mail.com", "12345");
+        userList.add(user);
+        userList.add(user2);
+        when(userRepository.findAll()).thenReturn(userList);
+
+       List<User>listUser= userService.findAll();
+
+        verify(userRepository, Mockito.times(1)).findAll();
+        assertEquals("Frank", listUser.get(0).getFirstName());
+
+
+
     }
 
     @Test
     void deleteUserFriendById() {
+
+
+
+
     }
 }
