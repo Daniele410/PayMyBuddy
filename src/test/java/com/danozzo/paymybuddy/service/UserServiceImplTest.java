@@ -144,19 +144,66 @@ class UserServiceImplTest {
 
 
     @Test
-    void saveFriend_test() {
-//      User connectedUser = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
-//      User friend = new User("Toto", "Tata", "toto@mail.com", "12345");
-
+    void saveFriend_test_shouldReturnSaveFriend() {
+//        //Given
+//        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+//        User friend = new User("Toto", "Tata", "toto@mail.com", "12345");
+//        User connectedUser = when(userRepository.findByEmail(any())).thenReturn(this.user.getEmail());
+//
+//        List<User> friendsList = new ArrayList<>();
+//        friendsList.add(friend);
+//        Optional<User> isAlreadyFriend = connectedUser.getFriends().stream()
+//                .filter(friend -> friend.getEmail().equals(friendUser.getEmail())).findFirst();
+//
+//
+//        //When
+//        userService.saveFriend("toto@gmail.com",connectedUser.getEmail() );
+//
+//
+//
+//        //Then
+//        assertEquals("toto@gmail.com", friend.getEmail());
 
     }
 
     @Test
     void getCurrentUser() {
+        //Given
+        User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+        List<User> listUser = new ArrayList<>();
+        listUser.add(user);
+        when(userRepository.findByEmail("palumbo@mail.com")).thenReturn(listUser.get(0));
+
+        //When
+        User resultUser = userService.getCurrentUser("palumbo@mail.com");
+
+        //Then
+        assertEquals(listUser.get(0), resultUser);
+        verify(userRepository, Mockito.times(1)).findByEmail("palumbo@mail.com");
+        assertEquals("Frank", user.getFirstName());
+
+
     }
+
 
     @Test
     void getUsersFriends() {
+
+//        //Given
+//        User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+//        User friend = new User("Toto", "Tata", "toto@mail.com", "12345");
+//        List<User> listUser = new ArrayList<>();
+//        listUser.add(friend);
+//        when(userRepository.findByEmail("palumbo@mail.com")).thenReturn(listUser.get(0));
+//
+//        //When
+//        User resultUser = userService.getUsersFriends(user.getFriends().get(0).getEmail();
+//
+//        //Then
+//        assertEquals(listUser.get(0), resultUser);
+//        verify(userRepository, Mockito.times(1)).findByEmail("palumbo@mail.com");
+//        assertEquals("Frank", user.getFirstName());
+//
     }
 
     @Test
