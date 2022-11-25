@@ -14,14 +14,11 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -46,13 +43,6 @@ class UserServiceImplTest {
 
     private List<User> userList = new ArrayList<>();
 
-
-//    @BeforeEach
-//    void initialize() {
-//        user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
-//        user2 = new User("Toto", "Tata", "toto@mail.com", "12345");
-//        friend = new User("Paulo", "Rossi", "rossi@gmail.com", "12345");
-//    }
 
 
     @Test
@@ -90,9 +80,10 @@ class UserServiceImplTest {
     void loadUserByUsername_Test_shouldReturnException() throws UsernameNotFoundException {
         User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
 
-        assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername("Invalid username and password."));
+        UsernameNotFoundException result = assertThrows(UsernameNotFoundException.class,
+                () -> userService.loadUserByUsername("Invalid username and password."));
 
-
+        assertEquals(result.getMessage(), "Invalid username and password.");
     }
 
     @Test
@@ -144,28 +135,70 @@ class UserServiceImplTest {
 
     }
 
+    @Test
+    void saveFriend_test_shouldReturnIllegalArgumentException() throws IllegalArgumentException {
+        User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+        User user2 = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+        //GIVEN
+        //si on appelle la méthode findByEmail plusieurs fois ce sera toujours user
+        when(userRepository.findByEmail(anyString())).thenReturn(user);
+        //Je veux deux user différents pour les deux appels
+        when(userRepository.findByEmail(anyString())).thenReturn(user).thenReturn(user2);
+
+
+        //WHEN
+        IllegalArgumentException result = assertThrows(IllegalArgumentException.class,
+                () -> userService.saveFriend(user.getEmail(), user2.getEmail()));
+        //THEN
+        assertEquals("Your account not is user friend!", result.getMessage());
+    }
 
     @Test
-    void saveFriend_test_shouldReturnSaveFriend() {
+    void saveFriend_test_shouldReturnSaveFriend() throws RuntimeException{
+        User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+        User user2 = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+
+        List<User> userList = new ArrayList<>();
+        userList.add(user);
+        userList.add(user2);
+        //Given
+        when(userRepository.findByEmail(anyString())).thenReturn(user);
+        when(userRepository.findByEmail(anyString())).thenReturn(user).thenReturn(user2);
+
+        Optional<User> isAlreadyFriend = userList.stream()
+                .filter(u -> u.getEmail().equals(user2.getEmail())).findFirst();
+
+        userService.saveFriend("palumbo@mail.com", "tutu");
+
+        //Then
+        verify(userRepository, Mockito.times(2)).findByEmail(any());
+
+    }
+
+    @Test
+    void saveFriend_test_shouldReturnSaveFriendRuntimeException() throws RuntimeException{
+//        User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+//        User user2 = new User(1L, "Frank", "Palumbo", "coco@gmail.com", "12345");
+//
+//        List<User> userList = new ArrayList<>();
+//        userList.add(user);
+//        userList.add(user2);
 //        //Given
-//        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
-//        User friend = new User("Toto", "Tata", "toto@mail.com", "12345");
-//        User connectedUser = when(userRepository.findByEmail(any())).thenReturn(this.user.getEmail());
+//        when(userRepository.findByEmail(anyString())).thenReturn(user2);
+//        when(userRepository.findByEmail(anyString())).thenReturn(user2).thenReturn(user2);
+//        when(userRepository.save(user2)).thenReturn(user2);
 //
-//        List<User> friendsList = new ArrayList<>();
-//        friendsList.add(friend);
-//        Optional<User> isAlreadyFriend = connectedUser.getFriends().stream()
-//                .filter(friend -> friend.getEmail().equals(friendUser.getEmail())).findFirst();
+////        Optional<User> isAlreadyFriend = userList.stream()
+////                .filter(u -> u.getEmail().equals(user2.getEmail())).findFirst();
 //
+////        isAlreadyFriend.isPresent(user2.getEmail());
 //
-//        //When
-//        userService.saveFriend("toto@gmail.com",connectedUser.getEmail() );
-//
-//
+//        RuntimeException result = assertThrows(RuntimeException.class,
+//                () -> userService.saveFriend("palumbo@mail.com", "coco@gmail.com"));
 //
 //        //Then
-//        assertEquals("toto@gmail.com", friend.getEmail());
-
+//        assertEquals("This user is already in this list", result.getMessage());
+////
     }
 
     @Test
@@ -239,7 +272,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail("palumbo@mail.com")).thenReturn(user);
 
         //When
-       userService.getReceivedPayments(user.getEmail());
+        userService.getReceivedPayments(user.getEmail());
 
         //Then
         verify(userRepository, Mockito.times(1)).findByEmail("palumbo@mail.com");
@@ -252,12 +285,14 @@ class UserServiceImplTest {
         User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
         Transfer transfer = new Transfer("Gift", 100.0);
         transfer.setCreditAccount(transfer.getCreditAccount());
-        when(userRepository.findByEmail("palumbo@mail.com")).thenReturn(user);
+        user.setSentPayments(Set.of(transfer));
+        when(userRepository.findByEmail(anyString())).thenReturn(user);
 
         //When
-        userService.getSentPayment(user.getEmail());
+        Set<Transfer> result = userService.getSentPayment(user.getEmail());
 
         //Then
+        assertNotNull(result);
         verify(userRepository, Mockito.times(1)).findByEmail("palumbo@mail.com");
 
 
@@ -271,18 +306,30 @@ class UserServiceImplTest {
         userList.add(user2);
         when(userRepository.findAll()).thenReturn(userList);
 
-       List<User>listUser= userService.findAll();
+        List<User> listUser = userService.findAll();
 
         verify(userRepository, Mockito.times(1)).findAll();
         assertEquals("Frank", listUser.get(0).getFirstName());
-
 
 
     }
 
     @Test
     void deleteUserFriendById() {
+        User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
 
+//        Optional<User> optionalUser = Optional.of(user);
+//        Optional<User> optUser = Optional.of(user);
+
+        doNothing().when(userRepository).deleteById(user.getId());
+
+       userService.deleteUserFriendById(1L);
+
+
+
+
+        verify(userRepository, Mockito.times(1)).deleteById(user.getId());
+        verify(userRepository).deleteById(user.getId());
 
 
 

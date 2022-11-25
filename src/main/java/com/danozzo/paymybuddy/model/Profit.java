@@ -5,8 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Profit {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profit_gen")
-    @SequenceGenerator(name = "profit_gen", sequenceName = "profit_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

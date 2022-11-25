@@ -46,8 +46,8 @@ public class TransferServiceImpl implements ITransferService {
         List<User> friends = debitAccount.getFriends();
         logger.debug("Contact list: " + friends);
 
-        double amountWithCommission = amount + (5 * 100 / amount);
-        double commission = amount * 5 / 100;
+        double amountWithCommission = amount + 0.5 * 100 / amount;
+        double commission = amount * 0.5 / 100;
 
         double balanceDebitAccount = debitAccount.getBalance();
         double balanceCreditAccount = creditAccount.getBalance();

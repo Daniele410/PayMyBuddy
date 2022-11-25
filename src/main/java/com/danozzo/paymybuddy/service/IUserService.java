@@ -32,7 +32,7 @@ public interface IUserService extends UserDetailsService {
 
     Boolean existsByEmail(String email);
 
-    void saveFriend(String emailConnectedUser ,String email);
+    void saveFriend(String emailConnectedUser ,String email) throws RuntimeException, IllegalArgumentException;
 
 
 //    List<User> getUsersFriends();

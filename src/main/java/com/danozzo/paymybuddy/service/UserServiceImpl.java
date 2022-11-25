@@ -75,7 +75,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void saveFriend(String email, String emailConnectedUser) {
+    public void saveFriend(String email, String emailConnectedUser) throws RuntimeException, IllegalArgumentException {
         User friendUser = userRepository.findByEmail(email);
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
 
@@ -146,15 +146,15 @@ public class UserServiceImpl implements IUserService {
 
         User account = userRepository.findByEmail(emailConnectedUser.getName());
 
-        Profit appProfit = profitRepository.findAll().stream().findFirst().get();
+        Profit appProfit = profitRepository.findById(1L).get();
 
         Optional<BankAccount> isAlreadyBank = account.getBankAccountList()
                 .stream()
                 .filter(bank -> bank.getBankName().equals(bankAccountDto.getBankName())).findFirst();
         if (isAlreadyBank.isPresent()) {
 
-            double amountWithCommission = amount + 5 * 100 / amount;
-            double commission = amount * 5 / 100;
+            double amountWithCommission = amount + 0.5 * 100 / amount;
+            double commission = amount * 0.5 / 100;
 
             double balanceAccount = isAlreadyBank.get().getBalance();
             double balanceCreditAccount = account.getBalance();
