@@ -34,3 +34,4 @@ build/
 
 ###config###
 config/application.properties
+application.properties
