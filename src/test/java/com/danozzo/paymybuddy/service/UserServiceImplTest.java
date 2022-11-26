@@ -32,17 +32,15 @@ class UserServiceImplTest {
     @Captor
     ArgumentCaptor<User> userCaptor;
 
-    Logger logger = LogManager.getLogger(UserServiceImpl.class);
+
 
     private static LogCaptor logcaptor;
-
 
     User user;
     User user2;
     User friend;
 
     private List<User> userList = new ArrayList<>();
-
 
 
     @Test
@@ -154,7 +152,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void saveFriend_test_shouldReturnSaveFriend() throws RuntimeException{
+    void saveFriend_test_shouldReturnSaveFriend() throws RuntimeException {
         User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
         User user2 = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
 
@@ -176,7 +174,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void saveFriend_test_shouldReturnSaveFriendRuntimeException() throws RuntimeException{
+    void saveFriend_test_shouldReturnSaveFriendRuntimeException() throws RuntimeException {
 //        User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
 //        User user2 = new User(1L, "Frank", "Palumbo", "coco@gmail.com", "12345");
 //
@@ -299,15 +297,18 @@ class UserServiceImplTest {
     }
 
     @Test
-    void findAll() {
+    void findAllTest_ShouldReturnFirstName() {
+        //Given
         User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
         User user2 = new User("Toto", "Tata", "toto@mail.com", "12345");
         userList.add(user);
         userList.add(user2);
         when(userRepository.findAll()).thenReturn(userList);
 
+        //When
         List<User> listUser = userService.findAll();
 
+        //Then
         verify(userRepository, Mockito.times(1)).findAll();
         assertEquals("Frank", listUser.get(0).getFirstName());
 
@@ -318,19 +319,14 @@ class UserServiceImplTest {
     void deleteUserFriendById() {
         User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
 
-//        Optional<User> optionalUser = Optional.of(user);
-//        Optional<User> optUser = Optional.of(user);
 
         doNothing().when(userRepository).deleteById(user.getId());
 
-       userService.deleteUserFriendById(1L);
-
-
+        userService.deleteUserFriendById(1L);
 
 
         verify(userRepository, Mockito.times(1)).deleteById(user.getId());
         verify(userRepository).deleteById(user.getId());
-
 
 
     }

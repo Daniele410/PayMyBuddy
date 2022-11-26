@@ -36,8 +36,7 @@ public class BankAccountController {
     @Autowired
     IUserService userService;
 
-
-    //    bankRegistration
+    
     @GetMapping("/bankAccount")
     public ModelAndView showBanks() {
         ModelAndView modelAndView = new ModelAndView("bankAccount");
@@ -61,10 +60,8 @@ public class BankAccountController {
     }
 
 
-
-
     @PostMapping("/bankRegistration")
-    public String registerContactFriend(@ModelAttribute("bankAccount") BankRegistrationDto bankRegistrationDto, BindingResult bindingResult) {
+    public String registerBankUser(@ModelAttribute("bankAccount") BankRegistrationDto bankRegistrationDto, BindingResult bindingResult) {
         Authentication user = SecurityContextHolder.getContext().getAuthentication();
         if (bindingResult.hasErrors()) {
             return "redirect:/bankRegistration?error";
@@ -98,10 +95,6 @@ public class BankAccountController {
         modelAndView.addObject("bankAccountList", bankAccountList);
         modelAndView.addObject("bankAccount", bankRegistrationDto());
 
-
-
-//        bankAccountService.saveBankTransfert(bankAccount, balance);
-//        return "redirect:/bankAccount";
         return modelAndView;
     }
 
@@ -111,31 +104,6 @@ public class BankAccountController {
         bankAccountService.saveBankTransfert(bankAccount, balance);
         return "redirect:/bankTransfer";
     }
-
-
-//    @GetMapping("/bankTransfer")
-//    public String showBankTransferPage() {
-//        return "bankTransfer";
-//    }
-
-
-
-//    @PostMapping
-//    public String registerBankUserAccount(@ModelAttribute("bankAccount")BankRegistrationDto bankRegistrationDto){
-//        bankAccountService.save(bankRegistrationDto);
-//        logger.info("save BankAccount");
-//        return "redirect:/bankRegistration?success";
-//    }
-
-//    @PostMapping("/update")
-//    public String updateBank(String name,BankRegistrationDto bankRegistrationDto, BindingResult result, Model model) {
-//        if (result.hasErrors()) {
-//            bankRegistrationDto.setBankName(name);
-//            return "/bankRegistrationUpdate";
-//        }
-//        bankAccountService.save(bankRegistrationDto);
-//        return "redirect:/bankAccount";
-//    }
 
 
 }

@@ -41,7 +41,6 @@ public class TransferController {
         return new FriendDto();
     }
 
-
     @GetMapping("/transfer")
     public ModelAndView showReceivedPaymentsPage(TransferDto transferDto) {
         ModelAndView modelAndView = new ModelAndView("transfer");

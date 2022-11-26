@@ -141,6 +141,7 @@ public class UserServiceImpl implements IUserService {
     /**
      * send money from user credit to bank credit
      */
+    @Override
     public void saveUserTransfert(BankRegistrationDto bankAccountDto, double amount) throws Exception {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
 

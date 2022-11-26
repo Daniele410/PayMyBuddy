@@ -75,7 +75,6 @@ public class BankAccountServiceImpl implements IBankAccountService {
         bankAccountRepository.deleteById(id);
     }
 
-
     /**
      * send money from bank credit to user credit
      */
@@ -111,6 +110,5 @@ public class BankAccountServiceImpl implements IBankAccountService {
         }
 
     }
-
 
 }

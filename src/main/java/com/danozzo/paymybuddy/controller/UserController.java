@@ -133,10 +133,6 @@ public class UserController {
         modelAndView.addObject("bankAccountList", bankAccountList);
         modelAndView.addObject("bankAccount", bankRegistrationDto());
 
-
-
-//        bankAccountService.saveBankTransfert(bankAccount, balance);
-//        return "redirect:/bankAccount";
         return modelAndView;
     }
 

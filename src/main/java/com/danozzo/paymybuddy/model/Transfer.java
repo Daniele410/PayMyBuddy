@@ -9,7 +9,6 @@ import javax.persistence.*;
 @DynamicUpdate
 public class Transfer {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "transfer_id")
@@ -20,7 +19,6 @@ public class Transfer {
 
     @Column(name = "amount")
     private double amount;
-
 
     @ManyToOne
     @JoinColumn(name = "debit_account")
@@ -33,7 +31,6 @@ public class Transfer {
 
     public Transfer() {
     }
-
 
     public Transfer(String description, double amount, User debitAccount, User creditAccount) {
         this.description = description;
@@ -48,7 +45,6 @@ public class Transfer {
         this.amount = amount;
 
     }
-
 
     public Long getTransferId() {
         return transferId;

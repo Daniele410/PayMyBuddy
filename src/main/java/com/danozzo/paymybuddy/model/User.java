@@ -43,7 +43,6 @@ public class User {
     private List<BankAccount> bankAccountList = new ArrayList<>();
 
 
-
     /**
      * All payments received in pay may buddy account
      **/

@@ -20,14 +20,9 @@ public class Profit {
         this.id = id;
     }
 
-
     public void setFees(double fees) {
         this.fees = fees;
     }
-
-
-
-
 
     public Double getFees() {
         return fees;
