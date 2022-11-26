@@ -19,10 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BankAccountServiceImplTest {
@@ -87,7 +85,7 @@ class BankAccountServiceImplTest {
     void getUsersBanks_Test_ShouldReturnIbanBank() {
         //Given
         User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
-        BankAccount bankAccount = new BankAccount("IBM","123456789","Paris");
+        BankAccount bankAccount = new BankAccount("IBM", "123456789", "Paris");
 
         when(userRepository.findByEmail("palumbo@mail.com")).thenReturn(user);
         user.getBankAccountList().add(bankAccount);
@@ -104,14 +102,43 @@ class BankAccountServiceImplTest {
     }
 
     @Test
-    void existsByIban() {
+    void existsByIban_ShouldReturnTrue() {
+
+        //Given
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        BankAccount bankAccount = new BankAccount("IBM", "123456789", "Paris");
+        when(bankAccountRepository.existsByIban(anyString())).thenReturn(true);
+        user.getBankAccountList().add(bankAccount);
+
+        //When
+        Boolean result = bankAccountService.existsByIban(bankAccount.getIban());
+
+        //Then
+        verify(bankAccountRepository, Mockito.times(1)).existsByIban(anyString());
+        assertTrue(result);
+
+
     }
 
     @Test
     void deleteBankById() {
+        //Given
+        BankAccount bankAccount = new BankAccount("IBM", "123456789", "Paris");
+        bankAccount.setIdCountBank(1L);
+        doNothing().when(bankAccountRepository).deleteById(bankAccount.getIdCountBank());
+
+        //When
+         bankAccountService.deleteBankById(bankAccount.getIdCountBank());
+
+        //Then
+        verify(bankAccountRepository).deleteById(bankAccount.getIdCountBank());
+
+
     }
 
     @Test
     void saveBankTransfert() {
+
+
     }
 }

@@ -66,11 +66,16 @@ public class BankAccountServiceImpl implements IBankAccountService {
         return connectedUser.getBankAccountList();
     }
 
-
+    /**
+     * search the database if the bank exist sends a bulean value
+     */
     public boolean existsByIban(String iban) {
         return bankAccountRepository.existsByIban(iban);
     }
 
+    /**
+     * delete bank by id
+     */
     public void deleteBankById(Long id) {
         bankAccountRepository.deleteById(id);
     }
