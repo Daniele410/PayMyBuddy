@@ -83,12 +83,12 @@ public class BankAccountServiceImpl implements IBankAccountService {
     /**
      * send money from bank credit to user credit
      */
-    @Override
+    @Transactional
     public void saveBankTransfert(BankRegistrationDto bankAccountDto, double amount) throws Exception {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
         User account = userService.getCurrentUser(emailConnectedUser.getName());
 
-        Profit appProfit = profitRepository.findAll().stream().findFirst().get();
+        Profit appProfit = profitRepository.findById(1L).get();
 
         Optional<BankAccount> isAlreadyBank = account.getBankAccountList()
                 .stream()
@@ -112,6 +112,7 @@ public class BankAccountServiceImpl implements IBankAccountService {
 
             isAlreadyBank.get().setBalance(balanceCreditAccount + amount);
             bankAccountRepository.save(isAlreadyBank.get());
+
         }
 
     }

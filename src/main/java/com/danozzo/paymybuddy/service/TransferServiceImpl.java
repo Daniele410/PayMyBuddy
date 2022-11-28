@@ -41,7 +41,7 @@ public class TransferServiceImpl implements ITransferService {
         User creditAccount = userService.findByEmail(transferDto.getEmail());
 
 
-        Profit appProfit = profitRepository.findAll().stream().findFirst().get();
+        Profit appProfit = profitRepository.findById(1L).get();;
 
         List<User> friends = debitAccount.getFriends();
         logger.debug("Contact list: " + friends);

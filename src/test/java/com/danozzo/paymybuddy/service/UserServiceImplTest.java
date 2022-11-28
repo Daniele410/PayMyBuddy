@@ -33,7 +33,6 @@ class UserServiceImplTest {
     ArgumentCaptor<User> userCaptor;
 
 
-
     private static LogCaptor logcaptor;
 
     User user;
@@ -330,4 +329,13 @@ class UserServiceImplTest {
 
 
     }
+
+    @Test
+    void saveUserTransfert_test() {
+
+
+
+    }
+
+
 }
