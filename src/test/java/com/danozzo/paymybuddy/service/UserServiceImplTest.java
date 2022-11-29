@@ -195,32 +195,23 @@ class UserServiceImplTest {
 
     @Test
     void saveFriend_test_shouldReturnSaveFriendRuntimeException() throws RuntimeException {
-//        //Given
-//        User connectedUser = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
-//        User friendUser = new User(1L, "Frank", "Palumbo", "coco@gmail.com", "12345");
-//
-//
-//        when(userRepository.findByEmail(anyString())).thenReturn(connectedUser);
-//        when(userRepository.findByEmail(anyString())).thenReturn(friendUser);
-//        when(userRepository.save(connectedUser)).thenReturn(friendUser);
-////        when(userRepository.findByEmail(anyString())).thenReturn(connectedUser).thenReturn(friendUser);
-////        when(userRepository.save(connectedUser)).thenReturn(friendUser);
-//
-//
-//        when(userRepository.findByEmail(anyString())).thenReturn(connectedUser);
-//        when(userRepository.findByEmail(anyString())).thenReturn(connectedUser).thenReturn(friendUser);
-//
-//        Optional<User> isAlreadyFriend = connectedUser.getFriends().stream()
-//                .filter(u -> u.getEmail().equals(friendUser.getEmail())).findFirst();
-//        connectedUser.getFriends().add(friendUser);
-//
-//
-//        RuntimeException result = assertThrows(RuntimeException.class,
-//                () -> userService.saveFriend(friendUser.getEmail(), connectedUser.getEmail()));
-//
-//        //Then
-//        assertEquals("This user is already in this list", result.getMessage());
-//
+        //Given
+        User connectedUser = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+        User friendUser = new User(1L, "Frank", "Palumbo", "coco@gmail.com", "12345");
+        List<User> userFriend = new ArrayList<>();
+        userFriend.add(friendUser);
+        connectedUser.setFriends(userFriend);
+
+        when(userRepository.findByEmail("palumbo@mail.com")).thenReturn(connectedUser);
+        when(userRepository.findByEmail("coco@gmail.com")).thenReturn(friendUser);
+
+        //When
+        RuntimeException result = assertThrows(RuntimeException.class,
+                () -> userService.saveFriend(friendUser.getEmail(), connectedUser.getEmail()));
+
+        //Then
+        assertEquals("This user is already in this list", result.getMessage());
+
     }
 
     @Test
