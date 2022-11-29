@@ -82,13 +82,13 @@ class BankAccountServiceImplTest {
 
         //Then
 
-      assertTrue(userConnected.getBankAccountList().contains(bankAccount));
+        assertTrue(userConnected.getBankAccountList().contains(bankAccount));
 
 
     }
 
     @Test
-    void saveBank_test_shouldReturnRuntimeException() throws RuntimeException{
+    void saveBank_test_shouldReturnRuntimeException() throws RuntimeException {
         //Given
         User userConnected = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
         BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
@@ -108,11 +108,10 @@ class BankAccountServiceImplTest {
 
 
         RuntimeException result = assertThrows(RuntimeException.class,
-                () -> bankAccountService.saveBank(bankAccount,userConnected.getEmail()));
+                () -> bankAccountService.saveBank(bankAccount, userConnected.getEmail()));
 
         //Then
         assertEquals("This bank is already present in this list", result.getMessage());
-
 
 
     }
@@ -172,6 +171,9 @@ class BankAccountServiceImplTest {
 
     }
 
+    /**
+     *Send money from userBalance to bankBalance
+     */
     @Test
     void saveBankTransfert_test_shouldReturnBalance() throws Exception {
         //Given
@@ -204,7 +206,7 @@ class BankAccountServiceImplTest {
         verify(profitRepository, Mockito.times(1)).save(profitApp);
         verify(userRepository, Mockito.times(1)).save(user);
         verify(bankAccountRepository, Mockito.times(1)).save(bankAccount);
-        assertEquals(500, bankAccount.getBalance() - 500);
+        assertEquals(1000, bankAccount.getBalance());
 
 
     }

@@ -81,7 +81,7 @@ public class BankAccountServiceImpl implements IBankAccountService {
     }
 
     /**
-     * send money from bank credit to user credit
+     * send money from userBalance to bankBalance
      */
     @Transactional
     public void saveBankTransfert(BankRegistrationDto bankAccountDto, double amount) throws UserNotFoundException {

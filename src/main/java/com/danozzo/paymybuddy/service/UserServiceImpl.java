@@ -142,7 +142,7 @@ public class UserServiceImpl implements IUserService {
      * send money from user credit to bank credit
      */
     @Override
-    public void saveUserTransfert(BankRegistrationDto bankAccountDto, double amount) throws Exception {
+    public void saveUserTransfert(BankRegistrationDto bankAccountDto, double amount) throws UserNotFoundException {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
 
         User account = userRepository.findByEmail(emailConnectedUser.getName());
@@ -166,10 +166,10 @@ public class UserServiceImpl implements IUserService {
                 appProfit.setFees(appProfit.getFees() + commission);
             profitRepository.save(appProfit);
 
-            isAlreadyBank.get().setBalance(balanceCreditAccount - amountWithCommission);
+            isAlreadyBank.get().setBalance(balanceAccount - amountWithCommission);
             bankAccountRepository.save(isAlreadyBank.get());
 
-            account.setBalance(balanceAccount + amount);
+            account.setBalance(balanceCreditAccount + amount);
             userRepository.save(account);
 
 

@@ -1,10 +1,15 @@
 package com.danozzo.paymybuddy.service;
 
 import com.danozzo.paymybuddy.model.BankAccount;
+import com.danozzo.paymybuddy.model.Profit;
 import com.danozzo.paymybuddy.model.Transfer;
 import com.danozzo.paymybuddy.model.User;
+import com.danozzo.paymybuddy.repository.BankAccountRepository;
+import com.danozzo.paymybuddy.repository.ProfitRepository;
 import com.danozzo.paymybuddy.repository.UserRepository;
+import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
+import exception.UserNotFoundException;
 import nl.altindag.log.LogCaptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +17,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.*;
@@ -28,6 +37,19 @@ class UserServiceImplTest {
 
     @Mock
     UserRepository userRepository;
+
+    @Mock
+    Authentication authentication;
+
+    @Mock
+    SecurityContext securityContext;
+
+    @Mock
+    ProfitRepository profitRepository;
+
+    @Mock
+    BankAccountRepository bankAccountRepository;
+
 
     @Captor
     ArgumentCaptor<User> userCaptor;
@@ -134,19 +156,18 @@ class UserServiceImplTest {
 
     @Test
     void saveFriend_test_shouldReturnIllegalArgumentException() throws IllegalArgumentException {
+        //Given
         User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
         User user2 = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
-        //GIVEN
-        //si on appelle la méthode findByEmail plusieurs fois ce sera toujours user
+
         when(userRepository.findByEmail(anyString())).thenReturn(user);
-        //Je veux deux user différents pour les deux appels
         when(userRepository.findByEmail(anyString())).thenReturn(user).thenReturn(user2);
 
 
-        //WHEN
+        //When
         IllegalArgumentException result = assertThrows(IllegalArgumentException.class,
                 () -> userService.saveFriend(user.getEmail(), user2.getEmail()));
-        //THEN
+        //Then
         assertEquals("Your account not is user friend!", result.getMessage());
     }
 
@@ -174,28 +195,32 @@ class UserServiceImplTest {
 
     @Test
     void saveFriend_test_shouldReturnSaveFriendRuntimeException() throws RuntimeException {
-//        User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
-//        User user2 = new User(1L, "Frank", "Palumbo", "coco@gmail.com", "12345");
-//
-//        List<User> userList = new ArrayList<>();
-//        userList.add(user);
-//        userList.add(user2);
 //        //Given
-//        when(userRepository.findByEmail(anyString())).thenReturn(user2);
-//        when(userRepository.findByEmail(anyString())).thenReturn(user2).thenReturn(user2);
-//        when(userRepository.save(user2)).thenReturn(user2);
+//        User connectedUser = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+//        User friendUser = new User(1L, "Frank", "Palumbo", "coco@gmail.com", "12345");
 //
-////        Optional<User> isAlreadyFriend = userList.stream()
-////                .filter(u -> u.getEmail().equals(user2.getEmail())).findFirst();
 //
-////        isAlreadyFriend.isPresent(user2.getEmail());
+//        when(userRepository.findByEmail(anyString())).thenReturn(connectedUser);
+//        when(userRepository.findByEmail(anyString())).thenReturn(friendUser);
+//        when(userRepository.save(connectedUser)).thenReturn(friendUser);
+////        when(userRepository.findByEmail(anyString())).thenReturn(connectedUser).thenReturn(friendUser);
+////        when(userRepository.save(connectedUser)).thenReturn(friendUser);
+//
+//
+//        when(userRepository.findByEmail(anyString())).thenReturn(connectedUser);
+//        when(userRepository.findByEmail(anyString())).thenReturn(connectedUser).thenReturn(friendUser);
+//
+//        Optional<User> isAlreadyFriend = connectedUser.getFriends().stream()
+//                .filter(u -> u.getEmail().equals(friendUser.getEmail())).findFirst();
+//        connectedUser.getFriends().add(friendUser);
+//
 //
 //        RuntimeException result = assertThrows(RuntimeException.class,
-//                () -> userService.saveFriend("palumbo@mail.com", "coco@gmail.com"));
+//                () -> userService.saveFriend(friendUser.getEmail(), connectedUser.getEmail()));
 //
 //        //Then
 //        assertEquals("This user is already in this list", result.getMessage());
-////
+//
     }
 
     @Test
@@ -330,10 +355,78 @@ class UserServiceImplTest {
 
     }
 
+    /**
+     * Send money from bankCredit to userCredit
+     */
     @Test
-    void saveUserTransfert_test() {
+    void saveUserTransfertBank_test_shouldReturnUserBalance() throws Exception {
+        //Given
 
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        user.setBalance(500);
+        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
+        bankAccount.setBalance(1000);
+        user.getBankAccountList().add(bankAccount);
 
+        Profit profitApp = new Profit();
+        profitApp.setId(1L);
+        profitApp.setFees(100);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        String name = authentication.getName();
+
+        when(userService.getCurrentUser(name)).thenReturn(user);
+        when(profitRepository.findById(anyLong())).thenReturn(Optional.of(profitApp));
+        Optional<BankAccount> isAlreadyBank = user.getBankAccountList().stream().findFirst();
+        when(profitRepository.save(any())).thenReturn(profitApp);
+        when(userRepository.save(user)).thenReturn(user);
+        when(bankAccountRepository.save(bankAccount)).thenReturn(bankAccount);
+
+        //When
+        userService.saveUserTransfert(bankAccount, 500);
+
+        //Then
+
+        verify(profitRepository, Mockito.times(1)).save(profitApp);
+        verify(userRepository, Mockito.times(1)).save(user);
+        verify(bankAccountRepository, Mockito.times(1)).save(bankAccount);
+        assertEquals(1000, user.getBalance());
+
+    }
+
+    /**
+     * Send money from bankCredit to userCredit return exception
+     */
+    @Test
+    void saveUserTransfertBank_test_shouldReturnUserNotFoundException() throws UserNotFoundException {
+        //Given
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        user.setBalance(1000);
+        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
+        bankAccount.setBalance(500);
+        user.getBankAccountList().add(bankAccount);
+
+        Profit profitApp = new Profit();
+        profitApp.setId(1L);
+        profitApp.setFees(100);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        String name = authentication.getName();
+
+        when(userService.getCurrentUser(name)).thenReturn(user);
+        when(profitRepository.findById(anyLong())).thenReturn(Optional.of(profitApp));
+        Optional<BankAccount> isAlreadyBank = user.getBankAccountList().stream().findFirst();
+
+        //When
+        UserNotFoundException result = assertThrows(UserNotFoundException.class,
+                () -> userService.saveUserTransfert(bankAccount, 500));
+
+        //Then
+        assertEquals("Not enough money on your account", result.getMessage());
 
     }
 
