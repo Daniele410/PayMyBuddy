@@ -39,7 +39,7 @@ public class BankAccountServiceImpl implements IBankAccountService {
 
     @Override
     @Transactional
-    public BankAccount saveBank(BankRegistrationDto bankRegistrationDto, String emailConnectedUser) {
+    public BankAccount saveBank(BankRegistrationDto bankRegistrationDto, String emailConnectedUser) throws RuntimeException {
         Authentication user = SecurityContextHolder.getContext().getAuthentication();
         User userConnected = userRepository.findByEmail(user.getName());
 

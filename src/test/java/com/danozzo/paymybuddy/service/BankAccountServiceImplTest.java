@@ -59,41 +59,60 @@ class BankAccountServiceImplTest {
 
 
     @Test
-    void saveBank() {
+    void saveBank_test_shouldReturnSaveBankAccount() {
         //Given
-//
-//        when(securityContext.getAuthentication()).thenReturn(authentication);
-//        User user1 = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
-//        Authentication user = SecurityContextHolder.getContext().getAuthentication();
-//        User userConnected = (User) when(userRepository.findByEmail(user.getName())).thenReturn(any());
-//
-//        BankAccount bankAccount = new BankAccount("IBM", "123456789", "Paris");
-//
-//
-//        BankRegistrationDto bankDto = new BankRegistrationDto();
-//        bankDto.setBankName("IBM");
-//        bankDto.setIban("123456789");
-//        bankDto.setLocation("Paris");
-//
-//        Optional<BankAccount> isAlreadyBank = userConnected.getBankAccountList()
-//                .stream()
-//                .filter(bank -> bank.getIban().equals(bankDto.getIban())).findAny();
-//
-//
-//        when(isAlreadyBank.isPresent()).thenReturn(false);
-//
-//        when(userRepository.findByEmail(anyString())).thenReturn(user1);
-//
-//
-//        when(bankAccountRepository.save(any(BankAccount.class))).thenReturn(bankAccount);
-//
-//        //When
-//        bankAccountService.saveBank(bankDto, user.getName());
-//
-//        //Then
-//        verify(bankAccountRepository, times(1)).save(bankCaptor.capture());
-//        BankAccount bankResult = bankCaptor.getValue();
-//        assertEquals("IBM", bankResult.getBankName());
+        User userConnected = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
+        BankRegistrationDto bankAccount2 = new BankRegistrationDto("MyCredit", "987654321", "Paris");
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userConnected.getEmail(), userConnected.getPassword());
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        String name = authentication.getName();
+        when(userRepository.findByEmail(anyString())).thenReturn(userConnected);
+
+        Optional<BankAccount> isAlreadyBank = userConnected.getBankAccountList()
+                .stream()
+                .filter(bank -> bank.getIban().equals(bankAccount2.getIban())).findAny();
+        userConnected.addBankAccount(bankAccount);
+        when(userRepository.save(any())).thenReturn(userConnected);
+
+        //When
+        bankAccountService.saveBank(bankAccount2, userConnected.getEmail());
+
+        //Then
+
+      assertTrue(userConnected.getBankAccountList().contains(bankAccount));
+
+
+    }
+
+    @Test
+    void saveBank_test_shouldReturnRuntimeException() throws RuntimeException{
+        //Given
+        User userConnected = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userConnected.getEmail(), userConnected.getPassword());
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        String name = authentication.getName();
+        when(userRepository.findByEmail(anyString())).thenReturn(userConnected);
+
+        Optional<BankAccount> isAlreadyBank = userConnected.getBankAccountList()
+                .stream()
+                .filter(bank -> bank.getIban().equals(bankAccount.getIban())).findAny();
+        userConnected.addBankAccount(bankAccount);
+
+        //When
+
+
+        RuntimeException result = assertThrows(RuntimeException.class,
+                () -> bankAccountService.saveBank(bankAccount,userConnected.getEmail()));
+
+        //Then
+        assertEquals("This bank is already present in this list", result.getMessage());
+
 
 
     }
@@ -167,6 +186,7 @@ class BankAccountServiceImplTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
         String name = authentication.getName();
+
         when(userService.getCurrentUser(name)).thenReturn(user);
         when(profitRepository.findById(anyLong())).thenReturn(Optional.of(profitApp));
         Optional<BankAccount> isAlreadyBank = user.getBankAccountList().stream().findFirst();
@@ -201,6 +221,7 @@ class BankAccountServiceImplTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
         String name = authentication.getName();
+
         when(userService.getCurrentUser(name)).thenReturn(user);
         when(profitRepository.findById(anyLong())).thenReturn(Optional.of(profitApp));
         Optional<BankAccount> isAlreadyBank = user.getBankAccountList().stream().findFirst();
