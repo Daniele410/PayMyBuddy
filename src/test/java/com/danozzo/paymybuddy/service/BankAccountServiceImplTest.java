@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -151,35 +152,31 @@ class BankAccountServiceImplTest {
     }
 
     @Test
-    void saveBankTransfert_Test() throws Exception {
-//        //Given
-//        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
-//        user.setBalance(1000);
-//        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
-//        Profit profitApp= new Profit(1L, 100);
-//
-//        when(securityContext.getAuthentication()).thenReturn(authentication);
-//        SecurityContextHolder.setContext(securityContext);
-//
-//
-//        when(userService.getCurrentUser(anyString())).thenReturn();
-//
-//        when(profitRepository.findById(anyLong())).thenReturn(Optional.of(profitApp));
-//
-//        when(profitRepository.save(any())).thenReturn(profitApp);
-//        when(userRepository.save(any())).thenReturn(user);
-//        when(bankAccountRepository.save(any())).thenReturn(bankAccount);
-//
-////        when(authentication.getName()).thenReturn(user.getEmail());
-////        when(securityContext.getAuthentication().getPrincipal()).thenReturn(user);
-//
-//        when(userRepository.findByEmail(anyString())).thenReturn(user);
-//
-//        //When
-//        bankAccountService.saveBankTransfert(bankAccount, 500);
-//
-//        //Then
-//        assertEquals(500, user.getBalance());
+    void saveBankTransfert_test_shouldReturnBalance() throws Exception {
+        //Given
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        user.setBalance(1000);
+        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
+        bankAccount.setBalance(500);
+        user.getBankAccountList().add(bankAccount);
+        Profit profitApp = new Profit(1L, 100);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        String name = authentication.getName();
+        when(userService.getCurrentUser(name)).thenReturn(user);
+        when(profitRepository.findById(anyLong())).thenReturn(Optional.of(profitApp));
+        Optional<BankAccount> isAlreadyBank = user.getBankAccountList().stream().findFirst();
+        when(profitRepository.save(any())).thenReturn(profitApp);
+        when(userRepository.save(any())).thenReturn(user);
+        when(bankAccountRepository.save(any())).thenReturn(bankAccount);
+
+        //When
+        bankAccountService.saveBankTransfert(bankAccount, 500);
+
+        //Then
+        assertEquals(500, bankAccount.getBalance() - 500);
 
 
     }

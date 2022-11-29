@@ -1,12 +1,13 @@
 package com.danozzo.paymybuddy.web.dto;
 
+import com.danozzo.paymybuddy.model.BankAccount;
 import com.danozzo.paymybuddy.model.User;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-public class BankRegistrationDto {
+public class BankRegistrationDto extends BankAccount {
 
 
     private String bankName;
