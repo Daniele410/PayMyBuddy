@@ -84,7 +84,7 @@ public class BankAccountServiceImpl implements IBankAccountService {
      * send money from bank credit to user credit
      */
     @Transactional
-    public void saveBankTransfert(BankRegistrationDto bankAccountDto, double amount) throws Exception {
+    public void saveBankTransfert(BankRegistrationDto bankAccountDto, double amount) throws UserNotFoundException {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
         User account = userService.getCurrentUser(emailConnectedUser.getName());
 

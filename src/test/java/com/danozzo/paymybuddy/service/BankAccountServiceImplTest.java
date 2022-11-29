@@ -9,6 +9,7 @@ import com.danozzo.paymybuddy.repository.ProfitRepository;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
+import exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,8 +178,40 @@ class BankAccountServiceImplTest {
         bankAccountService.saveBankTransfert(bankAccount, 500);
 
         //Then
+
+        verify(profitRepository, Mockito.times(1)).save(profitApp);
+        verify(userRepository, Mockito.times(1)).save(user);
+        verify(bankAccountRepository, Mockito.times(1)).save(bankAccount);
         assertEquals(500, bankAccount.getBalance() - 500);
 
 
     }
+
+    @Test
+    void saveBankTransfert_test_shouldReturnUserNotFoundException() throws UserNotFoundException {
+        //Given
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        user.setBalance(300);
+        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
+        bankAccount.setBalance(500);
+        user.getBankAccountList().add(bankAccount);
+        Profit profitApp = new Profit(1L, 100);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        String name = authentication.getName();
+        when(userService.getCurrentUser(name)).thenReturn(user);
+        when(profitRepository.findById(anyLong())).thenReturn(Optional.of(profitApp));
+        Optional<BankAccount> isAlreadyBank = user.getBankAccountList().stream().findFirst();
+
+        //When
+        UserNotFoundException result = assertThrows(UserNotFoundException.class,
+                () -> bankAccountService.saveBankTransfert(bankAccount, 500));
+
+        //Then
+        assertEquals("Not enough money on your account", result.getMessage());
+
+    }
+
 }
