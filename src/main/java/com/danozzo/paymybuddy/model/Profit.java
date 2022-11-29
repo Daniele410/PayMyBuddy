@@ -11,10 +11,6 @@ public class Profit {
 
     private double fees;
 
-    public Profit(Long id, double fees) {
-        this.id = id;
-        this.fees = fees;
-    }
 
     public Long getId() {
         return id;

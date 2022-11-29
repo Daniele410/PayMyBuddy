@@ -180,7 +180,9 @@ class BankAccountServiceImplTest {
         BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
         bankAccount.setBalance(500);
         user.getBankAccountList().add(bankAccount);
-        Profit profitApp = new Profit(1L, 100);
+        Profit profitApp = new Profit();
+        profitApp.setId(1L);
+        profitApp.setFees(100);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         when(securityContext.getAuthentication()).thenReturn(authentication);
@@ -215,7 +217,9 @@ class BankAccountServiceImplTest {
         BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
         bankAccount.setBalance(500);
         user.getBankAccountList().add(bankAccount);
-        Profit profitApp = new Profit(1L, 100);
+        Profit profitApp = new Profit();
+        profitApp.setId(1L);
+        profitApp.setFees(100);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         when(securityContext.getAuthentication()).thenReturn(authentication);
