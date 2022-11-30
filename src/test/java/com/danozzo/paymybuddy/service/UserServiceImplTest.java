@@ -9,6 +9,7 @@ import com.danozzo.paymybuddy.repository.ProfitRepository;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
+import exception.BankNotFoundException;
 import exception.UserNotFoundException;
 import nl.altindag.log.LogCaptor;
 import org.apache.logging.log4j.LogManager;
@@ -215,6 +216,28 @@ class UserServiceImplTest {
     }
 
     @Test
+    void saveFriend_test_shouldReturnSaveFriendRuntimeException_friendUserSameConnectedUser() throws RuntimeException {
+        //Given
+        User connectedUser = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+        User friendUser = new User(1L, "Frank", "Palumbo", "coco@gmail.com", "12345");
+        List<User> userFriend = new ArrayList<>();
+        userFriend.add(friendUser);
+        connectedUser.setFriends(userFriend);
+
+        when(userRepository.findByEmail(anyString())).thenReturn(connectedUser);
+        when(userRepository.findByEmail(anyString())).thenReturn(friendUser);
+
+        //When
+        RuntimeException result = assertThrows(RuntimeException.class,
+                () -> userService.saveFriend(friendUser.getEmail(), friendUser.getEmail()));
+
+        //Then
+        assertEquals("Your account not is user friend!", result.getMessage());
+
+    }
+
+
+    @Test
     void getCurrentUser() {
         //Given
         User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
@@ -418,6 +441,35 @@ class UserServiceImplTest {
 
         //Then
         assertEquals("Not enough money on your account", result.getMessage());
+
+    }
+    @Test
+    void saveUserTransfertBank_test_isAlreadyBankNotPresentReturnException() throws BankNotFoundException {
+        //Given
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        user.setBalance(1000);
+        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
+        bankAccount.setBalance(500);
+
+        Profit profitApp = new Profit();
+        profitApp.setId(1L);
+        profitApp.setFees(100);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        String name = authentication.getName();
+
+        when(userService.getCurrentUser(name)).thenReturn(user);
+        when(profitRepository.findById(anyLong())).thenReturn(Optional.of(profitApp));
+        Optional<BankAccount> isAlreadyBank = user.getBankAccountList().stream().findFirst();
+
+        //When
+        BankNotFoundException result = assertThrows(BankNotFoundException.class,
+                () -> userService.saveUserTransfert(bankAccount, 500));
+
+        //Then
+        assertEquals("Bank not present", result.getMessage());
 
     }
 

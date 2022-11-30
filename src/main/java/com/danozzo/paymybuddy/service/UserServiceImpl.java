@@ -9,6 +9,7 @@ import com.danozzo.paymybuddy.repository.ProfitRepository;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
+import exception.BankNotFoundException;
 import exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -142,7 +143,7 @@ public class UserServiceImpl implements IUserService {
      * send money from user credit to bank credit
      */
     @Override
-    public void saveUserTransfert(BankRegistrationDto bankAccountDto, double amount) throws UserNotFoundException {
+    public void saveUserTransfert(BankRegistrationDto bankAccountDto, double amount) throws UserNotFoundException, BankNotFoundException {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
 
         User account = userRepository.findByEmail(emailConnectedUser.getName());
@@ -173,7 +174,9 @@ public class UserServiceImpl implements IUserService {
             userRepository.save(account);
 
 
-    }
+    }else {
+            throw new BankNotFoundException("Bank not present");
+        }
 
     }
 

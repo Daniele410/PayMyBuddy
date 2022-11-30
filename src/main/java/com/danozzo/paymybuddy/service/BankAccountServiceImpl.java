@@ -9,6 +9,7 @@ import com.danozzo.paymybuddy.repository.ProfitRepository;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.TransferDto;
+import exception.BankNotFoundException;
 import exception.UserNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,7 +85,7 @@ public class BankAccountServiceImpl implements IBankAccountService {
      * send money from userBalance to bankBalance
      */
     @Transactional
-    public void saveBankTransfert(BankRegistrationDto bankAccountDto, double amount) throws UserNotFoundException {
+    public void saveBankTransfert(BankRegistrationDto bankAccountDto, double amount) throws UserNotFoundException, BankNotFoundException {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
         User account = userService.getCurrentUser(emailConnectedUser.getName());
 
@@ -113,8 +114,9 @@ public class BankAccountServiceImpl implements IBankAccountService {
             isAlreadyBank.get().setBalance(balanceCreditAccount + amount);
             bankAccountRepository.save(isAlreadyBank.get());
 
+        }else {
+            throw new BankNotFoundException("Bank not present");
         }
-
     }
 
 }
