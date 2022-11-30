@@ -32,6 +32,24 @@ public class TransferDto {
         this.description = description;
     }
 
+//    public TransferDto(String email) {
+//        this.email = email;
+//    }
+
+    public TransferDto(String description, double amount, String email) {
+        this.description=description;
+        this.amount=amount;
+        this.email=email;
+    }
+
+    public List<User> getListFriend() {
+        return listFriend;
+    }
+
+    public void setListFriend(List<User> listFriend) {
+        this.listFriend = listFriend;
+    }
+
     public String getEmail() {
         return email;
     }

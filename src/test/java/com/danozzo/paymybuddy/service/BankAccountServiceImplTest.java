@@ -227,8 +227,8 @@ class BankAccountServiceImplTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
         String name = authentication.getName();
-
         when(userService.getCurrentUser(name)).thenReturn(user);
+
         when(profitRepository.findById(anyLong())).thenReturn(Optional.of(profitApp));
         Optional<BankAccount> isAlreadyBank = user.getBankAccountList().stream().findFirst();
 

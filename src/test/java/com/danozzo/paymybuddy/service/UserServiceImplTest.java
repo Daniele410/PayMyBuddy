@@ -173,7 +173,7 @@ class UserServiceImplTest {
 
     @Test
     void saveFriend_test_shouldReturnSaveFriend() throws RuntimeException {
-        User user = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+        User user = new User(1L, "Jimmy", "Sax", "rossi@gmail.com", "12345");
         User user2 = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
 
         List<User> userList = new ArrayList<>();
@@ -186,7 +186,7 @@ class UserServiceImplTest {
         Optional<User> isAlreadyFriend = userList.stream()
                 .filter(u -> u.getEmail().equals(user2.getEmail())).findFirst();
 
-        userService.saveFriend("palumbo@mail.com", "tutu");
+        userService.saveFriend("palumbo@mail.com", "rossi@gmail.com");
 
         //Then
         verify(userRepository, Mockito.times(2)).findByEmail(any());
