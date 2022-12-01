@@ -102,7 +102,7 @@ class TransferServiceImplTest {
     void saveTransfert_test_shouldReturnException() throws UserNotFoundException {
         //Given
         User debitAccount = new User(1L, "Jimmy", "Sax", "rossi@gmail.com", "12345");
-        User creditAccount = new User(1L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+        User creditAccount = new User(2L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
         debitAccount.setBalance(500);
         creditAccount.setBalance(1000);
 

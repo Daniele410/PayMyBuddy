@@ -25,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -94,10 +96,6 @@ class UserControllerTest {
     @WithMockUser(roles = "admin")
     void authenticated() throws Exception {
 
-
-
-//        mockMvc.perform( get("/authenticated").secure( true ) ).andExpect( status().isOk());
-
         mockMvc.perform(MockMvcRequestBuilders.get("/authenticated").secure(true)
                         .param("principal.username", authentication.getName())).andExpect(status().isOk())
                 .andDo(print())
@@ -107,21 +105,50 @@ class UserControllerTest {
     }
 
 //    @Test
+//    @WithMockUser(roles = "admin")
 //    void getUserById() throws Exception {
+//        User user = new User(1L, "Jimmy", "Sax", "rossi@gmail.com", "12345");
+//        User user2 = new User(2L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+//        List<User> users = new ArrayList<>();
+//        users.add(user);
+//        users.add(user2);
+//
+//        Optional<User> usersOpt= Optional.of(users).get().stream().findFirst();
+//        when(userService.getUserById(1L)).thenReturn(usersOpt);
+//
+//        MvcResult result =  mockMvc.perform(MockMvcRequestBuilders.get("/id")
+//                        .param("firstName", "Jimmy").param("lastName", "Sax"))
+//                .andExpect(status().isOk());
+//
+//       mockMvc.perform(get("/id", usersOpt)).andExpect(status().isOk())
+//                .andExpect( jsonPath("$.user.firstName").value(user.getFirstName()))
+//                .andExpect( jsonPath("$.user.lastName").value(user.getLastName()))
+//                .andExpect( jsonPath("$.user.email").value(user.getEmail()))
+//                .andDo(print());
 //
 //
-//
-////        mockMvc.perform(MockMvcRequestBuilders.get("/id").contentType(MediaType.APPLICATION_JSON)
-////                .param("firstName","lastName","email","password")).andExpect(status().isOk());
+//        mockMvc.perform(MockMvcRequestBuilders.get("/id").contentType(MediaType.APPLICATION_JSON)
+//                .param("firstName","lastName","email","password")).andExpect(status().isOk());
 //    }
-//
-//    @Test
-//    void userRegistrationDto() {
-//    }
-//
-//    @Test
-//    void showFriends() {
-//    }
+
+
+
+    @Test
+    @WithMockUser(roles = "admin")
+    void showFriends() throws Exception {
+        User user = new User(1L, "Jimmy", "Sax", "rossi@gmail.com", "12345");
+        User user2 = new User(2L, "Frank", "Palumbo", "palumbo@mail.com", "12345");
+
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        users.add(user2);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/contact").secure(true)
+                        .param("principal.username", authentication.getName())).andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(view().name("contact"));
+
+    }
 //
 //    @Test
 //    void showAddContactForm() {
@@ -131,24 +158,35 @@ class UserControllerTest {
 //    void addContact() {
 //    }
 //
-//    @Test
-//    void registerContactFriend() throws Exception {
+    @Test
+    @WithMockUser(roles = "admin")
+    void registerContactFriend() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/addContact").secure(true)
+                        .param("principal.username", authentication.getName()))
+                .andDo(print())
+                .andExpect(view().name("addContact")
+                );
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                .param("email", "palum@gmail.com"))
+//                .andExpect(status().isOk())
+//                .andDo(print())
+//                .andExpect(view().name("contact"));
+//        //Given
+//        UserRegistrationDto user = new UserRegistrationDto("Frank", "Palumbo", "palumbo@mail.com", "12345");
 //
-////        //Given
-////        UserRegistrationDto user = new UserRegistrationDto("Frank", "Palumbo", "palumbo@mail.com", "12345");
-////
-////        //When
-////        when(userService.getUserById(anyLong())).thenReturn(listUser.stream().findFirst());
-////        //Then
-////        mockMvc.perform(get("/id")
-////                        .contentType(MediaType.APPLICATION_JSON)
-////                        .accept(MediaType.APPLICATION_JSON))
-////                .andExpect(model().size(3))
-////                .andExpect((ResultMatcher) jsonPath("$.data['user'].firstName").value(user.getFirstName()))
-////                .andExpect((ResultMatcher) jsonPath("$.data['user'].lastName").value(user.getLastName()))
-////                .andExpect((ResultMatcher) jsonPath("$.data['account'].mail").value(user.getEmail()));
-//
-//    }
+//        //When
+//        when(userService.getUserById(anyLong())).thenReturn(listUser.stream().findFirst());
+//        //Then
+//        mockMvc.perform(get("/id")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON))
+//                .andExpect(model().size(3))
+//                .andExpect((ResultMatcher) jsonPath("$.data['user'].firstName").value(user.getFirstName()))
+//                .andExpect((ResultMatcher) jsonPath("$.data['user'].lastName").value(user.getLastName()))
+//                .andExpect((ResultMatcher) jsonPath("$.data['account'].mail").value(user.getEmail()));
+
+    }
 //
 //    @Test
 //    void deleteFriend() {

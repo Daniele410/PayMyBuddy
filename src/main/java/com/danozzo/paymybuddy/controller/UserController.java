@@ -49,11 +49,11 @@ public class UserController {
         return user;
     }
 
-    @GetMapping(value = "/id")
-    public Optional<User> getUserById(Long id) {
-        logger.info("get user by id");
-        return userService.getUserById(id);
-    }
+//    @GetMapping(value = "/id")
+//    public Optional<User> getUserById(Long id) {
+//        logger.info("get user by id");
+//        return userService.getUserById(id);
+//    }
 
 
     @ModelAttribute("user")
@@ -72,10 +72,10 @@ public class UserController {
 
     }
 
-    @GetMapping
-    public String showAddContactForm() {
-        return "addContact";
-    }
+//    @GetMapping
+//    public String showAddContactForm() {
+//        return "addContact";
+//    }
 
 
     @GetMapping("/addContact")
