@@ -1,16 +1,13 @@
 package com.danozzo.paymybuddy.controller;
 
-import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.service.IUserService;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,19 +17,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import static java.nio.file.Paths.get;
-import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = UserRegistrationController.class)
+@WebMvcTest(controllers = MainController.class)
 @EnableWebMvc
-class UserRegistrationControllerTest {
-
+class MainControllerTest {
     @MockBean
     private IUserService userService;
 
@@ -63,39 +55,18 @@ class UserRegistrationControllerTest {
     }
 
 
-
-
     @Test
-    void showRegistrationForm() throws Exception {
-       mockMvc.perform(MockMvcRequestBuilders.get("/registration"))
+    void login() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/login"))
                 .andDo(print())
-                .andExpect(view().name("registration")
-                );
-
+                .andExpect(view().name("login"));
 
     }
 
     @Test
-    void registerUserAccount()throws Exception {
-
-        UserRegistrationDto user =
-                new UserRegistrationDto("Frank", "Palumbo", "palumbo@mail.com", "12345");
-        String encryptedPassword = passwordEncoder.encode(user.getPassword());
-        when(userService.save(user,encryptedPassword)).thenReturn(new User());
-
-
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/registration")
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("firstName", "Frank")
-                .param("lastName","Palumbo")
-                .param("email", "palum@gmail.com")
-                .param("password", "12345")
-                .with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/registration?success"));
-
-
+    void home() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/"))
+                .andDo(print())
+                .andExpect(view().name("index"));
     }
-
 }

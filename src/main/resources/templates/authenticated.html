@@ -7,7 +7,8 @@
 <body>
 
 <div class = "row justify-contnt-center">
-  <h1 class="dispay-4" th:text=" 'Hello' +${user.username}">USERNAME</h1>
+<!--  <h1 class="dispay-4" th:text=" 'Hello' +${user.username}">USERNAME</h1>-->
+    Welcome <span sec:authentication="principal.username"> User</span>
 
 </div>
 
