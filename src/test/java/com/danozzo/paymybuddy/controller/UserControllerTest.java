@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,14 +40,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(UserController.class)
-@Import(SecurityConfig.class)
+@WebMvcTest(controllers = UserController.class)
 @EnableWebMvc
 class UserControllerTest {
 
@@ -63,50 +64,47 @@ class UserControllerTest {
     private WebApplicationContext context;
     UserRegistrationDto userRegistrationDto;
 
-    @Mock
+    @MockBean
     Authentication authentication;
 
-    @Mock
+    @MockBean
     SecurityContext securityContext;
-
-    @Autowired
-    UserController userController;
 
     @MockBean
     ModelAttribute modelAttribute;
 
+
     @BeforeEach
     void setup() {
         userRegistrationDto = new UserRegistrationDto("Bob", "Marvel", "marvel@gamil.com", "12345");
-        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(springSecurity()).build();
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        String name = authentication.getName();
     }
 
     User user;
 
 
-//    @Test
-//    void authenticated() throws Exception {
-//        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
-//
-//        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
-//        when(securityContext.getAuthentication()).thenReturn(authentication);
-//        SecurityContextHolder.setContext(securityContext);
-//        String name = authentication.getName();
-//
-//
-//        mockMvc.perform(get("/authenticated")
-//                        .contentType(MediaType.APPLICATION_JSON))
-//
-//                .andExpect(view().name("authenticated");
+    @Test
+    @WithMockUser(roles = "admin")
+    void authenticated() throws Exception {
 
 
-//        mockMvc.perform(MockMvcRequestBuilders.get("/authenticated")
-//                        .param(modelAttribute("user",name)))
-//                .andDo(print())
-//                .andExpect(view().name("authenticated"))
-//                .andExpect(status().isAccepted());
-//
-//    }
+
+//        mockMvc.perform( get("/authenticated").secure( true ) ).andExpect( status().isOk());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/authenticated").secure(true)
+                        .param("principal.username", authentication.getName())).andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(view().name("authenticated"));
+
+
+    }
 
 //    @Test
 //    void getUserById() throws Exception {
