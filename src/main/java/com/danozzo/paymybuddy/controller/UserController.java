@@ -5,22 +5,22 @@ import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.service.IUserService;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
-import com.danozzo.paymybuddy.web.dto.FriendDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.aspectj.weaver.NewConstructorTypeMunger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -49,11 +49,7 @@ public class UserController {
         return user;
     }
 
-//    @GetMapping(value = "/id")
-//    public Optional<User> getUserById(Long id) {
-//        logger.info("get user by id");
-//        return userService.getUserById(id);
-//    }
+
 
 
     @ModelAttribute("user")
@@ -72,10 +68,6 @@ public class UserController {
 
     }
 
-//    @GetMapping
-//    public String showAddContactForm() {
-//        return "addContact";
-//    }
 
 
     @GetMapping("/addContact")

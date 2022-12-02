@@ -1,10 +1,12 @@
 package com.danozzo.paymybuddy.controller;
 
+import com.danozzo.paymybuddy.model.BankAccount;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.security.SecurityConfig;
 import com.danozzo.paymybuddy.service.IUserService;
 import com.danozzo.paymybuddy.service.UserServiceImpl;
+import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,6 +33,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.ArrayList;
@@ -39,6 +42,7 @@ import java.util.Optional;
 
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -167,39 +171,36 @@ class UserControllerTest {
                 .andDo(print())
                 .andExpect(view().name("addContact")
                 );
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                .param("email", "palum@gmail.com"))
-//                .andExpect(status().isOk())
-//                .andDo(print())
-//                .andExpect(view().name("contact"));
-//        //Given
-//        UserRegistrationDto user = new UserRegistrationDto("Frank", "Palumbo", "palumbo@mail.com", "12345");
-//
-//        //When
-//        when(userService.getUserById(anyLong())).thenReturn(listUser.stream().findFirst());
-//        //Then
-//        mockMvc.perform(get("/id")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(model().size(3))
-//                .andExpect((ResultMatcher) jsonPath("$.data['user'].firstName").value(user.getFirstName()))
-//                .andExpect((ResultMatcher) jsonPath("$.data['user'].lastName").value(user.getLastName()))
-//                .andExpect((ResultMatcher) jsonPath("$.data['account'].mail").value(user.getEmail()));
 
     }
 //
 //    @Test
 //    void deleteFriend() {
 //    }
-//
-//    @Test
-//    void bankRegistrationDto() {
-//    }
-//
-//    @Test
-//    void showSendToTheBank() {
-//    }
-//
+
+
+    @Test
+    void showSendToTheBank() throws Exception {
+        BankAccount bankAccount = new BankAccount("IBM", "123456789", "Paris");
+        BankRegistrationDto bankRegistrationDto = new BankRegistrationDto("Credit", "987654321", "Rome");
+
+        List<BankAccount> bankAccountList = new ArrayList<>();
+        bankAccountList.add(bankAccount);
+        when(userService.getUsersBanks(any())).thenReturn(bankAccountList);
+
+        ModelAndView expectedReturn = new ModelAndView();
+        expectedReturn.addObject("bankAccountList", bankAccountList);
+        expectedReturn.addObject("bankAccount", bankRegistrationDto);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/userTransfer") .contentType(MediaType.APPLICATION_JSON)
+                        .param("bankAccountList", String.valueOf(bankAccountList))
+                        .param("user.bankName",bankAccount.getBankName())
+                        .secure(true)
+                        .param("principal.username", authentication.getName()));
+
+
+    }
+
 //    @Test
 //    void sentBankAmount() {
 //    }
