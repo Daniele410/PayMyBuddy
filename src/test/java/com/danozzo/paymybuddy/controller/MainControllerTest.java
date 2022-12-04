@@ -31,15 +31,11 @@ class MainControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @MockBean
     private WebApplicationContext webApplicationContext;
-
-//    @Autowired
-//    ObjectMapper objectMapper;
 
     @Autowired
     private WebApplicationContext context;
@@ -53,7 +49,6 @@ class MainControllerTest {
         userRegistrationDto = new UserRegistrationDto("Bryan", "Marvel", "marvel@gamil.com", "12345");
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
-
 
     @Test
     void login() throws Exception {
