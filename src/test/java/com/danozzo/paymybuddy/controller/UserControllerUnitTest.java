@@ -2,6 +2,7 @@ package com.danozzo.paymybuddy.controller;
 
 import com.danozzo.paymybuddy.model.BankAccount;
 import com.danozzo.paymybuddy.model.User;
+import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.service.UserServiceImpl;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
@@ -17,12 +18,16 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -34,6 +39,9 @@ public class UserControllerUnitTest {
 
     @Mock
     private UserServiceImpl userService;
+
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
     SecurityContext securityContext;
@@ -57,11 +65,10 @@ public class UserControllerUnitTest {
     void showSendToTheBankShouldReturnModifiedModelAndView() {
         //GIVEN
         User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
-
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
-//        String name = authentication.getName();
+
         BankRegistrationDto dto = new BankRegistrationDto();
         dto.setLocation("Paris");
         BankAccount account = new BankAccount();
@@ -81,7 +88,6 @@ public class UserControllerUnitTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
-//        String name = authentication.getName();
         List<User> listFriends = List.of(user);
         when(userService.getUsersFriends(anyString())).thenReturn(listFriends);
 
@@ -90,7 +96,6 @@ public class UserControllerUnitTest {
 
         //Then
         assertEquals(listFriends, result.getModel().get("listFriends"));
-
 
     }
 
@@ -104,17 +109,13 @@ public class UserControllerUnitTest {
 
         List<User> listFriends = List.of(user);
 
-
         when(userService.getUsersFriends(anyString())).thenReturn(listFriends);
         model.addAttribute("user", user);
 
-
         //When
-
         String result = controller.addContact(model);
         //Then
         assertEquals("addContact", result);
-
 
     }
 
@@ -128,16 +129,15 @@ public class UserControllerUnitTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
 
+        List<User> listFriends = List.of(user);
+
         when(bindingResult.hasErrors()).thenReturn(false);
         when(userService.existsByEmail(anyString())).thenReturn(true);
-//        when(modelAttribute.name()).thenReturn("User");
 
         //When
-
-        String result = controller.registerContactFriend(registrationDto,bindingResult);
+        String result = controller.registerContactFriend(registrationDto, bindingResult);
         //Then
         assertEquals("redirect:/addContact?success", result);
-
 
     }
 
@@ -153,33 +153,68 @@ public class UserControllerUnitTest {
 
         when(bindingResult.hasErrors()).thenReturn(false);
         when(userService.existsByEmail(anyString())).thenReturn(false);
-//        when(modelAttribute.name()).thenReturn("User");
 
         //When
-
-        String result = controller.registerContactFriend(registrationDto,bindingResult);
+        String result = controller.registerContactFriend(registrationDto, bindingResult);
         //Then
         assertEquals("redirect:/addContact?error", result);
-
 
     }
 
 
-//    @Test
-//    void sentBankAmountShouldReturnModifiedModelAndView() throws Exception {
-//        //GIVEN
-//        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
-//        user.setBalance(500);
-//        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
-//        bankAccount.setBalance(1000);
-//        user.getBankAccountList().add(bankAccount);
-//
-//       when(userService.saveUserTransfert(bankAccount,100)).thenReturn(any());
-//        //WHEN
-//        String result = controller.sentBankAmount(bankAccount, 100);
-//        //THEN
-//
-//    }
+    @Test
+    void registerContactFriendReturnModifiedModelAndView() throws RuntimeException {
+        //Given
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        User friend = new User("Jack", "Morgan", "jack@mail.com", "12345");
+        friend.setId(1L);
+       user.getFriends().add(friend);
+        List<User> listFriends = List.of(user);
+
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(userService.getCurrentUser(user.getEmail())).thenReturn(user);
+
+        when(userService.getUsersFriends(user.getEmail())).thenReturn(user.getFriends());
+        when(userService.getCurrentUser(user.getEmail())).thenReturn(listFriends.stream().findFirst().get());
+        when(userRepository.save(user)).thenReturn(user);
+
+        //When
+        String result = controller.deleteFriend(1L);
+        //Then
+        assertEquals("redirect:/contact", result);
+
+    }
+
+    @Test
+    void registerContactFriendReturnException() throws RuntimeException {
+        //Given
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        User friend = new User("Jack", "Morgan", "jack@mail.com", "12345");
+        friend.setId(1L);
+        user.getFriends().add(friend);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(userService.getCurrentUser(user.getEmail())).thenReturn(user);
+
+        when(userService.getUsersFriends(anyString())).thenReturn(user.getFriends());
+        when(userService.getCurrentUser(user.getEmail())).thenReturn(user.getFriends().get(0));
+
+
+        //When
+        RuntimeException result = assertThrows(RuntimeException.class,
+                () ->  controller.deleteFriend(friend.getId()));
+
+        //Then
+        assertEquals("Id Not Found", result.getMessage());
+
+    }
 
 
 }

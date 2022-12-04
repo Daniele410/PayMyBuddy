@@ -89,19 +89,18 @@ public class UserController {
             userService.saveFriend(userRegistrationDto.getEmail(), user.getName());
             logger.info("save contact");
             return "redirect:/addContact?success";
-
         }
         return "redirect:/addContact?error";
 
     }
 
     @GetMapping("/contact/{id}")
-    public String deleteFriend(@PathVariable Long id) {
+    public String deleteFriend(@PathVariable Long id) throws RuntimeException{
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
         List<User> listFriends = userService.getUsersFriends(emailConnectedUser.getName());
 
         User contactToDelete = userService.getCurrentUser(emailConnectedUser.getName()).getFriends().stream()
-                .filter(friend -> friend.getId().equals(id)).findFirst().orElseThrow(()-> new RuntimeException(" Id Not Found") );
+                .filter(friend -> friend.getId().equals(id)).findFirst().orElseThrow(()-> new RuntimeException("Id Not Found") );
 
         listFriends.remove(contactToDelete);
         userRepository.save(userService.getCurrentUser(emailConnectedUser.getName()));
