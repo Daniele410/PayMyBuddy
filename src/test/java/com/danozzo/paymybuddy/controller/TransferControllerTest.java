@@ -51,12 +51,12 @@ class TransferControllerTest {
     @Mock
     ModelAttribute modelAttribute;
 
+
     @Test
     void friendDto() {
-       //Given-When-Then
+        //Given-When-Then
         FriendDto user = new FriendDto();
         transferController.friendDto();
-
 
     }
 
@@ -72,7 +72,6 @@ class TransferControllerTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
         List<User> friends = List.of(user);
-//        when(userService.getUsersBanks(any())).thenReturn(bankAccountList);
 
         //When
         ModelAndView result = transferController.showReceivedPaymentsPage(transferDto);
@@ -87,11 +86,15 @@ class TransferControllerTest {
 
     @Test
     void sentAmountShouldReturnRedirectPage() throws UserNotFoundException {
+
+        //Given
         TransferDto transferDto = new TransferDto();
-        String email="palumbo@gmail.com";
+        String email = "palumbo@gmail.com";
 
-       String result= transferController.sentAmount(transferDto,email,100);
+        //When
+        String result = transferController.sentAmount(transferDto, email, 100);
 
+        //Then
         assertEquals("redirect:/transfer", result);
 
     }

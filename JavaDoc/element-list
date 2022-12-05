@@ -1,0 +1,8 @@
+com.danozzo.paymybuddy
+com.danozzo.paymybuddy.controller
+com.danozzo.paymybuddy.model
+com.danozzo.paymybuddy.repository
+com.danozzo.paymybuddy.security
+com.danozzo.paymybuddy.service
+com.danozzo.paymybuddy.web.dto
+exception
