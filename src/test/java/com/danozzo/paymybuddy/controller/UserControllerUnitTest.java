@@ -115,6 +115,29 @@ public class UserControllerUnitTest {
     }
 
     @Test
+    void registerContactFriendShouldReturnError() {
+        //Given
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        UserRegistrationDto registrationDto = new UserRegistrationDto();
+        registrationDto.setEmail("morgan@gmail.com");
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        List<User> listFriends = List.of(user);
+
+        when(bindingResult.hasErrors()).thenReturn(true);
+//        when(userService.existsByEmail(anyString())).thenReturn(true);
+
+        //When
+        String result = controller.registerContactFriend(registrationDto, bindingResult);
+        //Then
+        assertEquals("redirect:/addContact?error", result);
+
+    }
+
+
+    @Test
     void registerContactFriendReturnModifiedModelAndViewSuccess() {
         //Given
         User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");

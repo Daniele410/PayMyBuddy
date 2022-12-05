@@ -63,10 +63,4 @@ class MainControllerTest {
 
     }
 
-//    @Test
-//    void home() throws Exception {
-//        mockMvc.perform(MockMvcRequestBuilders.get("/"))
-//                .andDo(print())
-//                .andExpect(view().name("index"));
-//    }
 }
