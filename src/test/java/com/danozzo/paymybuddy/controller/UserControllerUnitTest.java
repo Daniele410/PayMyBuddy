@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -46,8 +47,10 @@ public class UserControllerUnitTest {
     Model model;
 
     @Mock
-    BindingResult bindingResult;
+    ModelAttribute modelAttribute;
 
+    @Mock
+    BindingResult bindingResult;
 
 
 

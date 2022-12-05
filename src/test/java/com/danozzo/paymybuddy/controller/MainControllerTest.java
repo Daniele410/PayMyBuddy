@@ -31,11 +31,15 @@ class MainControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @MockBean
     private WebApplicationContext webApplicationContext;
+
+//    @Autowired
+//    ObjectMapper objectMapper;
 
     @Autowired
     private WebApplicationContext context;
@@ -50,6 +54,7 @@ class MainControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
+
     @Test
     void login() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/login"))
@@ -58,10 +63,10 @@ class MainControllerTest {
 
     }
 
-    @Test
-    void home() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/"))
-                .andDo(print())
-                .andExpect(view().name("index"));
-    }
+//    @Test
+//    void home() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders.get("/"))
+//                .andDo(print())
+//                .andExpect(view().name("index"));
+//    }
 }
