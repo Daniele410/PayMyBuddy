@@ -6,6 +6,8 @@ import com.danozzo.paymybuddy.repository.UserRepository;
 import com.danozzo.paymybuddy.service.UserServiceImpl;
 import com.danozzo.paymybuddy.web.dto.BankRegistrationDto;
 import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
+import exception.BankNotFoundException;
+import exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -168,7 +171,7 @@ public class UserControllerUnitTest {
         User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
         User friend = new User("Jack", "Morgan", "jack@mail.com", "12345");
         friend.setId(1L);
-       user.getFriends().add(friend);
+        user.getFriends().add(friend);
         List<User> listFriends = List.of(user);
 
 
@@ -209,10 +212,50 @@ public class UserControllerUnitTest {
 
         //When
         RuntimeException result = assertThrows(RuntimeException.class,
-                () ->  controller.deleteFriend(friend.getId()));
+                () -> controller.deleteFriend(friend.getId()));
 
         //Then
         assertEquals("Id Not Found", result.getMessage());
+
+    }
+
+    @Test
+    void showSendToTheBankReturnModifiedModelAndView() {
+        //Given
+        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
+        bankAccount.setBalance(1000);
+        List<BankAccount> bankAccountList = List.of(bankAccount);
+        when(userService.getUsersBanks(any())).thenReturn(bankAccountList);
+
+        //When
+        ModelAndView result = controller.showSendToTheBank(bankAccount);
+
+        //Then
+        assertEquals(bankAccountList, result.getModel().get("bankAccountList"));
+
+
+    }
+
+
+
+    @Test
+    void showSendToTheBankAmountReturnModifiedModelAndView() throws Exception {
+        //Given
+        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
+        bankAccount.setBalance(1000);
+
+
+        //When
+        String result = controller.sentBankAmount(bankAccount, 100.0);
+
+        //Then
+        assertEquals("redirect:/userTransfer", result);
+
 
     }
 
