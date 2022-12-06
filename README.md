@@ -35,13 +35,23 @@ Running App
 
 To run the app you go to the folder PayMyBuddy
 
-To set up the tables and data in the database. Please run the sql commands present in the PayMyBuddyDataBase.sql file.
+To set up the tables and data in the database. Please run the sql commands present in the 
+PayMyBuddyDataBase.sql file.
 
-Compile and generate the final jar by running command line: mvn clean package -DskipTest=true
+Steps for Windows 10 
+
+Click on the Start Menu and search for “environment variables.”
+Click on the environment variable you want to edit and press the “Edit” option.
+Now enter the Variable Name: spring.datasource.username and Value:username
+and its Value and press the OK button.
+Now enter the Variable Name: spring.datasource.password and Value:database password
+and its Value and press the OK button.
+
+Compile and generate the final jar by running command line: mvn clean package
 
 After for start application digit
 
-Command line : mvn spring-boot:run -Dspring-boot.run.arguments="--spring.datasource.username=database username --spring.datasource.password=database password"
+Command line : mvn spring-boot:run
 
 
 Testing
