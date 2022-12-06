@@ -29,6 +29,7 @@ https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.
 https://maven.apache.org/install.html
 
 3.Install MySQL Workbench 8:
+
 https://www.mysql.com/fr/products/workbench/
 
 Running App
@@ -59,3 +60,9 @@ To run the tests execute the command: mvn verify
 To generate the project's reports site, please run :mvn site
 
 To access the application, open your favorite browser and go to address: http://localhost:8080
+
+UML
+![UML](img/uml_project6.drawio.png)
+
+MPD
+![UML](img/PayMyBuddy_MPD.png)
