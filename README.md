@@ -61,8 +61,8 @@ To generate the project's reports site, please run :mvn site
 
 To access the application, open your favorite browser and go to address: http://localhost:8080
 
-UML
-![UML](img/uml_project6.drawio.png)
+UML:Unified Modeling Language
+![UML](img/PayMyBuddy_UML.png)
 
-MPD
-![UML](img/PayMyBuddy_MPD.png)
+PDM:Physical Data Model
+![MPD](img/PayMyBuddy_MPD.png)
