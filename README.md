@@ -4,7 +4,7 @@ The Pay My Buddy app. Developing with spring boot. That allows transactions betw
 
 Note : Configure before the data.json file path in the application.properties in order to start the application
 
-Prerequisites 
+##Prerequisites 
 
 •Java 1.8
 
@@ -16,7 +16,7 @@ Prerequisites
 
 •MySQL 8
 
-Installing
+##Installing
 
 A step by step series of examples that tell you how to get a development env running:
 
@@ -61,8 +61,8 @@ To generate the project's reports site, please run :mvn site
 
 To access the application, open your favorite browser and go to address: http://localhost:8080
 
-UML:Unified Modeling Language
+UML: Unified Modeling Language
 ![UML](img/PayMyBuddy_UML.png)
 
-PDM:Physical Data Model
+PDM: Physical Data Model
 ![MPD](img/PayMyBuddy_MPD.png)

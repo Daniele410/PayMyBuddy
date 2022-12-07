@@ -93,7 +93,7 @@ class TransferServiceImplTest {
         //Then
         assertEquals(creditAccount.getBalance(), 600);
         assertEquals(debitAccount.getBalance(),
-                1000 - transferDto.getAmount() - 0.5 * 100 / transferDto.getAmount());
+                1000 - transferDto.getAmount() - 0.005 * 100 / transferDto.getAmount());
 
 
     }

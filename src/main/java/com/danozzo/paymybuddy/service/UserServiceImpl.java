@@ -155,8 +155,8 @@ public class UserServiceImpl implements IUserService {
                 .filter(bank -> bank.getBankName().equals(bankAccountDto.getBankName())).findFirst();
         if (isAlreadyBank.isPresent()) {
 
-            double amountWithCommission = amount + 0.5 * 100 / amount;
-            double commission = amount * 0.5 / 100;
+            double amountWithCommission = amount + 0.005 * 100 / amount;
+            double commission = amount * 0.005 / 100;
 
             double balanceAccount = isAlreadyBank.get().getBalance();
             double balanceCreditAccount = account.getBalance();
