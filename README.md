@@ -12,8 +12,6 @@ Note : Configure before the data.json file path in the application.properties in
 
 •Spring-boot 2.6.13-SNAPSHOT
 
-•Maven 3.6.2
-
 •MySQL 8
 
 ##Installing
