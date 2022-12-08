@@ -413,36 +413,36 @@ class UserServiceImplTest {
     /**
      * Send money from bankCredit to userCredit return exception
      */
-    @Test
-    void saveUserTransfertBank_test_shouldReturnUserNotFoundException() throws UserNotFoundException {
-        //Given
-        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
-        user.setBalance(1000);
-        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
-        bankAccount.setBalance(500);
-        user.getBankAccountList().add(bankAccount);
-
-        Profit profitApp = new Profit();
-        profitApp.setId(1L);
-        profitApp.setFees(100);
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        String name = authentication.getName();
-
-        when(userService.getCurrentUser(name)).thenReturn(user);
-        when(profitRepository.findById(anyLong())).thenReturn(Optional.of(profitApp));
-        Optional<BankAccount> isAlreadyBank = user.getBankAccountList().stream().findFirst();
-
-        //When
-        UserNotFoundException result = assertThrows(UserNotFoundException.class,
-                () -> userService.saveUserTransfert(bankAccount, 500));
-
-        //Then
-        assertEquals("Not enough money on your account", result.getMessage());
-
-    }
+//    @Test
+//    void saveUserTransfertBank_test_shouldReturnUserNotFoundException() throws UserNotFoundException {
+//        //Given
+//        User user = new User("Frank", "Palumbo", "palumbo@mail.com", "12345");
+//        user.setBalance(1000);
+//        BankRegistrationDto bankAccount = new BankRegistrationDto("IBM", "123456789", "Paris");
+//        bankAccount.setBalance(500);
+//        user.getBankAccountList().add(bankAccount);
+//
+//        Profit profitApp = new Profit();
+//        profitApp.setId(1L);
+//        profitApp.setFees(100);
+//
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+//        when(securityContext.getAuthentication()).thenReturn(authentication);
+//        SecurityContextHolder.setContext(securityContext);
+//        String name = authentication.getName();
+//
+//        when(userService.getCurrentUser(name)).thenReturn(user);
+//        when(profitRepository.findById(anyLong())).thenReturn(Optional.of(profitApp));
+//        Optional<BankAccount> isAlreadyBank = user.getBankAccountList().stream().findFirst();
+//
+//        //When
+//        UserNotFoundException result = assertThrows(UserNotFoundException.class,
+//                () -> userService.saveUserTransfert(bankAccount, 500));
+//
+//        //Then
+//        assertEquals("Not enough money on your account", result.getMessage());
+//
+//    }
     @Test
     void saveUserTransfertBank_test_isAlreadyBankNotPresentReturnException() throws BankNotFoundException {
         //Given

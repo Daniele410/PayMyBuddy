@@ -140,8 +140,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
-     * send money from user credit to bank credit
+     * send money from bank to user
      */
+    @Transactional
     @Override
     public void saveUserTransfert(BankRegistrationDto bankAccountDto, double amount) throws UserNotFoundException, BankNotFoundException {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();
@@ -161,9 +162,9 @@ public class UserServiceImpl implements IUserService {
             double balanceAccount = isAlreadyBank.get().getBalance();
             double balanceCreditAccount = account.getBalance();
 
-            if (balanceAccount < amountWithCommission) {
-                throw new UserNotFoundException("Not enough money on your account");
-            } else
+//            if (balanceAccount < amountWithCommission) {
+//                throw new UserNotFoundException("Not enough money on your bankAccount");
+//            } else
                 appProfit.setFees(appProfit.getFees() + commission);
             profitRepository.save(appProfit);
 
