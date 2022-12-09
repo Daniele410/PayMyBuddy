@@ -34,18 +34,8 @@ CREATE TABLE `bank_account` (
   PRIMARY KEY (`id_count_bank`),
   KEY `FK92iik4jwhk7q385jubl2bc2mm` (`user_id`),
   CONSTRAINT `FK92iik4jwhk7q385jubl2bc2mm` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `bank_account`
---
-
-LOCK TABLES `bank_account` WRITE;
-/*!40000 ALTER TABLE `bank_account` DISABLE KEYS */;
-INSERT INTO `bank_account` VALUES (1,'IBM','GB33BUKB20201555555555','Paris',1,9438.25),(2,'Credit Germany','GB33BUKB20201777777777','Germany',2,100000);
-/*!40000 ALTER TABLE `bank_account` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `profit`
@@ -60,16 +50,6 @@ CREATE TABLE `profit` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `profit`
---
-
-LOCK TABLES `profit` WRITE;
-/*!40000 ALTER TABLE `profit` DISABLE KEYS */;
-INSERT INTO `profit` VALUES (1,1);
-/*!40000 ALTER TABLE `profit` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `transfer`
@@ -89,17 +69,8 @@ CREATE TABLE `transfer` (
   KEY `FK2rfdmvffyfukv03hbxj0xg328` (`debit_account`),
   CONSTRAINT `FK2rfdmvffyfukv03hbxj0xg328` FOREIGN KEY (`debit_account`) REFERENCES `user` (`id`),
   CONSTRAINT `FK9yeuco2x06m71vbcpfx82kkcf` FOREIGN KEY (`credit_account`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `transfer`
---
-
-LOCK TABLES `transfer` WRITE;
-/*!40000 ALTER TABLE `transfer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `transfer` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -117,18 +88,8 @@ CREATE TABLE `user` (
   `balance` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UKob8kqyqqgmefl0aco34akdtpe` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Jimmy','Sax','jimmysax@gmail.com','$2a$10$mI8rfWOMFtgqoIChMdpOEuDMhvPIG4kea5dUNhFVTQB.R2yDZ2t2y',849),(2,'Margo','Fujico','margo@gmail.com','$2a$10$TIjo18Gv5HYJJr9osP9pYu7cMFNZFaQxcaxZ9Ps9oyXYU6Z6DPTj2',1409);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user_friends`
@@ -146,15 +107,6 @@ CREATE TABLE `user_friends` (
   CONSTRAINT `FKe1jhkryq5denjdrjngi7lj9h4` FOREIGN KEY (`friends_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user_friends`
---
-
-LOCK TABLES `user_friends` WRITE;
-/*!40000 ALTER TABLE `user_friends` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_friends` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -165,4 +117,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-06 14:51:20
+-- Dump completed on 2022-12-09 10:56:42
