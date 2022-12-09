@@ -36,5 +36,5 @@ build/
 config/application.properties
 application.properties
 
-## Remove JavaDoc
-JavaDoc/
+## Remove JavaDoc ##
+/JavaDoc/
