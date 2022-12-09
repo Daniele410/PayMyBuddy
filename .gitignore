@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+## Remove JavaDoc ##
+JavaDoc/
+
 ### STS ###
 .apt_generated
 .classpath
@@ -36,5 +39,3 @@ build/
 config/application.properties
 application.properties
 
-## Remove JavaDoc ##
-JavaDoc/
