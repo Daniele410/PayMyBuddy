@@ -64,8 +64,8 @@ To generate the project's reports site, please run : mvn site
 
 ### UML: Unified Modeling Language
 
-![UML](img/PayMyBuddy_UML.png)
+![UML](images/PayMyBuddy_UML.png)
 
 ### PDM: Physical Data Model
 
-![MPD](img/PayMyBuddy_MPD.png)
+![MPD](images/PayMyBuddy_MPD.png)
