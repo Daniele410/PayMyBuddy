@@ -1,4 +1,4 @@
-#Pay My Buddy
+# Pay My Buddy
 
 The Pay My Buddy app. Developing with spring boot. That allows transactions between users to users and users to bank.
 
