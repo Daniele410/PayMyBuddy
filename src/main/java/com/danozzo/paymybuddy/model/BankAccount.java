@@ -5,24 +5,43 @@ import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
 
+/**
+ * BankAccount model
+ */
 @Entity
 @Table(name = "bank_account")
 public class BankAccount {
     private static final Logger logger = LogManager.getLogger("BankAccount");
+
+    /**
+     * pay may buddy profit id
+     **/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_count_bank")
     private Long idCountBank;
 
+    /**
+     * pay may buddy bankName
+     **/
     @Column(name = "bank_name")
     private String bankName;
 
+    /**
+     * pay may buddy iban
+     **/
     @Column(name = "iban")
     private String iban;
 
+    /**
+     * pay may buddy location
+     **/
     @Column(name = "bank_location")
     private String location;
 
+    /**
+     * pay may buddy balance
+     **/
     private double balance;
 
     @ManyToOne
@@ -32,12 +51,24 @@ public class BankAccount {
     public BankAccount() {
     }
 
+    /**
+     * @param bankName
+     * @param iban
+     * @param location
+     */
     public BankAccount(String bankName, String iban, String location) {
         this.bankName = bankName;
         this.iban = iban;
         this.location = location;
     }
 
+    /**
+     * @param idCountBank
+     * @param bankName
+     * @param iban
+     * @param location
+     * @param balance
+     */
     public BankAccount(Long idCountBank, String bankName, String iban, String location, double balance) {
         this.idCountBank = idCountBank;
         this.bankName = bankName;
@@ -94,27 +125,6 @@ public class BankAccount {
         this.balance = balance;
     }
 
-//        public void deposit(double amount){
-//        balance += amount;
-//    }
-//
-//    public void withdraw(double amount){
-//        if (amount <= balance){
-//            balance -= amount;
-//        }else {
-//
-//            throw new RuntimeException("error!! you do not have enough money!");
-//        }
-//    }
-//
-//    public void transfer(double amount, BankAccount bankAccount){
-//        if (this.balance < amount){
-//            throw new RuntimeException("Transfer fails!! you do not have enough money!");
-//        }else{
-//            this.balance-=amount;
-//            bankAccount.balance += amount;
-//            logger.info("User of " + this.bankName + " become €"+this.balance);
-//        }
-//    }
+
 
 }

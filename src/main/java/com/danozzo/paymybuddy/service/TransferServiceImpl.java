@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-
+/**
+ * contain all business service methods for transfer
+ */
 @Service
 public class TransferServiceImpl implements ITransferService {
     private static final Logger logger = LogManager.getLogger("TransferServiceImpl");
@@ -33,7 +35,9 @@ public class TransferServiceImpl implements ITransferService {
     @Autowired
     ProfitRepository profitRepository;
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     public Transfer saveTransfert(TransferDto transferDto, double amount) throws UserNotFoundException {
         Authentication emailConnectedUser = SecurityContextHolder.getContext().getAuthentication();

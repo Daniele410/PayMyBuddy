@@ -36,7 +36,9 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
+/**
+ * Unit tests of UserController
+ */
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = UserController.class)
 @EnableWebMvc

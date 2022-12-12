@@ -22,10 +22,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit Tests of BankAccountController
+ */
 @ExtendWith(MockitoExtension.class)
 class BankAccountControllerTest {
 
@@ -64,7 +68,7 @@ class BankAccountControllerTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
         List<BankAccount> bankAccountList = List.of(bankAccount);
-//        when(userService.getUsersBanks(any())).thenReturn(bankAccountList);
+
 
         //When
         ModelAndView result = bankController.showBanks();
@@ -192,7 +196,6 @@ class BankAccountControllerTest {
 
         //Then
         assertEquals("redirect:/bankTransfer", result);
-
 
 
     }

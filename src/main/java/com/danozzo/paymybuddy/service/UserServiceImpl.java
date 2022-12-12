@@ -24,7 +24,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
+/**
+ * contain all business service methods for user
+ */
 @Service
 @Transactional
 public class UserServiceImpl implements IUserService {
@@ -38,7 +40,9 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private ProfitRepository profitRepository;
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User save(UserRegistrationDto registrationDto, String newPassword) {
         User user = new User(registrationDto.getFirstName(),
@@ -48,7 +52,9 @@ public class UserServiceImpl implements IUserService {
         return userRepository.save(user);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -60,21 +66,32 @@ public class UserServiceImpl implements IUserService {
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void saveFriend(String email, String emailConnectedUser) throws RuntimeException, IllegalArgumentException {
         User friendUser = userRepository.findByEmail(email);
@@ -96,43 +113,61 @@ public class UserServiceImpl implements IUserService {
 
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User getCurrentUser(String emailConnectedUser) {
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
         return connectedUser;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<User> getUsersFriends(String emailConnectedUser) {
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
         return connectedUser.getFriends();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public List<BankAccount> getUsersBanks(String emailConnectedUser){
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
         return connectedUser.getBankAccountList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<Transfer> getReceivedPayments(String emailConnectedUser) {
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
         return connectedUser.getReceivedPayments();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<Transfer> getSentPayment(String emailConnectedUser) {
         User connectedUser = userRepository.findByEmail(emailConnectedUser);
         return connectedUser.getSentPayments();
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deleteUserFriendById(Long id) {
 

@@ -6,26 +6,47 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * User model
+ */
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 
+    /**
+     * pay may buddy account's id
+     **/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * account's firstName
+     **/
     @Column(name = "first_name")
     private String firstName;
 
+    /**
+     * account's lastName
+     **/
     @Column(name = "last_name")
     private String lastName;
 
+    /**
+     * account's email
+     **/
     @Column(name = "email")
     private String email;
 
+    /**
+     * account's assword
+     **/
     @Column(name = "password")
     private String password;
 
+    /**
+     * account's balance
+     **/
     @Column(name = "balance")
     private double balance;
 
@@ -77,6 +98,14 @@ public class User {
         bankAccount.setUser(this);
     }
 
+    /**
+     * Constructor
+     * @param id
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @param password
+     */
     public User(Long id, String firstName, String lastName, String email, String password) {
         this.id = id;
         this.firstName = firstName;
@@ -85,6 +114,13 @@ public class User {
         this.password = password;
     }
 
+    /**
+     * Constructor
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @param password
+     */
     public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -173,6 +209,14 @@ public class User {
         this.sentPayments = sentPayments;
     }
 
+
+    /**
+     * Constructor
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @return getFriends()
+     */
     public Object getFriends(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;

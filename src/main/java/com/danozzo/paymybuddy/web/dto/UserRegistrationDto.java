@@ -1,5 +1,7 @@
 package com.danozzo.paymybuddy.web.dto;
-
+/**
+ * user data transform object
+ */
 public class UserRegistrationDto {
 
     private String firstName;

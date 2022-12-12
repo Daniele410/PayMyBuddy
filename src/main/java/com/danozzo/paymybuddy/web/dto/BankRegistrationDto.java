@@ -7,21 +7,20 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * bankAccount data transform Object
+ */
 public class BankRegistrationDto extends BankAccount {
-
 
     private String bankName;
 
-
     private String iban;
-
 
     private String location;
 
     private long userId;
 
     private double balance;
-
 
 
     public BankRegistrationDto() {

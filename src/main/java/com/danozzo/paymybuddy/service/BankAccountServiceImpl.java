@@ -21,7 +21,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * BankAccountService contain all business service methods for BankAccount
+ */
 @Service
 public class BankAccountServiceImpl implements IBankAccountService {
     private static final Logger logger = LogManager.getLogger("BankAccountServiceImpl");
@@ -37,7 +39,9 @@ public class BankAccountServiceImpl implements IBankAccountService {
     @Autowired
     ProfitRepository profitRepository;
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public BankAccount saveBank(BankRegistrationDto bankRegistrationDto, String emailConnectedUser) throws RuntimeException {
@@ -61,6 +65,9 @@ public class BankAccountServiceImpl implements IBankAccountService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<BankAccount> getUsersBanks(String emailConnectedUser) {
         User connectedUser = userRepository.findByEmail(emailConnectedUser);

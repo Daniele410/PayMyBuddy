@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+/**
+ * UserRegistrationController class allows to register new user
+ */
 @Controller
 @RequestMapping("/registration")
 public class UserRegistrationController {
@@ -20,6 +22,9 @@ public class UserRegistrationController {
     @Autowired
     private IUserService userService;
 
+    /**
+     * @passwordEncoder cryptage password
+     */
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -29,11 +34,20 @@ public class UserRegistrationController {
         return new UserRegistrationDto();
     }
 
+    /**
+     * endpoint to get show form add contact
+     * @return registration page
+     */
     @GetMapping
     public String showRegistrationForm() {
         return "registration";
     }
 
+    /**
+     * @param registrationDto firstName, lastName, email, password
+     * endpoint to post parameter new contact
+     * @return registration?success page
+     */
     @PostMapping
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto) {
         String cryptedPassword = passwordEncoder.encode(registrationDto.getPassword());

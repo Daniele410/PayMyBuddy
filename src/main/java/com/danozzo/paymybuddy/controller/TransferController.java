@@ -21,7 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Set;
-
+/**
+ * TransferController allows to user/friend operations for transfers
+ */
 @Controller
 public class TransferController {
     private static final Logger logger = LogManager.getLogger("TransferController");
@@ -41,6 +43,12 @@ public class TransferController {
         return new FriendDto();
     }
 
+    /**
+     * @param transferDto
+     * /**
+     * endpoint to get show received/sent payments
+     * @return
+     */
     @GetMapping("/transfer")
     public ModelAndView showReceivedPaymentsPage(TransferDto transferDto) {
         ModelAndView modelAndView = new ModelAndView("transfer");
@@ -62,6 +70,14 @@ public class TransferController {
         return modelAndView;
     }
 
+    /**
+     * @param transfer email/user/description for operation transfer
+     * @param email friend
+     * @param amount to transfer
+     * end point to do new transfer
+     * @return endPoint transfer
+     * @throws UserNotFoundException
+     */
     @PostMapping("/transaction")
     public String sentAmount(TransferDto transfer, String email ,double amount) throws UserNotFoundException {
 

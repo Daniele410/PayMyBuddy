@@ -1,13 +1,11 @@
 package com.danozzo.paymybuddy.controller;
 
-import com.danozzo.paymybuddy.model.BankAccount;
 import com.danozzo.paymybuddy.model.User;
 import com.danozzo.paymybuddy.repository.TransferRepository;
 import com.danozzo.paymybuddy.service.TransferServiceImpl;
 import com.danozzo.paymybuddy.service.UserServiceImpl;
 import com.danozzo.paymybuddy.web.dto.FriendDto;
 import com.danozzo.paymybuddy.web.dto.TransferDto;
-import com.danozzo.paymybuddy.web.dto.UserRegistrationDto;
 import exception.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,9 +22,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+/**
+ * Unit tests of TransferController
+ */
 @ExtendWith(MockitoExtension.class)
 class TransferControllerTest {
 

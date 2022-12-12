@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-
+/**
+ * BankAccountController class allows to do CRUD operations for bankAccount
+ */
 @Controller
 public class BankAccountController {
     private static final Logger logger = LogManager.getLogger("BankAccountController");
@@ -36,7 +38,11 @@ public class BankAccountController {
     @Autowired
     IUserService userService;
 
-    
+
+    /**
+     * endpoint to get list of banks of current user
+     * @return modelAndView of bankAccount
+     */
     @GetMapping("/bankAccount")
     public ModelAndView showBanks() {
         ModelAndView modelAndView = new ModelAndView("bankAccount");
@@ -48,18 +54,32 @@ public class BankAccountController {
 
     }
 
+    /**
+     * @return new BankRegistrationDto
+     */
     @ModelAttribute("bankAccount")
     public BankRegistrationDto bankRegistrationDto() {
         return new BankRegistrationDto();
     }
 
 
+    /**
+     * endpoint to show form bankRegistration
+     * @return bankRegistration
+     */
     @GetMapping("/bankRegistration")
     public String showRegistrationForm() {
         return "bankRegistration";
     }
 
 
+    /**
+     * @param bankRegistrationDto String bankName, String iban, String location
+     * @param bindingResult
+     * endpoint to post new Bank
+     * if true
+     * @return bankRegistration?success
+     */
     @PostMapping("/bankRegistration")
     public String registerBankUser(@ModelAttribute("bankAccount") BankRegistrationDto bankRegistrationDto, BindingResult bindingResult) {
         Authentication user = SecurityContextHolder.getContext().getAuthentication();
@@ -76,6 +96,11 @@ public class BankAccountController {
         }
     }
 
+    /**
+     * @param id
+     * delete bank by id of listBank userConnected
+     * @return bankAccount
+     */
     @GetMapping("/bankAccount/{id}")
     public String deleteBankById(@PathVariable Long id) {
 
@@ -84,6 +109,11 @@ public class BankAccountController {
         return "redirect:/bankAccount";
     }
 
+    /**
+     * @param bankAccount
+     * endpoint to show page user transfer to bank
+     * @return modelAndView bankTransfer
+     */
     @GetMapping("/bankTransfer")
     public ModelAndView showSendToTheBank(BankRegistrationDto bankAccount) {
         ModelAndView modelAndView = new ModelAndView("bankTransfer");
@@ -98,6 +128,13 @@ public class BankAccountController {
         return modelAndView;
     }
 
+    /**
+     * @param bankAccount
+     * @param balance
+     * endpoint save transfer user to bank
+     * @return bankTransfer page
+     * @throws Exception
+     */
     @PostMapping("/bankTransfer")
     public String sentBankAmount(BankRegistrationDto bankAccount, double balance) throws Exception {
 

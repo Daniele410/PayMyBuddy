@@ -4,12 +4,10 @@ import com.danozzo.paymybuddy.model.User;
 import com.sun.istack.NotNull;
 
 import java.util.List;
-
+/**
+ * transfer data transform object
+ */
 public class TransferDto {
-
-//    @NotNull
-//    //A cross-record validation is also done in UserTransferController
-//    private Long userDestinationId;
 
     @NotNull
     private String email;
@@ -31,10 +29,6 @@ public class TransferDto {
         this.amount = amount;
         this.description = description;
     }
-
-//    public TransferDto(String email) {
-//        this.email = email;
-//    }
 
     public TransferDto(String description, double amount, String email) {
         this.description=description;

@@ -1,7 +1,9 @@
 package com.danozzo.paymybuddy.web.dto;
 
 import java.util.Date;
-
+/**
+ * user data transform object
+ */
 public class FriendDto {
 
     private String connection;

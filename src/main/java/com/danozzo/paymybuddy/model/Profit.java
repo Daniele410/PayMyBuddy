@@ -2,13 +2,23 @@ package com.danozzo.paymybuddy.model;
 
 import javax.persistence.*;
 
+/**
+ * Profit model
+ */
 @Entity
 public class Profit {
+
+    /**
+     * pay may buddy profit id
+     **/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
+    /**
+     * pay may buddy fees
+     **/
     private double fees;
 
 
